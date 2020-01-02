@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".activity.TabActivity">
 
-    <com.zhengsr.tablib.FlowLayout
+    <com.zhengsr.tablib.ScrollFlowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -36,8 +36,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="005"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="006"/>
 
-    </com.zhengsr.tablib.FlowLayout>
+    </com.zhengsr.tablib.ScrollFlowLayout>
 
 
 </LinearLayout>

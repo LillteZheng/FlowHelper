@@ -3,14 +3,16 @@ package com.zhengsr.tablib;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
- * Describe: 瀑布流布局
+ * Describe: 瀑布流布局,这个类只用来测量子控件，不做其他操作
  */
 public class FlowLayout extends ViewGroup {
+    private static final String TAG = "FlowLayout";
     public FlowLayout(Context context) {
         this(context, null);
     }
@@ -36,7 +38,7 @@ public class FlowLayout extends ViewGroup {
         int width = 0;
         int height = 0;
         /**
-         * 计算宽高，由于是横向 width 应该是所有子控件的累加，不用管模式了
+         * 计算宽高
          */
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -47,13 +49,14 @@ public class FlowLayout extends ViewGroup {
 
             MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
 
-            //拿到 子控件宽度
+            //拿到 子控件宽高 + margin
             int cw = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
             int ch = child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
 
             width += cw;
             //拿到 子控件高度，拿到最大的那个高度
             height = Math.max(height, ch);
+
 
         }
 
@@ -65,8 +68,6 @@ public class FlowLayout extends ViewGroup {
         }
 
         setMeasuredDimension(width, height);
-
-
     }
 
     @Override
@@ -79,8 +80,8 @@ public class FlowLayout extends ViewGroup {
             MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
             int cl = left + params.leftMargin;
             int ct = top + params.topMargin;
-            int cr = cl + child.getMeasuredWidth() + params.rightMargin;
-            int cb = ct + child.getMeasuredHeight() + params.bottomMargin;
+            int cr = cl + child.getMeasuredWidth() ;
+            int cb = ct + child.getMeasuredHeight() ;
             //下个控件的起始位置
             left += child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
             child.layout(cl, ct, cr, cb);
