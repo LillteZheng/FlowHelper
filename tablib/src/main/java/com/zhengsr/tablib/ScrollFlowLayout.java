@@ -2,11 +2,18 @@ package com.zhengsr.tablib;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
+import android.widget.OverScroller;
+import android.widget.Scroller;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -20,6 +27,11 @@ public class ScrollFlowLayout extends FlowLayout {
     private int mRightBound;
     private boolean isCanMove;
     private int mScreenWidth;
+    private VelocityTracker mVelocityTracker;
+    private Scroller mScroller;
+    private int mCurScrollX;
+    private int mMaximumVelocity;
+    private int mMinimumVelocity;
 
     public ScrollFlowLayout(Context context) {
         this(context, null);
@@ -33,7 +45,11 @@ public class ScrollFlowLayout extends FlowLayout {
         super(context, attrs, defStyleAttr);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mScreenWidth = getResources().getDisplayMetrics().widthPixels;
+        mScroller = new Scroller(context);
+        mMaximumVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
+        mMinimumVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
     }
+
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -61,6 +77,11 @@ public class ScrollFlowLayout extends FlowLayout {
                 mLastX = ev.getX();
                 //拿到上次的down坐标
                 mMoveX = ev.getX();
+
+                if (mScroller != null && !mScroller.isFinished()) {
+                    mScroller.abortAnimation();
+                }
+
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -79,7 +100,15 @@ public class ScrollFlowLayout extends FlowLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
+        
         switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Log.d(TAG, "zsr onTouchEvent: ");
+                break;
             case MotionEvent.ACTION_MOVE:
                 //scroller 向右为负，向左为正
                 int dx = (int) (mMoveX - event.getX());
@@ -100,11 +129,42 @@ public class ScrollFlowLayout extends FlowLayout {
                 mMoveX = event.getX();
                 break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+
+                mVelocityTracker.computeCurrentVelocity(1000,mMaximumVelocity);
+                int velocityX = (int) mVelocityTracker.getXVelocity();
+                if (Math.abs(velocityX) >= mMinimumVelocity) {
+                    mCurScrollX = getScrollX();
+                    mScroller.fling(mCurScrollX, 0, velocityX/2, 0, 0, getWidth(), 0, 0);
+                    if (mVelocityTracker != null) {
+                        mVelocityTracker.recycle();
+                        mVelocityTracker = null;
+                    }
+                }
                 break;
             default:
                 break;
 
         }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()){
+            int dx = mCurScrollX - mScroller.getCurrX();
+            // 超出右边界，进行修正
+            if (getScrollX() + dx >= mRightBound - mScreenWidth) {
+                dx = mRightBound - mScreenWidth - getScrollX();
+            }
+
+            // 超出左边界，进行修正
+            if (getScrollX() + dx <= 0) {
+                dx = -getScrollX();
+            }
+            scrollBy(dx,0);
+            postInvalidate();
+        }
     }
 }
