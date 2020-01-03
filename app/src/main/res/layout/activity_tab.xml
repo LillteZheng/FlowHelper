@@ -7,41 +7,26 @@
     android:orientation="vertical"
     tools:context=".activity.TabActivity">
 
-    <com.zhengsr.tablib.ScrollFlowLayout
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:text="更新数据"
+        android:onClick="update"/>
+
+    <com.zhengsr.tablib.TabFlowLayout
+        android:id="@+id/tabflow"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:background="#15000000"
         >
+    </com.zhengsr.tablib.TabFlowLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="001"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="002"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 
-            android:text="003"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="004"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="005"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="006"/>
-
-    </com.zhengsr.tablib.ScrollFlowLayout>
 
 
 </LinearLayout>
