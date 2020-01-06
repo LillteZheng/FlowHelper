@@ -1,17 +1,19 @@
-package com.zhengsr.tablib;
+package com.zhengsr.tablib.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 瀑布流布局,这个类只用来测量子控件，不做其他操作
  */
-public class FlowLayout extends ViewGroup {
+class FlowLayout extends ViewGroup {
     private static final String TAG = "FlowLayout";
     public FlowLayout(Context context) {
         this(context, null);
@@ -72,6 +74,15 @@ public class FlowLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        LinearLayout parent = (LinearLayout) getParent();
+        Log.d(TAG, "zsr - ScrollFlowLayout: "+parent);
+        if (parent != null) {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();
+            layoutParams.gravity = Gravity.START;
+            Log.d(TAG, "zsr - ScrollFlowLayout: ");
+            setLayoutParams(layoutParams);
+
+        }
         int count = getChildCount();
         int left = getPaddingLeft();
         int top = getPaddingTop();

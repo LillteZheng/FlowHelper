@@ -10,7 +10,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TabLayout"
+        android:text="TabFlowLayout 结合 Viewpager"
+        android:textAllCaps="false"
         android:onClick="tablayout"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TabFlowLayout"
+        android:textAllCaps="false"
+        android:onClick="tablayout2"/>
 
 </LinearLayout>

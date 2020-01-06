@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TabFlowLayout">
+        <attr name="tab_style">
+            <enum name="rect" value="0"/>
+            <enum name="tri" value="1"/>
+            <enum name="round" value="2"/>
+            <enum name="res" value="3"/>
+        </attr>
+        <attr name="tab_color" format="color|reference"/>
+        <attr name="tab_width" format="dimension"/>
+        <attr name="tab_height" format="dimension"/>
+        <attr name="tab_round_size" format="dimension"/>
+        <attr name="tab_margin_l" format="dimension"/>
+        <attr name="tab_margin_t" format="dimension"/>
+        <attr name="tab_margin_r" format="dimension"/>
+        <attr name="tab_margin_b" format="dimension"/>
+        <attr name="tab_click_animTime" format="integer"/>
+    </declare-styleable>
+</resources>

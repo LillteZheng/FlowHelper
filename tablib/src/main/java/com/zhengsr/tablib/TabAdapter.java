@@ -24,7 +24,7 @@ public abstract class TabAdapter<T> {
      * 获取个数
      * @return
      */
-    int getItemCount(){
+    public int getItemCount(){
         return mDatas == null ? 0 : mDatas.size();
     }
 
@@ -32,7 +32,7 @@ public abstract class TabAdapter<T> {
      * 获取id
      * @return
      */
-    int getLayoutId(){
+    public int getLayoutId(){
         return mLayoutId;
     }
 
@@ -40,7 +40,7 @@ public abstract class TabAdapter<T> {
      * 获取数据
      * @return
      */
-    List<T> getDatas(){
+    public List<T> getDatas(){
         return mDatas;
     }
 
@@ -73,7 +73,7 @@ public abstract class TabAdapter<T> {
      */
 
     public AdapterListener mListener;
-    void setListener(AdapterListener listener){
+    public void setListener(AdapterListener listener){
         mListener = listener;
     }
 

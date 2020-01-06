@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.zhengsr.tabhelper.activity.TabActivity;
+import com.zhengsr.tabhelper.activity.TabNoViewPagerActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,10 +14,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(this, TabActivity.class));
+        startActivity(new Intent(this, TabNoViewPagerActivity.class));
     }
 
     public void tablayout(View view) {
         startActivity(new Intent(this, TabActivity.class));
+    }
+
+    public void tablayout2(View view) {
+        startActivity(new Intent(this, TabNoViewPagerActivity.class));
     }
 }

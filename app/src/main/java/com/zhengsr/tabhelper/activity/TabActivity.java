@@ -6,16 +6,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.fragment.CusFragment;
 import com.zhengsr.tablib.TabAdapter;
-import com.zhengsr.tablib.TabFlowLayout;
+import com.zhengsr.tablib.view.TabFlowLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;

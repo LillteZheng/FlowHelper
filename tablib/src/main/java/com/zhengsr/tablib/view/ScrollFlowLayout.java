@@ -1,34 +1,32 @@
-package com.zhengsr.tablib;
+package com.zhengsr.tablib.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.view.animation.OvershootInterpolator;
-import android.widget.OverScroller;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 滚动类，用来移动
  */
-public class ScrollFlowLayout extends FlowLayout {
+class ScrollFlowLayout extends FlowLayout {
     private static final String TAG = "ScrollFlowLayout";
     private int mTouchSlop;
     private float mLastX;
     private float mMoveX;
-    private int mRightBound;
+    protected int mRightBound;
     private boolean isCanMove;
-    private int mScreenWidth;
+    protected int mScreenWidth;
     private VelocityTracker mVelocityTracker;
-    private Scroller mScroller;
+    protected Scroller mScroller;
     private int mCurScrollX;
     private int mMaximumVelocity;
     private int mMinimumVelocity;
