@@ -1,5 +1,6 @@
 package com.zhengsr.tabhelper.activity;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -20,55 +21,110 @@ import java.util.List;
 public class TabActivity extends AppCompatActivity {
     private static final String TAG = "TabActivity";
     private List<Fragment> mFragments = new ArrayList<>();
-    private List<String> mTitle = new ArrayList<>(Arrays.asList("An Android TabLayout Lib has 3 kinds of TabLayout at present.".split(" ")));
-    private TabFlowAdapter mAdapter;
+    private List<String> mTitle = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed people can reach the other side".split(" ")));
+
     private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab);
-        for (String string : mTitle) {
-            CusFragment fragment = CusFragment.newInStance(string);
-            mFragments.add(fragment);
-        }
-        //viewpager
         mViewPager = findViewById(R.id.viewpager);
+        for (String s : mTitle) {
+            mFragments.add(CusFragment.newInStance(s));
+        }
         mViewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
+        rectFlow();
+       // triFlow();
+       // roundFlow();
+        //resFlow();
 
-        // tabflowlayout
-        TabFlowLayout tabFlowLayout = findViewById(R.id.tabflow);
-        mAdapter = new TabFlowAdapter(R.layout.item_tab_text, mTitle);
-        tabFlowLayout.setViewPager(mViewPager);
-        tabFlowLayout.setAdapter(mAdapter);
     }
 
-    public void update(View view) {
-        mTitle.clear();
-        ArrayList<String> strings = new ArrayList<>(Arrays.asList("Life is like an ocean. Only strong willed people can reach the other side".split(" ")));
-        mTitle.addAll(strings);
-        mAdapter.notifyDataChanged();
+    private void rectFlow(){
+        TabFlowLayout flowLayout = findViewById(R.id.rectflow);
+        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+            }
+
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                mViewPager.setCurrentItem(position);
+            }
+        });
+
+        TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
+        flowLayout2.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout2.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+                if (position == 0){
+                    setVisiable(view,R.id.item_msg,true);
+                }
+            }
+
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                mViewPager.setCurrentItem(position);
+
+            }
+        });
+
     }
 
-    /**
-     * tabadapter
-     */
-    class TabFlowAdapter extends TabAdapter<String>{
+    private void triFlow(){
+        TabFlowLayout flowLayout = findViewById(R.id.triflow);
+        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+            }
 
-        public TabFlowAdapter(int layoutId, List<String> data) {
-            super(layoutId, data);
-        }
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                mViewPager.setCurrentItem(position);
+            }
+        });
+    }
+    private void roundFlow(){
+        TabFlowLayout flowLayout = findViewById(R.id.roundflow);
+        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+            }
 
-        @Override
-        public void bindView(View view, String data, int position) {
-            setText(view,R.id.item_text,data);
-        }
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                mViewPager.setCurrentItem(position);
+            }
+        });
+    }
+    private void resFlow(){
+        TabFlowLayout flowLayout = findViewById(R.id.resflow);
+        flowLayout.setViewPager(mViewPager);
+        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+            }
 
-        @Override
-        public void onItemClick(View view,String data,int position) {
-            super.onItemClick(view,data,position);
-            mViewPager.setCurrentItem(position);
-        }
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                mViewPager.setCurrentItem(position);
+            }
+        });
     }
 
     /**

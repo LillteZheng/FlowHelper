@@ -12,24 +12,36 @@
     <com.zhengsr.tablib.view.TabFlowLayout
         android:id="@+id/rectflow"
         android:layout_width="wrap_content"
-        android:background="#15000000"
+        android:background="@drawable/shape_round_ff"
         android:layout_marginTop="10dp"
         app:tab_style="rect"
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_width="20dp"
-        android:layout_height="40dp"/>
+        app:tab_margin_b="3dp"
+        android:layout_height="wrap_content"/>
+    <com.zhengsr.tablib.view.TabFlowLayout
+        android:id="@+id/rectflow2"
+        android:layout_width="wrap_content"
+        android:background="#15000000"
+        android:layout_marginTop="10dp"
+        app:tab_style="rect"
+        app:tab_color="@color/colorPrimary"
+        app:tab_height="3dp"
+        app:tab_margin_b="3dp"
+        android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.TabFlowLayout
         android:id="@+id/triflow"
         android:layout_width="wrap_content"
-        android:background="#15000000"
+        android:background="@drawable/shape_round"
         android:layout_marginTop="10dp"
         app:tab_style="tri"
-        app:tab_color="@color/colorPrimary"
+        app:tab_color="#ffffff"
         app:tab_width="20dp"
         app:tab_height="5dp"
-        android:layout_height="40dp"/>
+        app:tab_margin_b="2dp"
+        android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.TabFlowLayout
         android:id="@+id/roundflow"
@@ -39,12 +51,27 @@
         android:background="#6D8FB0"
         app:tab_color="#b01a1a1a"
         app:tab_round_size="50dp"
-        app:tab_margin_t="10dp"
+        app:tab_margin_t="8dp"
         app:tab_margin_b="7dp"
-        app:tab_margin_l="5dp"
-        app:tab_margin_r="5dp"
+        app:tab_margin_l="2dp"
+        app:tab_margin_r="2dp"
         app:tab_click_animTime="250"
-        android:layout_height="40dp"/>
+        android:layout_height="wrap_content"/>
+
+    <com.zhengsr.tablib.view.TabFlowLayout
+        android:id="@+id/resflow"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        app:tab_style="res"
+        android:background="#6D8FB0"
+        app:tab_item_res="@drawable/shape_round"
+        app:tab_round_size="50dp"
+        app:tab_margin_t="7dp"
+        app:tab_margin_b="7dp"
+        app:tab_margin_l="2dp"
+        app:tab_margin_r="2dp"
+        app:tab_click_animTime="250"
+        android:layout_height="wrap_content"/>
 
 
 

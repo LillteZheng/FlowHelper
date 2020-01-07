@@ -1,5 +1,6 @@
 package com.zhengsr.tabhelper.activity;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,12 +25,24 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         rectFlow();
         triFlow();
         roundFlow();
+        resFlow();
 
     }
 
     private void rectFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.rectflow);
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+                if (position == 0){
+                    setVisiable(view,R.id.item_msg,true);
+                }
+            }
+        });
+
+        TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
+        flowLayout2.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -42,7 +55,18 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle2) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
+                setText(view,R.id.item_text,data)
+                        .setTextColor(view,R.id.item_text,Color.BLACK);
+                if (position == 0){
+                    setTextColor(view,R.id.item_text,Color.WHITE);
+                }
+            }
+
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                resetAllColor(R.id.item_text,Color.BLACK);
+                setTextColor(view,R.id.item_text,Color.WHITE);
             }
         });
     }
@@ -52,7 +76,19 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle3) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
+                setText(view,R.id.item_text,data)
+                        .setTextColor(view,R.id.item_text, Color.WHITE);
+            }
+        });
+    }
+
+    private void resFlow(){
+        TabFlowLayout flowLayout = findViewById(R.id.resflow);
+        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle3) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data)
+                        .setTextColor(view,R.id.item_text, Color.WHITE);
             }
         });
     }

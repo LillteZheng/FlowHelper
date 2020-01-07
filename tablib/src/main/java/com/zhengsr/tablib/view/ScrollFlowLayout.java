@@ -10,6 +10,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
@@ -26,10 +27,12 @@ class ScrollFlowLayout extends FlowLayout {
     private boolean isCanMove;
     protected int mScreenWidth;
     private VelocityTracker mVelocityTracker;
-    protected Scroller mScroller;
+    private Scroller mScroller;
     private int mCurScrollX;
     private int mMaximumVelocity;
     private int mMinimumVelocity;
+
+    private  boolean isFirst = true;
 
     public ScrollFlowLayout(Context context) {
         this(context, null);
@@ -46,6 +49,7 @@ class ScrollFlowLayout extends FlowLayout {
         mScroller = new Scroller(context);
         mMaximumVelocity = ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         mMinimumVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
+
     }
 
 
@@ -62,6 +66,15 @@ class ScrollFlowLayout extends FlowLayout {
         //判断是否可移动
         if (getWidth() > mScreenWidth){
             isCanMove = true;
+        }
+        if (isFirst) {
+            isFirst = false;
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }, 200);
         }
     }
 

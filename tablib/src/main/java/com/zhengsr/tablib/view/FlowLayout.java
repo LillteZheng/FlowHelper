@@ -68,21 +68,12 @@ class FlowLayout extends ViewGroup {
         }else{
             height = height + getPaddingTop() + getPaddingBottom();
         }
-
         setMeasuredDimension(width, height);
     }
 
+
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        LinearLayout parent = (LinearLayout) getParent();
-        Log.d(TAG, "zsr - ScrollFlowLayout: "+parent);
-        if (parent != null) {
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();
-            layoutParams.gravity = Gravity.START;
-            Log.d(TAG, "zsr - ScrollFlowLayout: ");
-            setLayoutParams(layoutParams);
-
-        }
         int count = getChildCount();
         int left = getPaddingLeft();
         int top = getPaddingTop();
