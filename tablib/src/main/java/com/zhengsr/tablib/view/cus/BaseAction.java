@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.zhengsr.tablib.Constants;
 import com.zhengsr.tablib.R;
+import com.zhengsr.tablib.bena.TabTypeValue;
 import com.zhengsr.tablib.view.TabFlowLayout;
 
 import java.lang.reflect.Field;
@@ -148,16 +149,22 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     mParentView.postInvalidate();
                 }
                 //超过中间了，让父控件也跟着移动
+                //Log.d(TAG, "zsr onPageScrolled: "+scrollX);
                 if (scrollX > mScreenWidth / 2 - mParentView.getPaddingLeft()) {
                     scrollX -= mScreenWidth / 2 - mParentView.getPaddingLeft();
                     //有边界提醒
-                    if (scrollX < mRightBound - mScreenWidth) {
+                    if (scrollX <= mRightBound - mScreenWidth) {
                         mParentView.scrollTo(scrollX, 0);
+                    }else{
+                        int dx = mRightBound - mScreenWidth;
+                        mParentView.scrollTo(dx,0);
                     }
                 } else {
                     mParentView.scrollTo(0, 0);
                 }
+
             }
+
 
         }
 
@@ -288,24 +295,5 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         }
     }
 
-    class TabTypeValue {
-        public float left;
-        public float right;
 
-        public TabTypeValue(float left, float right) {
-            this.left = left;
-            this.right = right;
-        }
-
-        public TabTypeValue() {
-        }
-
-        @Override
-        public String toString() {
-            return "TabTypeValue{" +
-                    "left=" + left +
-                    ", right=" + right +
-                    '}';
-        }
-    }
 }

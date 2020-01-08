@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
+import com.zhengsr.tablib.bena.TabTypeValue;
 import com.zhengsr.tablib.view.TabFlowLayout;
 
 /**

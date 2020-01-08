@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import com.zhengsr.tablib.Constants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.TabAdapter;
-import com.zhengsr.tablib.callback.FlowListener;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
 import com.zhengsr.tablib.view.cus.BaseAction;
@@ -42,7 +40,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private Scroller mScroller;
     private int mLastScrollX = 0;
     private boolean isFirst = true;
-
+    private TypedArray mTypeArray;
+    private int mIndex = 0;
     public TabFlowLayout(Context context) {
         this(context, null);
     }
@@ -54,8 +53,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public TabFlowLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
-        int tabStyle = ta.getInteger(R.styleable.TabFlowLayout_tab_style, -1);
+        mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
+        int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_style, -1);
 
         mScroller = new Scroller(getContext());
         if (tabStyle != -1) {
@@ -79,10 +78,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
         //配置自定义属性给 action
         if (mAction != null) {
-            mAction.configAttrs(ta);
+            mAction.configAttrs(mTypeArray);
         }
-
-        ta.recycle();
+        if (mAction != null) {
+            mTypeArray.recycle();
+        }
 
 
         /**
@@ -149,6 +149,16 @@ public class TabFlowLayout extends ScrollFlowLayout {
         notifyChanged();
     }
 
+    /**
+     * 自定义的action
+     * @param action
+     */
+    public void setCusAction(BaseAction action) {
+        mAction = action;
+        mAction.configAttrs(mTypeArray);
+        mTypeArray.recycle();
+    }
+
 
     class FlowListener extends FlowListenerAdapter {
         @Override
@@ -176,7 +186,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         setViewPager(viewPager, -1, 0, 0, 0);
     }
 
-    private int mIndex = 0;
+
 
     public void setViewPager(ViewPager viewPager, int textId, int unselectedColor, int selectedColor) {
         setViewPager(viewPager, textId, 0, unselectedColor, selectedColor);
@@ -229,7 +239,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 /**
                  * 如果没有 viewpager，则需要使用 scroller 平滑过渡
                  */
-                if (mViewPager != null) {
+                if (mViewPager == null) {
                     //超过中间了，让父控件也跟着移动
                     int scrollX = view.getLeft();
                     if (scrollX > mScreenWidth / 2 - getPaddingLeft()) {

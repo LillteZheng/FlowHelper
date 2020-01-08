@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
+import com.zhengsr.tablib.bena.TabTypeValue;
 import com.zhengsr.tablib.view.TabFlowLayout;
 
 /**
@@ -36,19 +37,22 @@ public class ResAction extends BaseAction {
 
         View child = parentView.getChildAt(0);
         if (child != null){
-            int width = child.getMeasuredWidth();
-            int height = child.getMeasuredHeight();
-            mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(mBitmap);
+            if (mDrawable != null) {
+                int width = child.getMeasuredWidth();
+                int height = child.getMeasuredHeight();
+                mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(mBitmap);
 
-            int l = parentView.getPaddingLeft();
-            int t = parentView.getPaddingTop();
-            int r = (int) (width - mMarginRight);
-            int b = (int) (height - mMarginBottom);
-            mDrawable.setBounds((int) (l+mMarginLeft), (int) (t+mMarginTop),r,b);
-            mDrawable.draw(canvas);
-            mRect.set(l,t,r,b);
-            mDstRect = new Rect(l,t,r,b);
+                int l = parentView.getPaddingLeft();
+                int t = parentView.getPaddingTop();
+                int r = (int) (width - mMarginRight);
+                int b = (int) (height - mMarginBottom);
+                mDrawable.setBounds((int) (l+mMarginLeft), (int) (t+mMarginTop),r,b);
+                mDrawable.draw(canvas);
+                mRect.set(l,t,r,b);
+                mDstRect = new Rect(l,t,r,b);
+            }
+
         }
 
 

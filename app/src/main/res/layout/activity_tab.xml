@@ -27,7 +27,6 @@
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_margin_b="3dp"
-        android:visibility="gone"
         android:background="@color/black_ff_bg"
         android:layout_height="wrap_content"/>
 
@@ -72,6 +71,18 @@
         app:tab_margin_l="2dp"
         app:tab_margin_r="2dp"
         app:tab_click_animTime="250"
+        android:layout_height="wrap_content"/>
+
+    <com.zhengsr.tablib.view.TabFlowLayout
+        android:id="@+id/cusflow"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#6D8FB0"
+        app:tab_click_animTime="250"
+        app:tab_color="@color/white"
+        app:tab_height="5dp"
+        app:tab_width="5dp"
+        app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
 
 
