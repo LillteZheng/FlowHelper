@@ -6,4 +6,5 @@
     <color name="white">#ffffff</color>
     <color name="unselect">#b0f1ffff</color>
     <color name="black_ff_bg">#b01a1a1a</color>
+    <color name="black">#000000</color>
 </resources>

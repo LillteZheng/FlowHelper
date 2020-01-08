@@ -1,17 +1,15 @@
 package com.zhengsr.tabhelper.activity;
 
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tabhelper.R;
-import com.zhengsr.tablib.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.bena.TabTypeValue;
-import com.zhengsr.tablib.view.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.cus.BaseAction;
 
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
                 if (position == 0){
-                    setVisiable(view,R.id.item_msg,true);
+                    setVisible(view,R.id.item_msg,true);
                 }
             }
         });
@@ -108,7 +106,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
                 setText(view,R.id.item_text,data)
                         .setTextColor(view,R.id.item_text, Color.WHITE);
                 if (position == 2){
-                    setVisiable(view,R.id.item_msg,true);
+                    setVisible(view,R.id.item_msg,true);
                 }
             }
         });

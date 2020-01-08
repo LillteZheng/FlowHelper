@@ -1,18 +1,15 @@
-package com.zhengsr.tablib.view;
+package com.zhengsr.tablib.view.flow;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
 import android.widget.Scroller;
+
+import com.zhengsr.tablib.view.flow.FlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -51,6 +48,7 @@ class ScrollFlowLayout extends FlowLayout {
         mMinimumVelocity = ViewConfiguration.get(context).getScaledMinimumFlingVelocity();
 
     }
+
 
 
     @Override

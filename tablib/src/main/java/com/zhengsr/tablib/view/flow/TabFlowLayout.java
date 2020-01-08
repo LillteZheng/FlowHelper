@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view;
+package com.zhengsr.tablib.view.flow;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 
 import com.zhengsr.tablib.Constants;
 import com.zhengsr.tablib.R;
-import com.zhengsr.tablib.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
 import com.zhengsr.tablib.view.cus.BaseAction;
@@ -55,7 +54,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
         mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
         int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_style, -1);
-
         mScroller = new Scroller(getContext());
         if (tabStyle != -1) {
             switch (tabStyle) {
@@ -275,5 +273,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
             //有边界
             scrollTo(dx, 0);
         }
+    }
+
+    @Override
+    public boolean isVertical() {
+        return false;
     }
 }

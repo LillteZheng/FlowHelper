@@ -1,17 +1,10 @@
 package com.zhengsr.tablib.view.cus;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 
-import com.zhengsr.tablib.Constants;
-import com.zhengsr.tablib.R;
-import com.zhengsr.tablib.view.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8

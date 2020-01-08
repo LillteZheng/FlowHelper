@@ -6,21 +6,26 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-
+    android:background="#506E7A"
     tools:context=".activity.TabNoViewPagerActivity">
 
-    <com.zhengsr.tablib.view.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/rectflow"
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round_ff"
         android:layout_marginTop="10dp"
         app:tab_style="rect"
         app:tab_color="@color/colorPrimary"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         app:tab_height="3dp"
         app:tab_width="20dp"
         app:tab_margin_b="3dp"
         android:layout_height="wrap_content"/>
-    <com.zhengsr.tablib.view.TabFlowLayout
+
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/rectflow2"
         android:layout_width="wrap_content"
         android:background="@color/black_ff_bg"
@@ -31,7 +36,7 @@
         app:tab_margin_b="3dp"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/triflow"
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round"
@@ -43,7 +48,7 @@
         app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/roundflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -58,7 +63,7 @@
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/resflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -74,7 +79,7 @@
         android:layout_height="wrap_content"/>
 
 
-    <com.zhengsr.tablib.view.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/cusflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"

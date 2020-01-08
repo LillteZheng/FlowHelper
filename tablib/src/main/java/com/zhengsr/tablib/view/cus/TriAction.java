@@ -2,11 +2,10 @@ package com.zhengsr.tablib.view.cus;
 
 import android.graphics.Canvas;
 import android.graphics.Path;
-import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.bena.TabTypeValue;
-import com.zhengsr.tablib.view.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.TabNoViewPagerActivity"></activity>
+        <activity android:name=".activity.LabelActivity"></activity>
+        <activity android:name=".activity.TabNoViewPagerActivity" />
         <activity android:name=".activity.TabActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

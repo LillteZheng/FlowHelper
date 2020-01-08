@@ -12,9 +12,9 @@ import android.view.View;
 
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.fragment.CusFragment;
-import com.zhengsr.tablib.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.bena.TabTypeValue;
-import com.zhengsr.tablib.view.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.cus.BaseAction;
 
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class TabActivity extends AppCompatActivity {
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
                 if (position == 0){
-                    setVisiable(view,R.id.item_msg,true);
+                    setVisible(view,R.id.item_msg,true);
                 }
             }
 
@@ -142,7 +142,7 @@ public class TabActivity extends AppCompatActivity {
                 setText(view,R.id.item_text,data)
                         .setTextColor(view,R.id.item_text, Color.WHITE);
                 if (position == 2){
-                    setVisiable(view,R.id.item_msg,true);
+                    setVisible(view,R.id.item_msg,true);
                 }
             }
             @Override
@@ -157,7 +157,6 @@ public class TabActivity extends AppCompatActivity {
      * 绘制一个圆的指示器
      */
     class CircleAction extends BaseAction {
-        private static final String TAG = "CircleAction";
         @Override
         public void config(TabFlowLayout parentView) {
             super.config(parentView);

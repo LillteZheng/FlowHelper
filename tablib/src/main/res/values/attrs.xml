@@ -17,6 +17,10 @@
         <attr name="tab_margin_b" format="dimension"/>
         <attr name="tab_click_animTime" format="integer"/>
         <attr name="tab_item_res" format="reference"/>
+    </declare-styleable>
 
+
+    <declare-styleable name="LabelFlowLayout">
+        <attr name="label_maxcount" format="integer"/>
     </declare-styleable>
 </resources>

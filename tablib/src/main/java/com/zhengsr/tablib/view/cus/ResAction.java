@@ -2,17 +2,14 @@ package com.zhengsr.tablib.view.cus;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bena.TabTypeValue;
-import com.zhengsr.tablib.view.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8

@@ -15,5 +15,7 @@ public class FlowListenerAdapter  {
 
     }
 
+    public void resetAllStatus(){}
+
 
 }

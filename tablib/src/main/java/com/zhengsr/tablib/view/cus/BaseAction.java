@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -18,9 +17,7 @@ import android.widget.TextView;
 import com.zhengsr.tablib.Constants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bena.TabTypeValue;
-import com.zhengsr.tablib.view.TabFlowLayout;
-
-import java.lang.reflect.Field;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
