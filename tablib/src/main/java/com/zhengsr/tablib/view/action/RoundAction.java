@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view.cus;
+package com.zhengsr.tablib.view.action;
 
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -15,10 +15,11 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
 public class RoundAction extends BaseAction {
     private static final String TAG = "RoundAction";
     private float mRound;
+
     @Override
     public void configAttrs(TypedArray ta) {
         super.configAttrs(ta);
-        mRound = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_round_size,10);
+        mRound = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_round_size, 10);
     }
 
     @Override
@@ -28,9 +29,9 @@ public class RoundAction extends BaseAction {
         if (child != null) {
             float l = parentView.getPaddingLeft() + mMarginLeft;
             float t = parentView.getPaddingTop() + mMarginTop;
-            float r = child.getMeasuredWidth() - mMarginRight;
-            float b = child.getMeasuredHeight() - mMarginBottom;
-            mRect.set(l,t,r,b);
+            float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
+            float b = parentView.getPaddingTop() + child.getMeasuredHeight() - mMarginBottom;
+            mRect.set(l, t, r, b);
 
         }
         parentView.postInvalidate();
@@ -47,6 +48,6 @@ public class RoundAction extends BaseAction {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRoundRect(mRect,mRound,mRound,mPaint);
+        canvas.drawRoundRect(mRect, mRound, mRound, mPaint);
     }
 }

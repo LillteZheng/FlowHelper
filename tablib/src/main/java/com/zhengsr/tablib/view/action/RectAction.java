@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view.cus;
+package com.zhengsr.tablib.view.action;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,6 +12,7 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
  */
 public class RectAction extends BaseAction {
     private static final String TAG = "RectAction";
+
     @Override
     public void config(TabFlowLayout parentView) {
         super.config(parentView);
@@ -20,24 +21,22 @@ public class RectAction extends BaseAction {
         if (child != null) {
             float l = parentView.getPaddingLeft() + mMarginLeft;
             float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabHeight - mMarginBottom;
-            float r = child.getMeasuredWidth() - mMarginRight;
-            float b = child.getMeasuredHeight() - mMarginBottom;
-            if (mTabWidth != -1){
-                l += (child.getMeasuredWidth() - mTabWidth)/2;
-                r = mTabWidth+l ;
+            float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
+            float b = t + mTabHeight;
+            if (mTabWidth != -1) {
+                l += (child.getMeasuredWidth() - mTabWidth) / 2;
+                r = mTabWidth + l;
             }
-            mRect.set(l,t,r,b);
+            mRect.set(l, t, r, b);
 
         }
         parentView.postInvalidate();
     }
 
 
-
-
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(mRect,mPaint);
+        canvas.drawRect(mRect, mPaint);
     }
 
 }

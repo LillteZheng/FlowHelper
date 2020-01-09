@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view.cus;
+package com.zhengsr.tablib.view.action;
 
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -14,6 +14,7 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
 public class TriAction extends BaseAction {
     private static final String TAG = "TriAction";
     private Path mPath;
+
     @Override
     public void config(TabFlowLayout parentView) {
         super.config(parentView);
@@ -22,17 +23,17 @@ public class TriAction extends BaseAction {
         if (child != null) {
             float l = parentView.getPaddingLeft() + mMarginLeft;
             float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabHeight - mMarginBottom;
-            float r = child.getMeasuredWidth() - mMarginRight;
-            float b = child.getMeasuredHeight() - mMarginBottom;
+            float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
+            float b = t + mTabHeight;
 
-            if (mTabWidth != -1){
-                l += (child.getMeasuredWidth() - mTabWidth)/2;
-                r = mTabWidth+l ;
+            if (mTabWidth != -1) {
+                l += (child.getMeasuredWidth() - mTabWidth) / 2;
+                r = mTabWidth + l;
             }
-            mRect.set(l,t,r,b);
-            mPath.moveTo(mRect.width()/2 + mRect.left,t);
-            mPath.lineTo(mRect.left,b);
-            mPath.lineTo(mRect.right,b);
+            mRect.set(l, t, r, b);
+            mPath.moveTo(mRect.width() / 2 + mRect.left, t);
+            mPath.lineTo(mRect.left, b);
+            mPath.lineTo(mRect.right, b);
         }
     }
 
@@ -47,6 +48,6 @@ public class TriAction extends BaseAction {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawPath(mPath,mPaint);
+        canvas.drawPath(mPath, mPaint);
     }
 }

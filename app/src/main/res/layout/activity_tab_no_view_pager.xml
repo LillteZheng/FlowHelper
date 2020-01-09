@@ -34,6 +34,10 @@
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_margin_b="3dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -46,6 +50,10 @@
         app:tab_width="20dp"
         app:tab_height="5dp"
         app:tab_margin_b="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -60,6 +68,10 @@
         app:tab_margin_b="3dp"
         app:tab_margin_l="2dp"
         app:tab_margin_r="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
@@ -71,10 +83,14 @@
         android:background="#6D8FB0"
         app:tab_item_res="@drawable/shape_round"
         app:tab_round_size="50dp"
-        app:tab_margin_t="5dp"
+        app:tab_margin_t="4dp"
         app:tab_margin_b="3dp"
         app:tab_margin_l="2dp"
         app:tab_margin_r="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
@@ -88,6 +104,10 @@
         app:tab_color="@color/white"
         app:tab_height="5dp"
         app:tab_width="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
 

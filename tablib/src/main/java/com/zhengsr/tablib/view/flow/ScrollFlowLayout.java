@@ -28,6 +28,7 @@ class ScrollFlowLayout extends FlowLayout {
     private int mCurScrollX;
     private int mMaximumVelocity;
     private int mMinimumVelocity;
+    protected boolean isMove;
 
     private  boolean isFirst = true;
 
@@ -97,6 +98,7 @@ class ScrollFlowLayout extends FlowLayout {
                 float dx = ev.getX() - mLastX;
                 if (Math.abs(dx) >= mTouchSlop) {
                     //由父控件接管触摸事件
+
                     return true;
                 }
                 mLastX = ev.getX();
@@ -134,6 +136,7 @@ class ScrollFlowLayout extends FlowLayout {
                 }
 
                 scrollBy(dx, 0);
+                isMove = true;
                 mMoveX = event.getX();
                 break;
             case MotionEvent.ACTION_UP:
@@ -174,5 +177,13 @@ class ScrollFlowLayout extends FlowLayout {
             scrollBy(dx,0);
             postInvalidate();
         }
+    }
+
+    public boolean isMove() {
+        return isMove;
+    }
+
+    public void setMove(boolean move) {
+        isMove = move;
     }
 }

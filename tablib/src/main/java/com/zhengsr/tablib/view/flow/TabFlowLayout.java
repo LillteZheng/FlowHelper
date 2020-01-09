@@ -1,11 +1,15 @@
 package com.zhengsr.tablib.view.flow;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +21,15 @@ import android.widget.TextView;
 
 import com.zhengsr.tablib.Constants;
 import com.zhengsr.tablib.R;
+import com.zhengsr.tablib.view.ColorTextView;
 import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
-import com.zhengsr.tablib.view.cus.BaseAction;
-import com.zhengsr.tablib.view.cus.RectAction;
-import com.zhengsr.tablib.view.cus.ResAction;
-import com.zhengsr.tablib.view.cus.RoundAction;
-import com.zhengsr.tablib.view.cus.TriAction;
+import com.zhengsr.tablib.view.action.BaseAction;
+import com.zhengsr.tablib.view.action.RectAction;
+import com.zhengsr.tablib.view.action.ResAction;
+import com.zhengsr.tablib.view.action.RoundAction;
+import com.zhengsr.tablib.view.action.TriAction;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -40,7 +45,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private int mLastScrollX = 0;
     private boolean isFirst = true;
     private TypedArray mTypeArray;
-    private int mIndex = 0;
+    private int mCurrentIndex = 0;
+
     public TabFlowLayout(Context context) {
         this(context, null);
     }
@@ -98,16 +104,26 @@ public class TabFlowLayout extends ScrollFlowLayout {
                         setLayoutParams(params);
                     }
                 }
-                if (mViewPager != null) {
-                    if (isFirst) {
-                        isFirst = false;
-                        if (mIndex == 0){
-                            if (mAction != null) {
-                                mAction.onPageSelected(0);
-                            }
-                        }else {
-                            mViewPager.setCurrentItem(mIndex);
+
+                /**
+                 *  当横竖屏之后，需要重新对位置，选中 index 等恢复到原来的状态
+                 */
+                if (isFirst) {
+                    isFirst = false;
+                    if (mViewPager != null) {
+                        if (mAction != null) {
+                            mAction.chooseSelectedPosition(mCurrentIndex);
+                            mAction.doAnim(mLastIndex, mCurrentIndex);
                         }
+
+                    } else {
+                        if (mAction != null && mCurrentIndex > 0) {
+                            mAction.onItemClick(mLastIndex, mCurrentIndex);
+                        }
+                    }
+                    View view = getChildAt(mCurrentIndex);
+                    if (view != null) {
+                        updateScroll(view);
                     }
                 }
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -149,6 +165,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 自定义的action
+     *
      * @param action
      */
     public void setCusAction(BaseAction action) {
@@ -185,7 +202,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
 
-
     public void setViewPager(ViewPager viewPager, int textId, int unselectedColor, int selectedColor) {
         setViewPager(viewPager, textId, 0, unselectedColor, selectedColor);
     }
@@ -198,7 +214,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 mAction.setViewPager(viewPager, textId, unselectedColor, selectedColor);
             }
         }
-        mIndex = selectedIndex;
+
+        mCurrentIndex = selectedIndex;
 
     }
 
@@ -229,40 +246,48 @@ public class TabFlowLayout extends ScrollFlowLayout {
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                mCurrentIndex = i;
+                if (mViewPager != null && mAction != null) {
+                    mLastIndex = mAction.getCurrentIndex();
+                }
                 mAdapter.onItemClick(view, mAdapter.getDatas().get(i), i);
                 if (mAction != null) {
                     mAction.onItemClick(mLastIndex, i);
                 }
-                mLastIndex = i;
+                mLastIndex = mCurrentIndex;
                 /**
                  * 如果没有 viewpager，则需要使用 scroller 平滑过渡
                  */
                 if (mViewPager == null) {
-                    //超过中间了，让父控件也跟着移动
-                    int scrollX = view.getLeft();
-                    if (scrollX > mScreenWidth / 2 - getPaddingLeft()) {
-                        scrollX -= mScreenWidth / 2 - getPaddingLeft();
-                        //有边界提醒
-                        if (scrollX < mRightBound - mScreenWidth) {
-                            int dx = scrollX - mLastScrollX;
-                            mScroller.startScroll(getScrollX(), 0, dx, 0);
-                            mLastScrollX = scrollX;
-                        } else {
-                            int dx = mRightBound - mScreenWidth - getScrollX();
-                            if (getScrollX() >= mRightBound - mScreenWidth) {
-                                dx = 0;
-                            }
-                            mScroller.startScroll(getScrollX(), 0, dx, 0);
-                            mLastScrollX = mRightBound - mScreenWidth - dx;
-                        }
-                    } else {
-                        scrollTo(0, 0);
-                        mLastScrollX = 0;
-
-                    }
+                    updateScroll(view);
                 }
             }
         });
+    }
+
+
+    private void updateScroll(View view) {
+        //超过中间了，让父控件也跟着移动
+        int scrollX = view.getLeft();
+        if (scrollX > mScreenWidth / 2 - getPaddingLeft()) {
+            scrollX -= mScreenWidth / 2 - getPaddingLeft();
+            //有边界提醒
+            if (scrollX < mRightBound - mScreenWidth) {
+                int dx = scrollX - mLastScrollX;
+                mScroller.startScroll(getScrollX(), 0, dx, 0);
+                mLastScrollX = scrollX;
+            } else {
+                int dx = mRightBound - mScreenWidth - getScrollX();
+                if (getScrollX() >= mRightBound - mScreenWidth) {
+                    dx = 0;
+                }
+                mScroller.startScroll(getScrollX(), 0, dx, 0);
+                mLastScrollX = mRightBound - mScreenWidth - dx;
+            }
+        } else {
+            scrollTo(0, 0);
+            mLastScrollX = 0;
+        }
     }
 
     @Override
@@ -273,6 +298,30 @@ public class TabFlowLayout extends ScrollFlowLayout {
             //有边界
             scrollTo(dx, 0);
         }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            state = bundle.getParcelable("instancestatus");
+            mCurrentIndex = bundle.getInt("index");
+            mLastIndex = bundle.getInt("lastindex");
+        }
+        super.onRestoreInstanceState(state);
+    }
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("instancestatus", super.onSaveInstanceState());
+        if (mViewPager != null) {
+            mCurrentIndex = mViewPager.getCurrentItem();
+        }
+        bundle.putInt("index", mCurrentIndex);
+        bundle.putInt("lastindex", mLastIndex);
+        return bundle;
     }
 
     @Override

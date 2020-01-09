@@ -74,6 +74,20 @@
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
+
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
+        android:id="@+id/colorflow"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#6D8FB0"
+        app:tab_style="tri"
+        app:tab_click_animTime="250"
+        app:tab_color="@color/white"
+        app:tab_height="5dp"
+        app:tab_width="5dp"
+        app:tab_margin_b="2dp"
+        android:layout_height="wrap_content"/>
+
     <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/cusflow"
         android:layout_width="wrap_content"
@@ -85,6 +99,9 @@
         app:tab_width="5dp"
         app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
+
+
+
 
 
     <android.support.v4.view.ViewPager

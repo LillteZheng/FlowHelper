@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view.cus;
+package com.zhengsr.tablib.view.action;
 
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -18,40 +18,38 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
 public class ResAction extends BaseAction {
     private static final String TAG = "ResAction";
     private Bitmap mBitmap;
-    private int mResourceId;
-    private Rect mDstRect;
+    private Rect mSrcRect;
     private Drawable mDrawable;
 
     @Override
     public void configAttrs(TypedArray ta) {
         super.configAttrs(ta);
-        mResourceId = ta.getResourceId(R.styleable.TabFlowLayout_tab_item_res, -1);
         mDrawable = ta.getDrawable(R.styleable.TabFlowLayout_tab_item_res);
     }
+
     @Override
     public void config(TabFlowLayout parentView) {
         super.config(parentView);
 
         View child = parentView.getChildAt(0);
-        if (child != null){
+        if (child != null) {
             if (mDrawable != null) {
                 int width = child.getMeasuredWidth();
                 int height = child.getMeasuredHeight();
                 mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(mBitmap);
 
-                int l = parentView.getPaddingLeft();
-                int t = parentView.getPaddingTop();
-                int r = (int) (width - mMarginRight);
-                int b = (int) (height - mMarginBottom);
-                mDrawable.setBounds((int) (l+mMarginLeft), (int) (t+mMarginTop),r,b);
+                int l = (int) (parentView.getPaddingLeft()+mMarginLeft);
+                int t = (int) (parentView.getPaddingTop()+mMarginTop);
+                int r = (int) (parentView.getPaddingLeft() + width - mMarginRight);
+                int b = (int) (parentView.getPaddingTop() + height - mMarginBottom);
+                mDrawable.setBounds(0,0,width, height);
                 mDrawable.draw(canvas);
-                mRect.set(l,t,r,b);
-                mDstRect = new Rect(l,t,r,b);
+                mRect.set(l, t, r, b);
+                mSrcRect = new Rect(0, 0, width, height);
             }
 
         }
-
 
 
     }
@@ -67,7 +65,7 @@ public class ResAction extends BaseAction {
     @Override
     public void draw(Canvas canvas) {
         if (mBitmap != null) {
-            canvas.drawBitmap(mBitmap,mDstRect,mRect,mPaint);
+            canvas.drawBitmap(mBitmap, mSrcRect, mRect, mPaint);
         }
     }
 }

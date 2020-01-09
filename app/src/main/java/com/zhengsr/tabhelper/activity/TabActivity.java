@@ -15,7 +15,7 @@ import com.zhengsr.tabhelper.fragment.CusFragment;
 import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.bena.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
-import com.zhengsr.tablib.view.cus.BaseAction;
+import com.zhengsr.tablib.view.action.BaseAction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +37,12 @@ public class TabActivity extends AppCompatActivity {
             mFragments.add(CusFragment.newInStance(s));
         }
         mViewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
-        rectFlow();
-        triFlow();
-        roundFlow();
-        resFlow();
-        cusFlow();
+        //rectFlow();
+        //triFlow();
+        //roundFlow();
+        //resFlow();
+        colorFlow();
+        //cusFlow();
 
     }
 
@@ -118,6 +119,23 @@ public class TabActivity extends AppCompatActivity {
         TabFlowLayout flowLayout = findViewById(R.id.resflow);
         flowLayout.setViewPager(mViewPager);
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data);
+            }
+
+            @Override
+            public void onItemClick(View view, String data, int position) {
+                super.onItemClick(view, data, position);
+                mViewPager.setCurrentItem(position);
+            }
+        });
+    }
+
+    private void colorFlow(){
+        TabFlowLayout flowLayout = findViewById(R.id.colorflow);
+        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.RED);
+        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_color_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
