@@ -9,11 +9,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.fragment.CusFragment;
+import com.zhengsr.tablib.FlowConstants;
+import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.view.adapter.TabAdapter;
-import com.zhengsr.tablib.bena.TabTypeValue;
+import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.action.BaseAction;
 
@@ -37,12 +40,15 @@ public class TabActivity extends AppCompatActivity {
             mFragments.add(CusFragment.newInStance(s));
         }
         mViewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
-        //rectFlow();
-        //triFlow();
-        //roundFlow();
-        //resFlow();
-        colorFlow();
-        //cusFlow();
+       /* rectFlow();
+        triFlow();
+        roundFlow();*/
+        resFlow();
+       /* colorFlow();
+        cusFlow();*/
+
+       ImageView imageView = findViewById(R.id.test);
+       imageView.setImageDrawable(getResources().getDrawable(R.drawable.shape_round));
 
     }
 
@@ -85,7 +91,7 @@ public class TabActivity extends AppCompatActivity {
 
     private void triFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.triflow);
-        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setViewPager(mViewPager,R.id.item_text);
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -118,6 +124,18 @@ public class TabActivity extends AppCompatActivity {
     private void resFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.resflow);
         flowLayout.setViewPager(mViewPager);
+
+        /**
+         * 配置自定义属性
+         */
+
+        TabBean bean = new TabBean();
+        bean.tabType = FlowConstants.RES;
+        bean.tabItemRes = R.drawable.shape_round;
+        bean.tabClickAnimTime = 300;
+
+        flowLayout.setTabBean(bean);
+
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {

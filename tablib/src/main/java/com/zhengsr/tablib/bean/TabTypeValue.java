@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.bena;
+package com.zhengsr.tablib.bean;
 
 public class TabTypeValue {
         public float left;

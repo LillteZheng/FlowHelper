@@ -10,14 +10,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
-import com.zhengsr.tablib.Constants;
+import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
-import com.zhengsr.tablib.bena.TabTypeValue;
+import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.ColorTextView;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
@@ -27,8 +27,8 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
  */
 public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     private static final String TAG = "BaseAction";
-    protected Paint mPaint;
-    protected RectF mRect;
+    public Paint mPaint;
+    public RectF mRect;
     protected TabFlowLayout mParentView;
 
     /**
@@ -255,7 +255,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 lastValue.left = mRect.left;
                 lastValue.right = mRect.right;
                 int width = curView.getMeasuredWidth();
-                if (mType == Constants.RECT) {
+                if (mType == FlowConstants.RECT) {
                     curValue.left = (1 - mOffset) * width / 2 + curView.getLeft();
                     curValue.right = width * mOffset + curValue.left;
                 } else {
@@ -327,7 +327,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mTabHeight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_height, -1);
         int color = ta.getColor(R.styleable.TabFlowLayout_tab_color, Color.RED);
         mPaint.setColor(color);
-        mType = ta.getInteger(R.styleable.TabFlowLayout_tab_style, -1);
+        mType = ta.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
         mMarginLeft = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_l, 0);
         mMarginTop = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_t, 0);
         mMarginRight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_r, 0);
@@ -341,6 +341,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * 绘制不同的view
      */
     public abstract void draw(Canvas canvas);
+
+
 
 
     /**
@@ -361,5 +363,38 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     public int getCurrentIndex() {
         return mCurrentIndex;
+    }
+
+
+    /**
+     * 配置动态属性
+     * @param bean
+     */
+    public void setBean(TabBean bean){
+        if (bean.tabColor != -2){
+            mPaint.setColor(bean.tabColor);
+        }
+        if (bean.tabWidth != -1){
+            mTabWidth = bean.tabWidth;
+        }
+        if (bean.tabHeight !=-1) {
+            mTabHeight = bean.tabHeight;
+        }
+        if (bean.tabClickAnimTime!=-1) {
+            mAnimTime = bean.tabClickAnimTime;
+        }
+        if (bean.tabMarginLeft!=-1) {
+            mMarginLeft = bean.tabMarginLeft;
+        }
+        if (bean.tabMarginTop!=-1) {
+            mMarginTop = bean.tabMarginTop;
+        }
+        if (bean.tabMarginRight!=-1) {
+            mMarginRight = bean.tabMarginRight;
+        }
+        if (bean.tabMarginBottom!=-1) {
+            mMarginBottom = bean.tabMarginBottom;
+        }
+
     }
 }

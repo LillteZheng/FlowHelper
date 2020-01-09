@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round_ff"
         android:layout_marginTop="10dp"
-        app:tab_style="rect"
+        app:tab_type="rect"
         app:tab_color="@color/colorPrimary"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:background="@color/black_ff_bg"
         android:layout_marginTop="10dp"
-        app:tab_style="rect"
+        app:tab_type="rect"
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_margin_b="3dp"
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round"
         android:layout_marginTop="10dp"
-        app:tab_style="tri"
+        app:tab_type="tri"
         app:tab_color="#ffffff"
         app:tab_width="20dp"
         app:tab_height="5dp"
@@ -60,7 +60,7 @@
         android:id="@+id/roundflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="round"
+        app:tab_type="round"
         android:background="#6D8FB0"
         app:tab_color="#b01a1a1a"
         app:tab_round_size="50dp"
@@ -79,7 +79,7 @@
         android:id="@+id/resflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="res"
+        app:tab_type="res"
         android:background="#6D8FB0"
         app:tab_item_res="@drawable/shape_round"
         app:tab_round_size="50dp"
@@ -93,6 +93,7 @@
         android:paddingBottom="2dp"
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
+
 
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout

@@ -12,7 +12,7 @@
         android:id="@+id/rectflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="rect"
+        app:tab_type="rect"
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_width="20dp"
@@ -24,7 +24,7 @@
         android:id="@+id/rectflow2"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="rect"
+        app:tab_type="rect"
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_margin_b="3dp"
@@ -36,7 +36,7 @@
         android:id="@+id/triflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="tri"
+        app:tab_type="tri"
         app:tab_color="@color/colorPrimary"
         app:tab_height="3dp"
         app:tab_width="10dp"
@@ -48,7 +48,7 @@
         android:id="@+id/roundflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="round"
+        app:tab_type="round"
         android:background="#6D8FB0"
         app:tab_color="#b01a1a1a"
         app:tab_round_size="4dp"
@@ -63,15 +63,7 @@
         android:id="@+id/resflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        app:tab_style="res"
         android:background="#6D8FB0"
-        app:tab_item_res="@drawable/shape_round"
-        app:tab_round_size="50dp"
-        app:tab_margin_t="5dp"
-        app:tab_margin_b="3dp"
-        app:tab_margin_l="2dp"
-        app:tab_margin_r="2dp"
-        app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
 
@@ -79,13 +71,8 @@
         android:id="@+id/colorflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#6D8FB0"
-        app:tab_style="tri"
-        app:tab_click_animTime="250"
-        app:tab_color="@color/white"
-        app:tab_height="5dp"
-        app:tab_width="5dp"
-        app:tab_margin_b="2dp"
+        android:background="#a0f3ecec"
+        app:tab_type="color"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -109,6 +96,11 @@
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:background="#15323232"
+        android:layout_height="100dp"/>
+
+    <ImageView
+        android:id="@+id/test"
+        android:layout_width="100dp"
         android:layout_height="100dp"/>
 
 

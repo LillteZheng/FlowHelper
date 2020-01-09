@@ -5,7 +5,8 @@ import android.graphics.Canvas;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
-import com.zhengsr.tablib.bena.TabTypeValue;
+import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -20,6 +21,15 @@ public class RoundAction extends BaseAction {
     public void configAttrs(TypedArray ta) {
         super.configAttrs(ta);
         mRound = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_round_size, 10);
+    }
+
+    @Override
+    public void setBean(TabBean bean) {
+        super.setBean(bean);
+
+        if (bean.tabRoundSize !=-1) {
+            mRound = bean.tabRoundSize;
+        }
     }
 
     @Override

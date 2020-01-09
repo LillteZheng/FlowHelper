@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tablib.view.adapter.TabAdapter;
-import com.zhengsr.tablib.bena.TabTypeValue;
+import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.action.BaseAction;
 
@@ -96,6 +96,8 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void cusFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.cusflow);

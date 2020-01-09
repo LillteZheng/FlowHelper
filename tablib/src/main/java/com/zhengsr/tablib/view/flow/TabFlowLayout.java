@@ -1,6 +1,5 @@
 package com.zhengsr.tablib.view.flow;
 
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,7 +8,6 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.zhengsr.tablib.Constants;
+import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
-import com.zhengsr.tablib.view.ColorTextView;
+import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.view.action.ColorAction;
 import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
@@ -46,6 +45,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private boolean isFirst = true;
     private TypedArray mTypeArray;
     private int mCurrentIndex = 0;
+    private TabBean mTabBean;
 
     public TabFlowLayout(Context context) {
         this(context, null);
@@ -59,26 +59,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
         super(context, attrs, defStyleAttr);
 
         mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
-        int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_style, -1);
+        int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
         mScroller = new Scroller(getContext());
-        if (tabStyle != -1) {
-            switch (tabStyle) {
-                case Constants.RECT:
-                    mAction = new RectAction();
-                    break;
-                case Constants.TRI:
-                    mAction = new TriAction();
-                    break;
-                case Constants.ROUND:
-                    mAction = new RoundAction();
-                    break;
-                case Constants.RES:
-                    mAction = new ResAction();
-                    break;
-                default:
-                    break;
-            }
-        }
+        chooseTabTpye(tabStyle);
 
         //配置自定义属性给 action
         if (mAction != null) {
@@ -133,6 +116,34 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     }
 
+    /**
+     * 选中不同的 action
+     * @param tabStyle
+     */
+    private void chooseTabTpye(int tabStyle) {
+        if (tabStyle != -1) {
+            switch (tabStyle) {
+                case FlowConstants.RECT:
+                    mAction = new RectAction();
+                    break;
+                case FlowConstants.TRI:
+                    mAction = new TriAction();
+                    break;
+                case FlowConstants.ROUND:
+                    mAction = new RoundAction();
+                    break;
+                case FlowConstants.RES:
+                    mAction = new ResAction();
+                    break;
+                case FlowConstants.COLOR:
+                    mAction = new ColorAction();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
         if (mAction != null) {
@@ -147,8 +158,12 @@ public class TabFlowLayout extends ScrollFlowLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         if (mAction != null) {
-            mAction.config(this);
+            mAction.config(TabFlowLayout.this);
+            if (mTabBean != null) {
+                mAction.setBean(mTabBean);
+            }
         }
+
     }
 
     /**
@@ -197,6 +212,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     }
 
+
     public void setViewPager(ViewPager viewPager) {
         setViewPager(viewPager, -1, 0, 0, 0);
     }
@@ -206,6 +222,18 @@ public class TabFlowLayout extends ScrollFlowLayout {
         setViewPager(viewPager, textId, 0, unselectedColor, selectedColor);
     }
 
+    public void setViewPager(ViewPager viewPager, int textId) {
+        setViewPager(viewPager, textId, 0, -1, -1);
+    }
+
+    /**
+     * 配置viewpager
+     * @param viewPager
+     * @param textId  view 中 textview 的id
+     * @param selectedIndex 默认选中的item，初始值为0，也可以从第二页或者其他 位置
+     * @param unselectedColor 没有选中的颜色 ColorTextView 中失效
+     * @param selectedColor 选中的颜色 ColorTextView 中失效
+     */
     public void setViewPager(ViewPager viewPager, int textId, int selectedIndex, int unselectedColor, int selectedColor) {
         if (viewPager != null) {
             mViewPager = viewPager;
@@ -266,6 +294,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
 
+    /**
+     * 更新滚动
+     * @param view
+     */
     private void updateScroll(View view) {
         //超过中间了，让父控件也跟着移动
         int scrollX = view.getLeft();
@@ -328,4 +360,22 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public boolean isVertical() {
         return false;
     }
+
+    /**
+     * 自定义属性的配置
+     */
+
+    public TabFlowLayout setTabBean(TabBean bean){
+        mTabBean = bean;
+        if (bean == null) {
+            return this;
+        }
+        if (bean.tabType != -1) {
+            chooseTabTpye(bean.tabType);
+        }
+
+        return this;
+    }
+
+
 }

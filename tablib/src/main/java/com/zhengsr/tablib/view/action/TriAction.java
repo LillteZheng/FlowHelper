@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.view.View;
 
-import com.zhengsr.tablib.bena.TabTypeValue;
+import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**

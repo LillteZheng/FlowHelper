@@ -19,7 +19,7 @@
         android:paddingEnd="12dp"
         android:textSize="14sp"
         app:colortext_default_color="@color/unselect"
-        app:colortext_change_color="@color/colorPrimary"
+        app:colortext_change_color="@color/colorAccent"
         android:layout_height="wrap_content"/>
 
     <TextView

@@ -5,10 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
-import com.zhengsr.tablib.bena.TabTypeValue;
+import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -20,6 +22,7 @@ public class ResAction extends BaseAction {
     private Bitmap mBitmap;
     private Rect mSrcRect;
     private Drawable mDrawable;
+    private int mRes = -1;
 
     @Override
     public void configAttrs(TypedArray ta) {
@@ -28,9 +31,18 @@ public class ResAction extends BaseAction {
     }
 
     @Override
+    public void setBean(TabBean bean) {
+        super.setBean(bean);
+        mRes = bean.tabItemRes;
+
+    }
+
+    @Override
     public void config(TabFlowLayout parentView) {
         super.config(parentView);
-
+        if (mRes != -1) {
+            mDrawable = mContext.getResources().getDrawable(mRes);
+        }
         View child = parentView.getChildAt(0);
         if (child != null) {
             if (mDrawable != null) {
@@ -39,14 +51,16 @@ public class ResAction extends BaseAction {
                 mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(mBitmap);
 
-                int l = (int) (parentView.getPaddingLeft()+mMarginLeft);
-                int t = (int) (parentView.getPaddingTop()+mMarginTop);
+                int l = (int) (parentView.getPaddingLeft() + mMarginLeft);
+                int t = (int) (parentView.getPaddingTop() + mMarginTop);
                 int r = (int) (parentView.getPaddingLeft() + width - mMarginRight);
                 int b = (int) (parentView.getPaddingTop() + height - mMarginBottom);
-                mDrawable.setBounds(0,0,width, height);
+                mDrawable.setBounds(0, 0, width, height);
                 mDrawable.draw(canvas);
                 mRect.set(l, t, r, b);
                 mSrcRect = new Rect(0, 0, width, height);
+
+                Log.d(TAG, "zsr config: "+mSrcRect.toShortString()+" "+mRect);
             }
 
         }
@@ -66,6 +80,8 @@ public class ResAction extends BaseAction {
     public void draw(Canvas canvas) {
         if (mBitmap != null) {
             canvas.drawBitmap(mBitmap, mSrcRect, mRect, mPaint);
+           // canvas.drawBitmap(mBitmap,0,0,null);
+
         }
     }
 }
