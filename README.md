@@ -1,6 +1,6 @@
 # FlowHelper
 FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与ViewPager搭配的工具类;
-FlowHelper helps you quickly build tabs, such as hot searches, search logs, and utility classes that go with the ViewPager;
+
 
 
 ## TabFlowLayout 效果图
