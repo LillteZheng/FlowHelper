@@ -17,7 +17,7 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 </table>
 
-[TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHleper/blob/master/TAB_README.md)
+[TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README.md)
 
 ## LabelFlowLayout 效果图
 
