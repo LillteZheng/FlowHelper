@@ -31,6 +31,6 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 </table>
 
-[LabelFlowLayout 使用说明](https://github.com/LillteZheng/FlowHleper/blob/master/Label_README.md)
+[LabelFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/Label_README.md)
 
 
