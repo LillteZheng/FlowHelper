@@ -23,6 +23,10 @@ allprojects {
 }
 ```
 
+```
+implementation 'com.github.LillteZheng:FlowHelper:v1.0'
+```
+
 ## TabFlowLayout 效果图
 
 <table  align="center">
