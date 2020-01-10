@@ -11,8 +11,8 @@ FlowHelper helps you quickly build tabs, such as hot searches, search logs, and 
     <th>结合ViewPager</th>
   </tr>
    <tr>
-    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_click.gif" align="left" height="200" width="340"></a></td>
-    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_viewpager.gif" align="left" height="200" width="340" ></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_click.gif" align="left"height="789" width="479"></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_viewpager.gif" align="left" height="789" width="479" ></a></td>
   </tr>
 
 </table>
@@ -26,7 +26,7 @@ FlowHelper helps you quickly build tabs, such as hot searches, search logs, and 
     <th>LabelFlowLayout</th>
   </tr>
    <tr>
-    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label.gif" align="left" height="200" width="340"></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label.gif" align="left" height="789" width="479"></a></td>
   </tr>
 
 </table>
