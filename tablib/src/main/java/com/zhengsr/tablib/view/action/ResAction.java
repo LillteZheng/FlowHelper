@@ -5,12 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
-import com.zhengsr.tablib.bean.TabTypeValue;
+import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -60,7 +59,6 @@ public class ResAction extends BaseAction {
                 mRect.set(l, t, r, b);
                 mSrcRect = new Rect(0, 0, width, height);
 
-                Log.d(TAG, "zsr config: "+mSrcRect.toShortString()+" "+mRect);
             }
 
         }
@@ -69,7 +67,7 @@ public class ResAction extends BaseAction {
     }
 
     @Override
-    protected void valueChange(TabTypeValue value) {
+    protected void valueChange(TabValue value) {
         //super.valueChange(value);
         mRect.left = value.left + mMarginLeft;
         mRect.right = value.right - mMarginRight;
@@ -80,7 +78,6 @@ public class ResAction extends BaseAction {
     public void draw(Canvas canvas) {
         if (mBitmap != null) {
             canvas.drawBitmap(mBitmap, mSrcRect, mRect, mPaint);
-           // canvas.drawBitmap(mBitmap,0,0,null);
 
         }
     }

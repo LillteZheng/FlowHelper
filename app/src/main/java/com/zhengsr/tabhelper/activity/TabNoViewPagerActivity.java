@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.zhengsr.tabhelper.R;
+import com.zhengsr.tablib.FlowConstants;
+import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.adapter.TabAdapter;
-import com.zhengsr.tablib.bean.TabTypeValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.action.BaseAction;
 
@@ -37,11 +39,24 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         TabFlowLayout flowLayout = findViewById(R.id.rectflow);
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
+            public void onItemSelectState(View view, boolean isSelected) {
+                super.onItemSelectState(view, isSelected);
+                if (isSelected){
+                    setTextColor(view,R.id.item_text,Color.WHITE);
+                }else{
+                    setTextColor(view,R.id.item_text,getResources().getColor(R.color.unselect));
+                }
+            }
+
+            @Override
             public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
+                setText(view,R.id.item_text,data)
+                        .setTextColor(view,R.id.item_text,getResources().getColor(R.color.unselect));
                 if (position == 0){
                     setVisible(view,R.id.item_msg,true);
                 }
+
+
             }
         });
 
@@ -77,6 +92,16 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
     private void roundFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.roundflow);
+        TabBean bean = new TabBean();
+        bean.tabType = FlowConstants.ROUND;
+        bean.tabColor = Color.parseColor("#b01a1a1a");
+        bean.tabMarginLeft = 5;
+        bean.tabMarginTop = 12;
+        bean.tabMarginRight = 5;
+        bean.tabMarginBottom = 10;
+        bean.tabRoundSize = 10;
+        flowLayout.setTabBean(bean);
+
         flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle3) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -134,7 +159,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
 
         @Override
-        protected void valueChange(TabTypeValue value) {
+        protected void valueChange(TabValue value) {
             super.valueChange(value);
             //由于自定义的，都是从left 开始算起的，所以这里还需要加上圆的半径
             mRect.left = value.left + mTabWidth/2;

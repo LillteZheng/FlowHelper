@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +38,28 @@ import com.zhengsr.tablib.view.action.TriAction;
 public class TabFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "TabFlowLayout";
     private TabAdapter mAdapter;
-    private int mLastIndex = 0;
     private BaseAction mAction;
-    private ViewPager mViewPager;
-    private Scroller mScroller;
-    private int mLastScrollX = 0;
+
     private boolean isFirst = true;
     private TypedArray mTypeArray;
-    private int mCurrentIndex = 0;
     private TabBean mTabBean;
+
+    /**
+     * 滚动
+     */
+    private Scroller mScroller;
+    private int mLastScrollX = 0;
+    private int mLastIndex = 0;
+    private int mCurrentIndex = 0;
+
+    /**
+     * viewpager 相关
+     *
+     */
+    private ViewPager mViewPager;
+    private int mTextId = -1;
+    private int mSelectedColor = -1;
+    private int mUnselectedColor = -1;
 
     public TabFlowLayout(Context context) {
         this(context, null);
@@ -96,7 +110,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     if (mViewPager != null) {
                         if (mAction != null) {
                             mAction.chooseSelectedPosition(mCurrentIndex);
-                            mAction.doAnim(mLastIndex, mCurrentIndex);
+                            if (mCurrentIndex != mLastIndex) {
+                                mAction.doAnim(mLastIndex, mCurrentIndex);
+                            }
                         }
 
                     } else {
@@ -115,6 +131,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
 
     }
+
 
     /**
      * 选中不同的 action
@@ -160,7 +177,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mAction != null) {
             mAction.config(TabFlowLayout.this);
             if (mTabBean != null) {
+                mAction.configAttrs(mTypeArray);
                 mAction.setBean(mTabBean);
+                if (mViewPager != null && mAction.getViewPager() == null){
+                    mAction.setViewPager(mViewPager,mTextId,mUnselectedColor,mSelectedColor);
+                }
             }
         }
 
@@ -187,7 +208,14 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mAction = action;
         mAction.configAttrs(mTypeArray);
         mTypeArray.recycle();
+
+        if (mAction != null){
+            if (mViewPager != null && mAction.getViewPager() == null){
+                mAction.setViewPager(mViewPager,mTextId,mUnselectedColor,mSelectedColor);
+            }
+        }
     }
+
 
 
     class FlowListener extends FlowListenerAdapter {
@@ -242,7 +270,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 mAction.setViewPager(viewPager, textId, unselectedColor, selectedColor);
             }
         }
-
+        mSelectedColor = selectedColor;
+        mUnselectedColor = unselectedColor;
+        mTextId = textId;
         mCurrentIndex = selectedIndex;
 
     }
@@ -264,7 +294,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
 
     /**
-     * 配置 点击事件
+     * 配置 点击和长按事件
      *
      * @param view
      * @param i
@@ -278,7 +308,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 if (mViewPager != null && mAction != null) {
                     mLastIndex = mAction.getCurrentIndex();
                 }
-                mAdapter.onItemClick(view, mAdapter.getDatas().get(i), i);
+                if (mAdapter != null) {
+                    mAdapter.onItemClick(view, mAdapter.getDatas().get(i), i);
+                }
                 if (mAction != null) {
                     mAction.onItemClick(mLastIndex, i);
                 }
@@ -291,16 +323,27 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 }
             }
         });
-    }
 
+        view.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mAdapter != null) {
+                    return mAdapter.onItemLongClick(view,i);
+                }
+                return false;
+            }
+        });
+    }
 
     /**
      * 更新滚动
      * @param view
      */
+    private int mCurrentX;
     private void updateScroll(View view) {
         //超过中间了，让父控件也跟着移动
         int scrollX = view.getLeft();
+                mCurrentX = getScrollX();
         if (scrollX > mScreenWidth / 2 - getPaddingLeft()) {
             scrollX -= mScreenWidth / 2 - getPaddingLeft();
             //有边界提醒
@@ -326,8 +369,14 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public void computeScroll() {
         super.computeScroll();
         if (mScroller.computeScrollOffset()) {
-            int dx = mScroller.getCurrX();
             //有边界
+            int dx = mScroller.getCurrX();
+            if (dx >= mRightBound - mScreenWidth){
+                dx = mRightBound - mScreenWidth;
+            }
+            if (dx <= 0){
+                dx = 0;
+            }
             scrollTo(dx, 0);
         }
     }
@@ -377,5 +426,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         return this;
     }
 
-
+    public TabAdapter getAdapter() {
+        return mAdapter;
+    }
 }

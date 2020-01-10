@@ -30,7 +30,6 @@ class ScrollFlowLayout extends FlowLayout {
     private int mMinimumVelocity;
     protected boolean isMove;
 
-    private  boolean isFirst = true;
 
     public ScrollFlowLayout(Context context) {
         this(context, null);
@@ -66,15 +65,7 @@ class ScrollFlowLayout extends FlowLayout {
         if (getWidth() > mScreenWidth){
             isCanMove = true;
         }
-        if (isFirst) {
-            isFirst = false;
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
 
-                }
-            }, 200);
-        }
     }
 
     @Override

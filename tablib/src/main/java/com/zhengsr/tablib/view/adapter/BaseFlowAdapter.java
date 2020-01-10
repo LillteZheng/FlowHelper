@@ -82,6 +82,11 @@ public abstract class BaseFlowAdapter<T> {
      */
     public void onItemChildClick(View childView,int position){}
 
+
+    public boolean onItemChildLongClick(View childView,int position){
+        return true;
+    }
+
     /**
      * 通知数据改变
      */
@@ -91,6 +96,14 @@ public abstract class BaseFlowAdapter<T> {
         }
     }
 
+
+    /**
+     * view 是否选中状态
+     * @param view
+     * @param isSelected
+     */
+    public void onItemSelectState(View view, boolean isSelected){}
+
     /**
      * 构建一个listener，用来改变数据
      */
@@ -98,23 +111,7 @@ public abstract class BaseFlowAdapter<T> {
         mListener = listener;
     }
 
-    /**
-     * 如果布局里的子控件需要点击事件，需要现在这里注册
-     * @param viewId
-     * @return
-     */
-    public BaseFlowAdapter addChildrenClick(View view, int viewId, final int position){
-        final View viewById = view.findViewById(viewId);
-        if (viewById != null) {
-            viewById.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemChildClick(viewById,position);
-                }
-            });
-        }
-        return this;
-    }
+
 
 
 }

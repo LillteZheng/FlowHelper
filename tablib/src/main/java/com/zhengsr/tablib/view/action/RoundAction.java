@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
-import com.zhengsr.tablib.bean.TabTypeValue;
+import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -49,7 +49,7 @@ public class RoundAction extends BaseAction {
 
 
     @Override
-    protected void valueChange(TabTypeValue value) {
+    protected void valueChange(TabValue value) {
         //super.valueChange(value);
         mRect.left = value.left + mMarginLeft;
         mRect.right = value.right - mMarginRight;

@@ -15,13 +15,6 @@ public abstract class LabelFlowAdapter<T> extends TemplateAdapter<T> {
     }
 
     /**
-     * view 是否选中状态
-     * @param view
-     * @param isSelected
-     */
-    public void onItemSelectState(View view, boolean isSelected){}
-
-    /**
      * 达到最大值
      * @param ids
      * @param count

@@ -16,6 +16,43 @@ public abstract class TemplateAdapter<T> extends BaseFlowAdapter<T> {
         super(layoutId, data);
     }
 
+
+    /**
+     * 如果布局里的子控件需要点击事件，需要现在这里注册
+     * @param viewId
+     * @return
+     */
+    public BaseFlowAdapter addChildrenClick(View view, int viewId, final int position){
+        final View child = view.findViewById(viewId);
+        if (child != null) {
+            child.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemChildClick(child,position);
+                }
+            });
+        }
+        return this;
+    }
+    /**
+     * 如果布局里的子控件需要长按事件，需要现在这里注册
+     * @param viewId
+     * @return
+     */
+    public BaseFlowAdapter addChildrenLongClick(View view, int viewId, final int position){
+        final View child = view.findViewById(viewId);
+        if (child != null) {
+            child.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onItemChildLongClick(child,position);
+                }
+            });
+        }
+        return this;
+    }
+
+
     /**
      * 常用模板
      */

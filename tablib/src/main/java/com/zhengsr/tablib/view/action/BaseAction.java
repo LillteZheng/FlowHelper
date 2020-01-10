@@ -1,7 +1,8 @@
 package com.zhengsr.tablib.view.action;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
-import com.zhengsr.tablib.bean.TabTypeValue;
+import com.zhengsr.tablib.bean.TabTypeEvaluator;
+import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.ColorTextView;
+import com.zhengsr.tablib.view.adapter.TabAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -53,8 +56,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     protected float mMarginRight;
     protected float mMarginBottom;
     protected int mType;
-    protected int mTabWidth;
-    protected int mTabHeight;
+    protected int mTabWidth = -1;
+    protected int mTabHeight = -1;
     protected int mAnimTime;
 
 
@@ -77,9 +80,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         View child = mParentView.getChildAt(0);
         if (child != null) {
             mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
-            if (mTextViewId !=-1) {
-                TextView textView  = child.findViewById(mTextViewId);
-                if (textView instanceof ColorTextView){
+            if (mTextViewId != -1) {
+                TextView textView = child.findViewById(mTextViewId);
+                if (textView instanceof ColorTextView) {
                     textView.setTextColor(((ColorTextView) textView).getChangeColor());
                 }
             }
@@ -114,10 +117,17 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public void onItemClick(int lastIndex, int curIndex) {
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
+        clearColorText();
+        if (mViewPager == null) {
+            doAnim(lastIndex, curIndex);
+        }
+    }
 
-        /**
-         * 为了防止 colortextView 滚动时的残留，先清掉
-         */
+    /**
+     * 为了防止 colortextView 滚动时的残留，先清掉
+     */
+    public void clearColorText() {
+
         if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
             int childCount = mParentView.getChildCount();
             for (int i = 0; i < childCount; i++) {
@@ -128,9 +138,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     colorTextView.setTextColor(colorTextView.getDefaultColor());
                 }
             }
-        }
-        if (mViewPager == null) {
-            doAnim(lastIndex, curIndex);
         }
     }
 
@@ -166,9 +173,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                         left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
                         right = left + mTabWidth;
                     }
-                    mRect.right = right;
                     mRect.left = left;
-                    valueChange(new TabTypeValue(mRect.left, mRect.right));
+                    mRect.right = right;
+                    valueChange(new TabValue(mRect.left, mRect.right));
                     mParentView.postInvalidate();
 
 
@@ -217,15 +224,20 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
 
     @Override
-    public void onPageScrollStateChanged(int position) {
+    public void onPageScrollStateChanged(int state) {
         /**
-         * 滚动结束时，再来改变colortextview，防止闪烁问题
+         * 滚动结束时，再来改变colortextview，防止闪烁问题和卡顿问题
          */
-        if (position == 0 && mTextViewId != -1) {
-            if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex)>1){
+        if (state == ViewPager.SCROLL_STATE_IDLE && mTextViewId != -1) {
+            if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
+                /**
+                 * 在这里加这个，是为了多个 flowlayout 跟 同个 viewpager 结合时；使用了 viewpager
+                 * 的 setCurrentItem，但是却没清其他 textview 的颜色值，所以在这里做个保险；
+                 */
+                clearColorText();
                 View view = mParentView.getChildAt(mCurrentIndex);
                 TextView colorTextView = view.findViewById(mTextViewId);
-                if (colorTextView instanceof ColorTextView){
+                if (colorTextView instanceof ColorTextView) {
                     colorTextView.setTextColor(((ColorTextView) colorTextView).getChangeColor());
                 }
             }
@@ -249,8 +261,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             final View curView = mParentView.getChildAt(curIndex);
             final View lastView = mParentView.getChildAt(lastIndex);
 
-            TabTypeValue lastValue = getValue(lastView);
-            TabTypeValue curValue = getValue(curView);
+            TabValue lastValue = getValue(lastView);
+            TabValue curValue = getValue(curView);
             if (mTabWidth != -1) {
                 lastValue.left = mRect.left;
                 lastValue.right = mRect.right;
@@ -263,19 +275,40 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     curValue.right = mTabWidth + curValue.left;
                 }
             }
-            mAnimator = ObjectAnimator.ofObject(new TabType(), lastValue, curValue);
+            mAnimator = ObjectAnimator.ofObject(new TabTypeEvaluator(), lastValue, curValue);
             mAnimator.setDuration(mAnimTime);
             mAnimator.setInterpolator(new LinearInterpolator());
             mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    TabTypeValue value = (TabTypeValue) animation.getAnimatedValue();
+                    TabValue value = (TabValue) animation.getAnimatedValue();
                     valueChange(value);
                     mParentView.postInvalidate();
                 }
             });
             mAnimator.start();
+            mAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    if (mParentView != null && mViewPager == null) {
+                        TabAdapter adapter = mParentView.getAdapter();
+                        if (adapter != null) {
+                            int childCount = mParentView.getChildCount();
+                            for (int i = 0; i < childCount; i++) {
+                                View view = mParentView.getChildAt(i);
+                                if (i == mCurrentIndex){
+                                    adapter.onItemSelectState(view,true);
+                                }else{
+                                    adapter.onItemSelectState(view,false);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
+
 
     }
 
@@ -304,15 +337,19 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         }
     }
 
-    private TabTypeValue getValue(View view) {
-        TabTypeValue value = new TabTypeValue();
+    private TabValue getValue(View view) {
+        TabValue value = new TabValue();
         value.left = view.getLeft();
         value.right = view.getRight();
         return value;
     }
 
 
-    protected void valueChange(TabTypeValue value) {
+    /**
+     * item 偏移的变化率
+     * @param value
+     */
+    protected void valueChange(TabValue value) {
         mRect.left = value.left;
         mRect.right = value.right;
     }
@@ -343,24 +380,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public abstract void draw(Canvas canvas);
 
 
-
-
-    /**
-     * 自定义 TypeEvaluator
-     */
-    class TabType implements TypeEvaluator<TabTypeValue> {
-        // PointF pointF = new PointF();
-        TabTypeValue value = new TabTypeValue();
-
-        @Override
-        public TabTypeValue evaluate(float fraction, TabTypeValue startValue, TabTypeValue endValue) {
-            //这里都采用匀速
-            value.left = startValue.left + fraction * (endValue.left - startValue.left);
-            value.right = startValue.right + fraction * (endValue.right - startValue.right);
-            return value;
-        }
-    }
-
     public int getCurrentIndex() {
         return mCurrentIndex;
     }
@@ -368,33 +387,38 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     /**
      * 配置动态属性
+     *
      * @param bean
      */
-    public void setBean(TabBean bean){
-        if (bean.tabColor != -2){
+    public void setBean(TabBean bean) {
+        if (bean.tabColor != -2) {
             mPaint.setColor(bean.tabColor);
         }
-        if (bean.tabWidth != -1){
+        if (bean.tabWidth != -1) {
             mTabWidth = bean.tabWidth;
         }
-        if (bean.tabHeight !=-1) {
+        if (bean.tabHeight != -1) {
             mTabHeight = bean.tabHeight;
         }
-        if (bean.tabClickAnimTime!=-1) {
+        if (bean.tabClickAnimTime != -1) {
             mAnimTime = bean.tabClickAnimTime;
         }
-        if (bean.tabMarginLeft!=-1) {
+        if (bean.tabMarginLeft != -1) {
             mMarginLeft = bean.tabMarginLeft;
         }
-        if (bean.tabMarginTop!=-1) {
+        if (bean.tabMarginTop != -1) {
             mMarginTop = bean.tabMarginTop;
         }
-        if (bean.tabMarginRight!=-1) {
+        if (bean.tabMarginRight != -1) {
             mMarginRight = bean.tabMarginRight;
         }
-        if (bean.tabMarginBottom!=-1) {
+        if (bean.tabMarginBottom != -1) {
             mMarginBottom = bean.tabMarginBottom;
         }
 
+    }
+
+    public ViewPager getViewPager() {
+        return mViewPager;
     }
 }

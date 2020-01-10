@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.view.View;
 
-import com.zhengsr.tablib.bean.TabTypeValue;
+import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -38,7 +38,7 @@ public class TriAction extends BaseAction {
     }
 
     @Override
-    protected void valueChange(TabTypeValue value) {
+    protected void valueChange(TabValue value) {
         super.valueChange(value);
         mPath.reset();
         mPath.moveTo(mRect.width() / 2 + mRect.left, mRect.top);

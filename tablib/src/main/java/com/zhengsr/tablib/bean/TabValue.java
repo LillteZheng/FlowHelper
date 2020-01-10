@@ -1,20 +1,20 @@
 package com.zhengsr.tablib.bean;
 
-public class TabTypeValue {
+public class TabValue {
         public float left;
         public float right;
 
-        public TabTypeValue(float left, float right) {
+        public TabValue(float left, float right) {
             this.left = left;
             this.right = right;
         }
 
-        public TabTypeValue() {
+        public TabValue() {
         }
 
         @Override
         public String toString() {
-            return "TabTypeValue{" +
+            return "TabValue{" +
                     "left=" + left +
                     ", right=" + right +
                     '}';

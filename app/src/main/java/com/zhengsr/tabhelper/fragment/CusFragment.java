@@ -1,5 +1,6 @@
 package com.zhengsr.tabhelper.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ public class CusFragment extends Fragment {
         }
         textView.setTextSize(30);
         textView.setGravity(Gravity.CENTER);
+        textView.setTextColor(Color.WHITE);
         return textView;
     }
 
