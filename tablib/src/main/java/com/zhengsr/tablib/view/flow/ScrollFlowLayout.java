@@ -3,6 +3,7 @@ package com.zhengsr.tablib.view.flow;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -22,14 +23,14 @@ class ScrollFlowLayout extends FlowLayout {
     private float mMoveX;
     protected int mRightBound;
     private boolean isCanMove;
-    protected int mScreenWidth;
+    private int mScreenWidth;
     private VelocityTracker mVelocityTracker;
     private Scroller mScroller;
     private int mCurScrollX;
     private int mMaximumVelocity;
     private int mMinimumVelocity;
     protected boolean isMove;
-
+    protected int mWidth;
 
     public ScrollFlowLayout(Context context) {
         this(context, null);
@@ -62,9 +63,24 @@ class ScrollFlowLayout extends FlowLayout {
         }
 
         //判断是否可移动
-        if (getWidth() > mScreenWidth){
-            isCanMove = true;
+
+        //说明控件没有满屏或者固定宽度
+        if (mViewWidth < mScreenWidth){
+            if (mRightBound > mViewWidth){
+                isCanMove = true;
+            }else{
+                isCanMove = false;
+            }
+            mWidth = mViewWidth;
+        }else{
+            //再确认一遍
+            if (mRightBound > mScreenWidth){
+                isCanMove = true;
+            }
+            mWidth = mScreenWidth;
         }
+
+
 
     }
 
@@ -121,8 +137,8 @@ class ScrollFlowLayout extends FlowLayout {
                     scrollTo(0, 0);
                     return true;
                 }
-                if (scrollX + dx >= mRightBound - mScreenWidth) {
-                    scrollTo(mRightBound - mScreenWidth, 0);
+                if (scrollX + dx >= mRightBound - mWidth) {
+                    scrollTo(mRightBound - mWidth, 0);
                     return true;
                 }
 
@@ -157,8 +173,8 @@ class ScrollFlowLayout extends FlowLayout {
         if (mScroller.computeScrollOffset()){
             int dx = mCurScrollX - mScroller.getCurrX();
             // 超出右边界，进行修正
-            if (getScrollX() + dx >= mRightBound - mScreenWidth) {
-                dx = mRightBound - mScreenWidth - getScrollX();
+            if (getScrollX() + dx >= mRightBound - mWidth) {
+                dx = mRightBound - mWidth - getScrollX();
             }
 
             // 超出左边界，进行修正
@@ -168,6 +184,14 @@ class ScrollFlowLayout extends FlowLayout {
             scrollBy(dx,0);
             postInvalidate();
         }
+    }
+
+    public int getViewWidth(){
+        return mWidth;
+    }
+
+    public boolean isCanMove() {
+        return isCanMove;
     }
 
     public boolean isMove() {

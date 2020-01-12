@@ -70,7 +70,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public void config(TabFlowLayout parentView) {
         mParentView = parentView;
         mContext = mParentView.getContext();
-        mScreenWidth = mParentView.getResources().getDisplayMetrics().widthPixels;
+        mScreenWidth = mParentView.getViewWidth();
         int childCount = mParentView.getChildCount();
         if (childCount > 0) {
             View child = mParentView.getChildAt(childCount - 1);
@@ -195,17 +195,19 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
                 }
                 //超过中间了，让父控件也跟着移动
-                if (scrollX > mScreenWidth / 2 - mParentView.getPaddingLeft()) {
-                    scrollX -= mScreenWidth / 2 - mParentView.getPaddingLeft();
-                    //有边界提醒
-                    if (scrollX <= mRightBound - mScreenWidth) {
-                        mParentView.scrollTo(scrollX, 0);
+                if (mParentView.isCanMove()) {
+                    if (scrollX > mScreenWidth / 2 - mParentView.getPaddingLeft()) {
+                        scrollX -= mScreenWidth / 2 - mParentView.getPaddingLeft();
+                        //有边界提醒
+                        if (scrollX <= mRightBound - mScreenWidth) {
+                            mParentView.scrollTo(scrollX, 0);
+                        } else {
+                            int dx = mRightBound - mScreenWidth;
+                            mParentView.scrollTo(dx, 0);
+                        }
                     } else {
-                        int dx = mRightBound - mScreenWidth;
-                        mParentView.scrollTo(dx, 0);
+                        mParentView.scrollTo(0, 0);
                     }
-                } else {
-                    mParentView.scrollTo(0, 0);
                 }
 
             }

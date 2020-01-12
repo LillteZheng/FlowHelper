@@ -18,7 +18,7 @@
         />
     <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/rectflow"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_marginTop="5dp"
         app:tab_type="rect"
         app:tab_color="@color/colorPrimary"

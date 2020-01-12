@@ -18,7 +18,7 @@ import java.util.List;
  */
 class FlowLayout extends ViewGroup {
     private static final String TAG = "FlowLayout";
-    private boolean isSameWeight = false;
+    protected int mViewWidth;
     private List<List<View>> mAllViews = new ArrayList<>();
     private List<Integer> mLineHeights = new ArrayList<>();
 
@@ -34,9 +34,6 @@ class FlowLayout extends ViewGroup {
         super(context, attrs, defStyleAttr);
     }
 
-    void setSameWeight(boolean sameWeight){
-        isSameWeight = sameWeight;
-    }
 
 
     @Override
@@ -103,6 +100,7 @@ class FlowLayout extends ViewGroup {
         }else{
             width += getPaddingLeft() + getPaddingRight();
         }
+        mViewWidth = width;
         setMeasuredDimension(width, height);
     }
 

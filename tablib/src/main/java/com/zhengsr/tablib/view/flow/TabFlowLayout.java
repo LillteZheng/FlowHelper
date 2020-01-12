@@ -93,7 +93,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (getWidth() > mScreenWidth) {
+                if (getWidth() > mWidth) {
                     ViewGroup parent = (ViewGroup) getParent();
                     if (parent instanceof LinearLayout) {
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
@@ -339,29 +339,29 @@ public class TabFlowLayout extends ScrollFlowLayout {
      * 更新滚动
      * @param view
      */
-    private int mCurrentX;
     private void updateScroll(View view) {
-        //超过中间了，让父控件也跟着移动
-        int scrollX = view.getLeft();
-                mCurrentX = getScrollX();
-        if (scrollX > mScreenWidth / 2 - getPaddingLeft()) {
-            scrollX -= mScreenWidth / 2 - getPaddingLeft();
-            //有边界提醒
-            if (scrollX < mRightBound - mScreenWidth) {
-                int dx = scrollX - mLastScrollX;
-                mScroller.startScroll(getScrollX(), 0, dx, 0);
-                mLastScrollX = scrollX;
-            } else {
-                int dx = mRightBound - mScreenWidth - getScrollX();
-                if (getScrollX() >= mRightBound - mScreenWidth) {
-                    dx = 0;
+        if (isCanMove()) {
+            //超过中间了，让父控件也跟着移动
+            int scrollX = view.getLeft();
+            if (scrollX > mWidth / 2 - getPaddingLeft()) {
+                scrollX -= mWidth / 2 - getPaddingLeft();
+                //有边界提醒
+                if (scrollX < mRightBound - mWidth) {
+                    int dx = scrollX - mLastScrollX;
+                    mScroller.startScroll(getScrollX(), 0, dx, 0);
+                    mLastScrollX = scrollX;
+                } else {
+                    int dx = mRightBound - mWidth - getScrollX();
+                    if (getScrollX() >= mRightBound - mWidth) {
+                        dx = 0;
+                    }
+                    mScroller.startScroll(getScrollX(), 0, dx, 0);
+                    mLastScrollX = mRightBound - mWidth - dx;
                 }
-                mScroller.startScroll(getScrollX(), 0, dx, 0);
-                mLastScrollX = mRightBound - mScreenWidth - dx;
+            } else {
+                scrollTo(0, 0);
+                mLastScrollX = 0;
             }
-        } else {
-            scrollTo(0, 0);
-            mLastScrollX = 0;
         }
     }
 
@@ -371,8 +371,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mScroller.computeScrollOffset()) {
             //有边界
             int dx = mScroller.getCurrX();
-            if (dx >= mRightBound - mScreenWidth){
-                dx = mRightBound - mScreenWidth;
+            if (dx >= mRightBound - mWidth){
+                dx = mRightBound - mWidth;
             }
             if (dx <= 0){
                 dx = 0;
