@@ -28,7 +28,7 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.0'
+implementation 'com.github.LillteZheng:FlowHelper:v1.11'
 ```
 
 ## TabFlowLayout 效果图

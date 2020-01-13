@@ -23,6 +23,8 @@
         app:tab_height="3dp"
         app:tab_width="20dp"
         app:tab_margin_b="3dp"
+        app:tab_item_autoScale="true"
+        app:tab_scale_factor="1.2"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -86,6 +88,8 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         app:tab_click_animTime="250"
+        app:tab_item_autoScale="true"
+        app:tab_scale_factor="1.2"
         android:layout_height="wrap_content"/>
 
 

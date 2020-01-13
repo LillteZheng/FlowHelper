@@ -9,10 +9,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
@@ -60,6 +62,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     protected int mTabWidth = -1;
     protected int mTabHeight = -1;
     protected int mAnimTime;
+    protected boolean mIsAutoScale = false;
+    protected float mScaleFactor;
 
 
     public BaseAction() {
@@ -87,6 +91,14 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     if (textView instanceof ColorTextView) {
                         textView.setTextColor(((ColorTextView) textView).getChangeColor());
                     }
+                }
+                if (mIsAutoScale && mScaleFactor >1) {
+                    child.animate()
+                            .scaleX(mScaleFactor)
+                            .scaleY(mScaleFactor)
+                            .setDuration(mAnimTime)
+                            .setInterpolator(new LinearInterpolator())
+                            .start();
                 }
             }
         }
@@ -120,7 +132,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public void onItemClick(int lastIndex, int curIndex) {
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
-
+        autoScaleView();
         if (mViewPager == null) {
             doAnim(lastIndex, curIndex);
         } else {
@@ -159,6 +171,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
          * positionOffset 当前页面移动的百分比
          * positionOffsetPixels 当前页面移动的像素
          */
+
+
+
         if (mParentView != null) {
             View curView = mParentView.getChildAt(position);
             float offset = curView.getMeasuredWidth() * positionOffset;
@@ -167,6 +182,15 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 if (position < mParentView.getChildCount() - 1) {
                     //要偏移的view
                     final View transView = mParentView.getChildAt(position + 1);
+                    if (Math.abs(mCurrentIndex - mLastIndex) == 1) {
+                        if (mIsAutoScale && mScaleFactor > 0) {
+                            float factor = mScaleFactor % 1;
+                            float transScale = 1 + factor * positionOffset;
+                            float curScale = 1 + factor * (1 - positionOffset);
+                            transView.animate().scaleX(transScale).scaleY(transScale).setDuration(0).start();
+                            curView.animate().scaleX(curScale).scaleY(curScale).setDuration(0).start();
+                        }
+                    }
 
                     //左边偏移量
                     float left = curView.getLeft() + positionOffset * (transView.getLeft() - curView.getLeft());
@@ -250,8 +274,28 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 clearColorText();
             }
         }
+
     }
 
+
+    private void autoScaleView(){
+        if (mIsAutoScale && mScaleFactor > 1){
+            View lastView = mParentView.getChildAt(mLastIndex);
+            View curView = mParentView.getChildAt(mCurrentIndex);
+            lastView.animate()
+                    .scaleX(1)
+                    .scaleY(1)
+                    .setDuration(mAnimTime)
+                    .setInterpolator(new LinearInterpolator())
+                    .start();
+            curView.animate()
+                    .scaleX(mScaleFactor)
+                    .scaleY(mScaleFactor)
+                    .setDuration(mAnimTime)
+                    .setInterpolator(new LinearInterpolator())
+                    .start();
+        }
+    }
 
     /**
      * 执行点击移动动画
@@ -268,7 +312,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         if (mParentView != null) {
             final View curView = mParentView.getChildAt(curIndex);
             final View lastView = mParentView.getChildAt(lastIndex);
-
             TabValue lastValue = getValue(lastView);
             TabValue curValue = getValue(curView);
             if (mTabWidth != -1) {
@@ -379,6 +422,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mMarginRight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_r, 0);
         mMarginBottom = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_b, 0);
         mAnimTime = ta.getInteger(R.styleable.TabFlowLayout_tab_click_animTime, 300);
+        mIsAutoScale = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale,false);
+        mScaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor,1);
     }
 
     /**

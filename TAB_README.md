@@ -12,6 +12,15 @@
 
 </table>
 
+**目前TabFlowLayout 支持以下效果:**
+- **矩形**
+- **三角形**
+- **圆角**
+- **shape 或者 bitmap 等资源**
+- **自定义功能**
+- **放大Item效果，与上述效果可共用**
+- **颜色渐变效果，需要使用 ColorTextView 控件，与上述效果可共用**
+
 
 ### 1、正常使用
 
@@ -37,9 +46,12 @@
     app:tab_width="20dp"
     app:tab_margin_b="3dp"
     android:background="@color/black_ff_bg"
+    app:tab_scale_factor="1.2"
+    app:tab_item_autoScale="true"
     android:layout_height="wrap_content"/>
 ```
 其中tab_width 可以不填，这样的话，它的大小，就是根据子控件本身的宽度的；当然 rect 是会随着控件的大小而变化的。
+tab_item_autoScale 则是开启放大缩小效果，tab_scale_factor 为放大倍速。
 其他自定义属性，可以参考下面的 自定义属性列表。
 
 那么，在 xml 写好了，接着，就是在 Activity 中，这样写：
@@ -81,20 +93,8 @@ private void rectFlow(){
 ```
 flowLayout.setViewPager(...) 即可.
 ```
-它有几个方法,参考最后一个的解释就可以了。
+它有几个方法,参考这个解释就可以了。
 ```
-  public void setViewPager(ViewPager viewPager) {
-      setViewPager(viewPager, -1, 0, 0, 0);
-  }
-
-
-  public void setViewPager(ViewPager viewPager, int textId) {
-      setViewPager(viewPager, textId, 0, -1, -1);
-  }
-  public void setViewPager(ViewPager viewPager, int textId, int unselectedColor, int selectedColor) {
-      setViewPager(viewPager, textId, 0, unselectedColor, selectedColor);
-  }
-
   /**
    * 配置viewpager
    * @param viewPager
@@ -110,7 +110,7 @@ flowLayout.setViewPager(...) 即可.
 
 ### 3、自定义属性动态配置
 
-可能你不想在 xml 直接定死，那么可以直接使用 TabBean 去配置，一个使用 shape 当移动背景的配置如下：
+可能你不想在 xml 直接定死，那么可以直接使用 TabBean 去配置，比如使用 shape 当移动背景的配置如下：
 ```
 private void resFlow(){
     final TabFlowLayout flowLayout = findViewById(R.id.resflow);
@@ -146,7 +146,7 @@ private void resFlow(){
 ```
 
 ### 4、自定义action
-可能上面的一些效果没有你想要的，那么项目也支持用户自定义，比如自定义一个白色圆点效果，只需要继承 BASEAction：
+可能上面的一些效果没有你想要的，那么项目也支持用户自定义，比如自定义一个白色圆点效果，只需要继承 BaseAction：
 
 ```
 
@@ -187,7 +187,7 @@ private void resFlow(){
         }
     }
 ```
-然后通过 flowLayout.setAction 即可。
+通过重写 valueChange 拿到移动偏移量，然后通过 flowLayout.setAction 即可。
 
 ### 5、参考代码
 
@@ -211,6 +211,8 @@ private void resFlow(){
 |tab_margin_r|dimension|右偏移|
 |tab_margin_b|dimension|下偏移|
 |tab_click_animTime|integer|点击动画的时间，默认300ms|
+|tab_item_autoScale|boolean|开启放大缩小的效果|
+|tab_scale_factor|float|放大倍数|
 
 **ColorTextView**
 

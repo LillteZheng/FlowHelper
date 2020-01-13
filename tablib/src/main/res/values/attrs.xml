@@ -18,6 +18,8 @@
         <attr name="tab_margin_b" format="dimension"/>
         <attr name="tab_click_animTime" format="integer"/>
         <attr name="tab_item_res" format="reference"/>
+        <attr name="tab_item_autoScale" format="boolean"/>
+        <attr name="tab_scale_factor" format="float"/>
     </declare-styleable>
 
 

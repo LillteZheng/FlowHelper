@@ -392,15 +392,17 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (isCanMove()) {
             //超过中间了，让父控件也跟着移动
             int scrollX = view.getLeft();
+            int dx;
             if (scrollX > mWidth / 2 - getPaddingLeft()) {
                 scrollX -= mWidth / 2 - getPaddingLeft();
                 //有边界提醒
                 if (scrollX < mRightBound - mWidth) {
-                    int dx = scrollX - mLastScrollX;
+                     dx = scrollX - mLastScrollX;
                     mScroller.startScroll(getScrollX(), 0, dx, 0);
                     mLastScrollX = scrollX;
+                    Log.d(TAG, "zsr - updateScroll r: "+dx+" "+mLastScrollX+" "+scrollX);
                 } else {
-                    int dx = mRightBound - mWidth - getScrollX();
+                    dx = mRightBound - mWidth - getScrollX();
                     if (getScrollX() >= mRightBound - mWidth) {
                         dx = 0;
                     }
@@ -408,7 +410,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     mLastScrollX = mRightBound - mWidth - dx;
                 }
             } else {
-                scrollTo(0, 0);
+                dx = - scrollX;
+                mScroller.startScroll(getScrollX(),0,dx,0);
                 mLastScrollX = 0;
             }
         }
