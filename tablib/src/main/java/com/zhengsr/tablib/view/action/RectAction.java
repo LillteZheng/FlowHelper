@@ -2,8 +2,10 @@ package com.zhengsr.tablib.view.action;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
+import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -18,7 +20,7 @@ public class RectAction extends BaseAction {
         super.config(parentView);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         View child = parentView.getChildAt(0);
-        if (child != null) {
+        if (child != null && mRect.isEmpty()) {
             float l = parentView.getPaddingLeft() + mMarginLeft;
             float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabHeight - mMarginBottom;
             float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
@@ -28,11 +30,14 @@ public class RectAction extends BaseAction {
                 r = mTabWidth + l;
             }
             mRect.set(l, t, r, b);
-
         }
         parentView.postInvalidate();
     }
 
+    @Override
+    protected void valueChange(TabValue value) {
+        super.valueChange(value);
+    }
 
     @Override
     public void draw(Canvas canvas) {

@@ -122,7 +122,6 @@ public class TabActivity extends AppCompatActivity {
     private void resFlow(){
         final TabFlowLayout flowLayout = findViewById(R.id.resflow);
 
-        flowLayout.setViewPager(mViewPager);
         /**
          * 配置自定义属性
          */
@@ -137,6 +136,7 @@ public class TabActivity extends AppCompatActivity {
         bean.tabMarginBottom = 10;
         flowLayout.setTabBean(bean);
 
+        flowLayout.setViewPager(mViewPager);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -170,8 +170,8 @@ public class TabActivity extends AppCompatActivity {
 
     private void cusFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.cusflow);
-        flowLayout.setViewPager(mViewPager);
         flowLayout.setCusAction(new CircleAction());
+        flowLayout.setViewPager(mViewPager);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {

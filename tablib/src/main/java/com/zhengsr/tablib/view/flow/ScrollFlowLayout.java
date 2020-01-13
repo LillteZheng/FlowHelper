@@ -51,7 +51,6 @@ class ScrollFlowLayout extends FlowLayout {
     }
 
 
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
@@ -79,9 +78,6 @@ class ScrollFlowLayout extends FlowLayout {
             }
             mWidth = mScreenWidth;
         }
-
-
-
     }
 
     @Override

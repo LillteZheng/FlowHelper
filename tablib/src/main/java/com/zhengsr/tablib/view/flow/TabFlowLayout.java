@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ import com.zhengsr.tablib.view.action.RectAction;
 import com.zhengsr.tablib.view.action.ResAction;
 import com.zhengsr.tablib.view.action.RoundAction;
 import com.zhengsr.tablib.view.action.TriAction;
+
+import java.lang.reflect.Field;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -77,38 +80,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mScroller = new Scroller(getContext());
         chooseTabTpye(tabStyle);
 
-        //配置自定义属性给 action
-        if (mAction != null) {
-            mAction.configAttrs(mTypeArray);
-        }
-        if (mAction != null) {
-            mTypeArray.recycle();
-        }
-
-
-        /**
-         * 如果超过了屏幕大小，且父布局是 LinearLayout ，gravity 或 自身的 layout_gravity 不是 left；
-         * 则需要自身去重新设置，不然初始位置是在中间开始去layout的。
-         * 如果是 ConstraintLayout ，width 又是 wrap_content 的，只需要改成0即可
-         */
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (getWidth() > mWidth) {
-                    ViewGroup parent = (ViewGroup) getParent();
-                    if (parent instanceof LinearLayout) {
-                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
-                        params.gravity = Gravity.START;
-                        setLayoutParams(params);
-                    }else if (parent instanceof ConstraintLayout){
-                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) getLayoutParams();
-                        boolean isWrapContent = params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT;
-                        if (isWrapContent && isCanMove()){
-                            params.width = 0;
-                            setLayoutParams(params);
-                        }
-                    }
-                }
+                reAdjustLayoutParams();
 
                 /**
                  *  当横竖屏之后，需要重新对位置，选中 index 等恢复到原来的状态
@@ -136,8 +111,29 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+    }
 
-
+    /**
+     * 如果超过了屏幕大小，且父布局是 LinearLayout ，gravity 或 自身的 layout_gravity 不是 left；
+     * 则需要自身去重新设置，不然初始位置是在中间开始去layout的。
+     * 如果是 ConstraintLayout ，width 又是 wrap_content 的，只需要改成0即可
+     */
+    private void reAdjustLayoutParams() {
+        if (getWidth() > mWidth) {
+            ViewGroup parent = (ViewGroup) getParent();
+            if (parent instanceof LinearLayout) {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+                params.gravity = Gravity.START;
+                setLayoutParams(params);
+            }else if (parent instanceof ConstraintLayout){
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) getLayoutParams();
+                boolean isWrapContent = params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                if (isWrapContent && isCanMove()){
+                    params.width = 0;
+                    setLayoutParams(params);
+                }
+            }
+        }
     }
 
 
@@ -167,6 +163,33 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     break;
             }
         }
+        //配置自定义属性给 action
+        if (mAction != null && !isTypeArrayRecycler()) {
+            mAction.configAttrs(mTypeArray);
+            mTypeArray.recycle();
+        }
+
+    }
+
+    /**
+     * 判断typeArray 是否被回收
+     * @return
+     */
+    private boolean isTypeArrayRecycler(){
+        if (mTypeArray != null) {
+            try {
+                Class<?> typeArrayClass = mTypeArray.getClass();
+                Field mRecycled  = typeArrayClass.getDeclaredField("mRecycled");
+                mRecycled.setAccessible(true);
+                return mRecycled.getBoolean(mTypeArray);
+
+            } catch (Exception e) {
+                //e.printStackTrace();
+                return false;
+
+            }
+        }
+        return false;
     }
 
     @Override
@@ -178,21 +201,18 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+    }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         if (mAction != null) {
             mAction.config(TabFlowLayout.this);
-            if (mTabBean != null) {
-                mAction.configAttrs(mTypeArray);
-                mAction.setBean(mTabBean);
-                if (mViewPager != null && mAction.getViewPager() == null){
-                    mAction.setViewPager(mViewPager,mTextId,mUnselectedColor,mSelectedColor);
-                }
-            }
         }
-
     }
 
     /**
@@ -203,8 +223,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public void setAdapter(TabFlowAdapter adapter) {
         mAdapter = adapter;
         mAdapter.setListener(new FlowListener());
+
         //实现数据更新
         notifyChanged();
+
+
     }
 
     /**
@@ -283,6 +306,14 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mTextId = textId;
         mCurrentIndex = selectedIndex;
 
+        if (mAction != null && !isTypeArrayRecycler()) {
+            if (mTabBean != null) {
+                mAction.configAttrs(mTypeArray);
+                mTypeArray.recycle();
+                mAction.setBean(mTabBean);
+            }
+        }
+
     }
 
     /**
@@ -297,6 +328,16 @@ public class TabFlowLayout extends ScrollFlowLayout {
             adapter.bindView(view, adapter.getDatas().get(i), i);
             configClick(view, i);
             addView(view);
+        }
+
+        //如果此时 width 为0，则是加载完布局，但是数据还没有导入，则需要重新适配一下；
+        if (mWidth == 0 && getWidth() == 0){
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    reAdjustLayoutParams();
+                }
+            },5);
         }
     }
 
@@ -429,6 +470,15 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
         if (bean.tabType != -1) {
             chooseTabTpye(bean.tabType);
+        }
+
+        if (mAction != null) {
+            if (mTabBean != null) {
+                mAction.setBean(mTabBean);
+                if (mViewPager != null && mAction.getViewPager() == null){
+                    mAction.setViewPager(mViewPager,mTextId,mUnselectedColor,mSelectedColor);
+                }
+            }
         }
 
         return this;

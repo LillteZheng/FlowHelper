@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     /**
      * logic
      */
-    protected int mScreenWidth;
+    protected int mViewWidth;
     protected int mRightBound;
     private ValueAnimator mAnimator;
     protected float mOffset;
@@ -68,22 +69,24 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
     public void config(TabFlowLayout parentView) {
-        mParentView = parentView;
-        mContext = mParentView.getContext();
-        mScreenWidth = mParentView.getViewWidth();
-        int childCount = mParentView.getChildCount();
-        if (childCount > 0) {
-            View child = mParentView.getChildAt(childCount - 1);
-            mRightBound = child.getRight() + mParentView.getPaddingRight();
-        }
+        if (mRect.isEmpty()) {
+            mParentView = parentView;
+            mContext = mParentView.getContext();
+            mViewWidth = mParentView.getViewWidth();
+            int childCount = mParentView.getChildCount();
+            if (childCount > 0) {
+                View child = mParentView.getChildAt(childCount - 1);
+                mRightBound = child.getRight() + mParentView.getPaddingRight();
+            }
 
-        View child = mParentView.getChildAt(0);
-        if (child != null) {
-            mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
-            if (mTextViewId != -1) {
-                TextView textView = child.findViewById(mTextViewId);
-                if (textView instanceof ColorTextView) {
-                    textView.setTextColor(((ColorTextView) textView).getChangeColor());
+            View child = mParentView.getChildAt(0);
+            if (child != null) {
+                mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
+                if (mTextViewId != -1) {
+                    TextView textView = child.findViewById(mTextViewId);
+                    if (textView instanceof ColorTextView) {
+                        textView.setTextColor(((ColorTextView) textView).getChangeColor());
+                    }
                 }
             }
         }
@@ -117,9 +120,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public void onItemClick(int lastIndex, int curIndex) {
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
-        clearColorText();
+
         if (mViewPager == null) {
             doAnim(lastIndex, curIndex);
+        } else {
+            clearColorText();
         }
     }
 
@@ -137,6 +142,12 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     ColorTextView colorTextView = (ColorTextView) textview;
                     colorTextView.setTextColor(colorTextView.getDefaultColor());
                 }
+            }
+
+            View view = mParentView.getChildAt(mCurrentIndex);
+            TextView colorTextView = view.findViewById(mTextViewId);
+            if (colorTextView instanceof ColorTextView) {
+                colorTextView.setTextColor(((ColorTextView) colorTextView).getChangeColor());
             }
         }
     }
@@ -196,13 +207,13 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 }
                 //超过中间了，让父控件也跟着移动
                 if (mParentView.isCanMove()) {
-                    if (scrollX > mScreenWidth / 2 - mParentView.getPaddingLeft()) {
-                        scrollX -= mScreenWidth / 2 - mParentView.getPaddingLeft();
+                    if (scrollX > mViewWidth / 2 - mParentView.getPaddingLeft()) {
+                        scrollX -= mViewWidth / 2 - mParentView.getPaddingLeft();
                         //有边界提醒
-                        if (scrollX <= mRightBound - mScreenWidth) {
+                        if (scrollX <= mRightBound - mViewWidth) {
                             mParentView.scrollTo(scrollX, 0);
                         } else {
-                            int dx = mRightBound - mScreenWidth;
+                            int dx = mRightBound - mViewWidth;
                             mParentView.scrollTo(dx, 0);
                         }
                     } else {
@@ -237,11 +248,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                  * 的 setCurrentItem，但是却没清其他 textview 的颜色值，所以在这里做个保险；
                  */
                 clearColorText();
-                View view = mParentView.getChildAt(mCurrentIndex);
-                TextView colorTextView = view.findViewById(mTextViewId);
-                if (colorTextView instanceof ColorTextView) {
-                    colorTextView.setTextColor(((ColorTextView) colorTextView).getChangeColor());
-                }
             }
         }
     }
@@ -299,10 +305,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                             int childCount = mParentView.getChildCount();
                             for (int i = 0; i < childCount; i++) {
                                 View view = mParentView.getChildAt(i);
-                                if (i == mCurrentIndex){
-                                    adapter.onItemSelectState(view,true);
-                                }else{
-                                    adapter.onItemSelectState(view,false);
+                                if (i == mCurrentIndex) {
+                                    adapter.onItemSelectState(view, true);
+                                } else {
+                                    adapter.onItemSelectState(view, false);
                                 }
                             }
                         }
@@ -349,6 +355,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     /**
      * item 偏移的变化率
+     *
      * @param value
      */
     protected void valueChange(TabValue value) {
@@ -372,8 +379,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mMarginRight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_r, 0);
         mMarginBottom = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_b, 0);
         mAnimTime = ta.getInteger(R.styleable.TabFlowLayout_tab_click_animTime, 300);
-
-
     }
 
     /**

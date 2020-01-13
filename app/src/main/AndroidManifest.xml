@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zhengsr.tabhelper">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LabelActivity"></activity>
+        <activity android:name=".activity.NetTestActivity"></activity>
+        <activity android:name=".activity.LabelActivity" />
         <activity android:name=".activity.TabNoViewPagerActivity" />
         <activity android:name=".activity.TabActivity" />
         <activity android:name=".MainActivity">
