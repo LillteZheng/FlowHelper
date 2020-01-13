@@ -58,7 +58,7 @@ tab_item_autoScale 则是开启放大缩小效果，tab_scale_factor 为放大�
 ```
 private void rectFlow(){
     TabFlowLayout flowLayout = findViewById(R.id.rectflow);
-    flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+    flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
         @Override
         public void onItemSelectState(View view, boolean isSelected) {
             super.onItemSelectState(view, isSelected);
@@ -130,7 +130,7 @@ private void resFlow(){
     bean.tabMarginBottom = 10;
     flowLayout.setTabBean(bean);
 
-    flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+    flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
         @Override
         public void bindView(View view, String data, int position) {
             setText(view,R.id.item_text,data);
