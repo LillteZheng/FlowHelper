@@ -62,3 +62,18 @@ implementation 'com.github.LillteZheng:FlowHelper:v1.0'
 [LabelFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/Label_README.md)
 
 
+**其实TabFlowLayout也可以支持底部导航栏，但其实没必要，可以参考这个库 https://github.com/LillteZheng/CusBottomHelper **
+
+ <tr>
+    <th>底部凸起</th>
+    <th>结合ViewPager</th>
+  </tr>
+   <tr>
+    <td><a href="url"><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_fragment.gif" align="left"height="789" width="479"></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_viewpager.gif" align="left" height="789" width="479" ></a></td>
+  </tr>
+
+</table>
+
+
+

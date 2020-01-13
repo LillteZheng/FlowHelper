@@ -30,4 +30,5 @@
         <attr name="colortext_default_color" format="color|reference"/> <!--默认颜色-->
         <attr name="colortext_change_color" format="color|reference"/> <!--渐变颜色-->
     </declare-styleable>
+
 </resources>

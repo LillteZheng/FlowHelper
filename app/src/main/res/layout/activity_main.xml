@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#506E7A"
     tools:context=".MainActivity">
 
     <Button
@@ -27,8 +28,6 @@
         android:text="LabelFlowLayout 标签布局"
         android:textAllCaps="false"
         android:onClick="labelflow"/>
-
-
 
 
 </LinearLayout>

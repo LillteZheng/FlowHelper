@@ -35,7 +35,6 @@ public class LabelActivity extends AppCompatActivity {
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
             }
-
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);

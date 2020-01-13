@@ -10,7 +10,7 @@ import com.zhengsr.tabhelper.R;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.adapter.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.action.BaseAction;
 
@@ -37,7 +37,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
     private void rectFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.rectflow);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);
@@ -61,7 +61,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         });
 
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-        flowLayout2.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -71,7 +71,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
     private void triFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.triflow);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle2) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle2) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data)
@@ -102,7 +102,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         bean.tabRoundSize = 10;
         flowLayout.setTabBean(bean);
 
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle3) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle3) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data)
@@ -113,7 +113,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
     private void resFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.resflow);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle3) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle3) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data)
@@ -127,7 +127,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
     private void cusFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.cusflow);
         flowLayout.setCusAction(new CircleAction());
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle2) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle2) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data)
@@ -161,6 +161,11 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         @Override
         protected void valueChange(TabValue value) {
             super.valueChange(value);
+
+            /**
+             * value 子控件在滚动时的 left 和 right，可以理解为偏移量
+             * Rect 为这个偏移量的局域。
+             */
             //由于自定义的，都是从left 开始算起的，所以这里还需要加上圆的半径
             mRect.left = value.left + mTabWidth/2;
         }

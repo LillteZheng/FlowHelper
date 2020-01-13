@@ -35,30 +35,30 @@ class FlowLayout extends ViewGroup {
     }
 
 
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (isVertical()){
-            measureVertical(widthMeasureSpec,heightMeasureSpec);
-        }else{
-            measureHorizontal(widthMeasureSpec,heightMeasureSpec);
+        if (isVertical()) {
+            measureVertical(widthMeasureSpec, heightMeasureSpec);
+        } else {
+            measureHorizontal(widthMeasureSpec, heightMeasureSpec);
         }
 
 
     }
 
-    public boolean isVertical(){
+    public boolean isVertical() {
         return true;
     }
 
     /**
      * 测量横向方向，比如一些搜索热词，搜索记录
      * 和轻量级的 tag
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
-    private void measureHorizontal(int widthMeasureSpec,int heightMeasureSpec){
+    private void measureHorizontal(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -70,9 +70,11 @@ class FlowLayout extends ViewGroup {
         /**
          * 计算宽高
          */
+
+
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-            if (child.getVisibility() == View.GONE){
+            if (child.getVisibility() == View.GONE) {
                 continue;
             }
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
@@ -91,18 +93,21 @@ class FlowLayout extends ViewGroup {
         //具体大小，padding不受影响
         if (MeasureSpec.EXACTLY == heightMode) {
             height = heightSize;
-        }else{
+        } else {
             height = height + getPaddingTop() + getPaddingBottom();
         }
 
-        if (MeasureSpec.EXACTLY == widthMode){
+        if (MeasureSpec.EXACTLY == widthMode) {
             width = widthSize;
-        }else{
+        } else {
             width += getPaddingLeft() + getPaddingRight();
         }
         mViewWidth = width;
+
         setMeasuredDimension(width, height);
     }
+
+
 
     /**
      * 测量竖直方向，常用瀑布流布局 tag 标签
@@ -194,11 +199,11 @@ class FlowLayout extends ViewGroup {
         } else if (heightMode == MeasureSpec.AT_MOST) {
             height = Math.min(height, heightSize);
             height += getPaddingTop() + getPaddingBottom();
-        }else{
+        } else {
             height += getPaddingTop() + getPaddingBottom();
         }
         //把测量完成的高，重设置给父控件
-        setMeasuredDimension((widthMode== MeasureSpec.EXACTLY) ? widthSize : lineWidth, height);
+        setMeasuredDimension((widthMode == MeasureSpec.EXACTLY) ? widthSize : lineWidth, height);
     }
 
 
@@ -209,7 +214,7 @@ class FlowLayout extends ViewGroup {
          * 需要给每一行的 View 设置 child.layout(l,t,r,b) ，行高也要设置，
          * 这些数据从onMeasure 中已经计算好了，所以，只需要把值拿到就可以了
          */
-        if (isVertical()){
+        if (isVertical()) {
             int size = mAllViews.size();
             int left = getPaddingLeft();
             int top = getPaddingTop();
@@ -231,7 +236,7 @@ class FlowLayout extends ViewGroup {
                 left = getPaddingLeft();
                 top += mLineHeights.get(i);
             }
-        }else{
+        } else {
             int count = getChildCount();
             int left = getPaddingLeft();
             int top = getPaddingTop();
@@ -240,8 +245,8 @@ class FlowLayout extends ViewGroup {
                 MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
                 int cl = left + params.leftMargin;
                 int ct = top + params.topMargin;
-                int cr = cl + child.getMeasuredWidth() ;
-                int cb = ct + child.getMeasuredHeight() ;
+                int cr = cl + child.getMeasuredWidth();
+                int cb = ct + child.getMeasuredHeight();
                 //下个控件的起始位置
                 left += child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
                 child.layout(cl, ct, cr, cb);

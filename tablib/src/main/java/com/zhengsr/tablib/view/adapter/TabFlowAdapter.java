@@ -11,10 +11,10 @@ import java.util.List;
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 数据构建基类
  */
-public abstract class TabAdapter<T> extends TemplateAdapter<T> {
+public abstract class TabFlowAdapter<T> extends TemplateAdapter<T> {
 
 
-    public TabAdapter(int layoutId, List<T> data) {
+    public TabFlowAdapter(int layoutId, List<T> data) {
         super(layoutId, data);
     }
 

@@ -15,7 +15,7 @@ import com.zhengsr.tabhelper.fragment.CusFragment;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.adapter.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.action.BaseAction;
 
@@ -52,7 +52,7 @@ public class TabActivity extends AppCompatActivity {
     private void rectFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.rectflow);
         flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -65,9 +65,10 @@ public class TabActivity extends AppCompatActivity {
             }
         });
 
+
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
         flowLayout2.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
-        flowLayout2.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -89,7 +90,7 @@ public class TabActivity extends AppCompatActivity {
     private void triFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.triflow);
         flowLayout.setViewPager(mViewPager,R.id.item_text);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -105,7 +106,7 @@ public class TabActivity extends AppCompatActivity {
     private void roundFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.roundflow);
         flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -136,7 +137,7 @@ public class TabActivity extends AppCompatActivity {
         bean.tabMarginBottom = 10;
         flowLayout.setTabBean(bean);
 
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -153,7 +154,7 @@ public class TabActivity extends AppCompatActivity {
     private void colorFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.colorflow);
         flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.RED);
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_color_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_color_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);
@@ -171,7 +172,7 @@ public class TabActivity extends AppCompatActivity {
         TabFlowLayout flowLayout = findViewById(R.id.cusflow);
         flowLayout.setViewPager(mViewPager);
         flowLayout.setCusAction(new CircleAction());
-        flowLayout.setAdapter(new TabAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data)

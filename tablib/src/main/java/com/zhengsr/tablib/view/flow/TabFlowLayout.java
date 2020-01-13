@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +22,7 @@ import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.view.action.ColorAction;
-import com.zhengsr.tablib.view.adapter.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
 import com.zhengsr.tablib.view.action.BaseAction;
@@ -37,7 +37,7 @@ import com.zhengsr.tablib.view.action.TriAction;
  */
 public class TabFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "TabFlowLayout";
-    private TabAdapter mAdapter;
+    private TabFlowAdapter mAdapter;
     private BaseAction mAction;
 
     private boolean isFirst = true;
@@ -88,7 +88,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
         /**
          * 如果超过了屏幕大小，且父布局是 LinearLayout ，gravity 或 自身的 layout_gravity 不是 left；
-         * 则需要自身去重新设置，不然初始位置是在中间开始去layout的
+         * 则需要自身去重新设置，不然初始位置是在中间开始去layout的。
+         * 如果是 ConstraintLayout ，width 又是 wrap_content 的，只需要改成0即可
          */
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -99,6 +100,13 @@ public class TabFlowLayout extends ScrollFlowLayout {
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
                         params.gravity = Gravity.START;
                         setLayoutParams(params);
+                    }else if (parent instanceof ConstraintLayout){
+                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) getLayoutParams();
+                        boolean isWrapContent = params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                        if (isWrapContent && isCanMove()){
+                            params.width = 0;
+                            setLayoutParams(params);
+                        }
                     }
                 }
 
@@ -192,7 +200,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
      *
      * @param adapter
      */
-    public void setAdapter(TabAdapter adapter) {
+    public void setAdapter(TabFlowAdapter adapter) {
         mAdapter = adapter;
         mAdapter.setListener(new FlowListener());
         //实现数据更新
@@ -246,13 +254,13 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
 
+    public void setViewPager(ViewPager viewPager, int textId) {
+        setViewPager(viewPager, textId, 0, -1, -1);
+    }
     public void setViewPager(ViewPager viewPager, int textId, int unselectedColor, int selectedColor) {
         setViewPager(viewPager, textId, 0, unselectedColor, selectedColor);
     }
 
-    public void setViewPager(ViewPager viewPager, int textId) {
-        setViewPager(viewPager, textId, 0, -1, -1);
-    }
 
     /**
      * 配置viewpager
@@ -282,7 +290,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
     private void notifyChanged() {
         removeAllViews();
-        TabAdapter adapter = mAdapter;
+        TabFlowAdapter adapter = mAdapter;
         int itemCount = adapter.getItemCount();
         for (int i = 0; i < itemCount; i++) {
             View view = LayoutInflater.from(getContext()).inflate(adapter.getLayoutId(), this, false);
@@ -426,7 +434,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         return this;
     }
 
-    public TabAdapter getAdapter() {
+    public TabFlowAdapter getAdapter() {
         return mAdapter;
     }
 }

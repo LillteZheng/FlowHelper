@@ -21,7 +21,7 @@ import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.ColorTextView;
-import com.zhengsr.tablib.view.adapter.TabAdapter;
+import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 /**
@@ -294,7 +294,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     if (mParentView != null && mViewPager == null) {
-                        TabAdapter adapter = mParentView.getAdapter();
+                        TabFlowAdapter adapter = mParentView.getAdapter();
                         if (adapter != null) {
                             int childCount = mParentView.getChildCount();
                             for (int i = 0; i < childCount; i++) {
