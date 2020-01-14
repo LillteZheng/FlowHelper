@@ -93,11 +93,12 @@ private void rectFlow(){
 ```
 flowLayout.setViewPager(...) 即可.
 
+```
+
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**
 - fragment 布局复杂或者网络加载数据时，建议在懒加载中去初始化或者加载数据
 - viewpager 增加缓存，setOffscreenPageLimit(3)。
 
-```
 它有几个方法,参考这个解释就可以了。
 ```
   /**
