@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -20,9 +21,12 @@ import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
+import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
 import com.zhengsr.tablib.view.ColorTextView;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
+
+import java.lang.reflect.Field;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -49,6 +53,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     private int mCurrentIndex;
     private int mLastIndex;
     private boolean isColorText = false;
+    private boolean isTextView = false;
+    private boolean isTabClick = false;
     /**
      * attrs
      */
@@ -70,8 +76,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
     public void config(TabFlowLayout parentView) {
-        if (mRect.isEmpty() && parentView.getChildCount() > 0) {
-            mParentView = parentView;
+        mParentView = parentView;
+        Log.d(TAG, "zsr - config: "+parentView.getChildCount());
+        if (parentView.getChildCount() > 0) {
             mContext = mParentView.getContext();
             mViewWidth = mParentView.getViewWidth();
             int childCount = mParentView.getChildCount();
@@ -84,11 +91,16 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             if (child != null) {
                 mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
                 if (mTextViewId != -1) {
-                    TextView textView = child.findViewById(mTextViewId);
+                    View textView = child.findViewById(mTextViewId);
                     if (textView instanceof ColorTextView) {
                         isColorText = true;
-                        textView.setTextColor(((ColorTextView) textView).getChangeColor());
+                        ColorTextView colorTextView = (ColorTextView) textView;
+                        colorTextView.setTextColor(colorTextView.getChangeColor());
                     }
+                    if (textView instanceof TextView){
+                        isTextView = true;
+                    }
+
                 }
                 if (mIsAutoScale && mScaleFactor > 1) {
                     child.animate()
@@ -118,6 +130,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mTextViewId = textId;
         mUnSelectedColor = unselectedColor;
         mSelectedColor = selectedColor;
+
     }
 
 
@@ -127,7 +140,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * @param lastIndex
      * @param curIndex
      */
+
+    private boolean isClickMore = false;
+
     public void onItemClick(int lastIndex, int curIndex) {
+        isTabClick = true;
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
         if (mViewPager == null) {
@@ -136,10 +153,14 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         } else {
             clearColorText();
             if (Math.abs(mCurrentIndex - mLastIndex) > 1) {
+                isClickMore = true;
+                doAnim(lastIndex, curIndex);
                 autoScaleView();
             }
         }
     }
+
+
 
     /**
      * 为了防止 colortextView 滚动时的残留，先清掉
@@ -150,17 +171,17 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 int childCount = mParentView.getChildCount();
                 for (int i = 0; i < childCount; i++) {
                     View view = mParentView.getChildAt(i);
-                    View textview = view.findViewById(mTextViewId);
-                    if (textview instanceof ColorTextView) {
-                        ColorTextView colorTextView = (ColorTextView) textview;
-                        colorTextView.setTextColor(colorTextView.getDefaultColor());
+                    ColorTextView textview = view.findViewById(mTextViewId);
+                    if (textview != null) {
+                        textview.setTextColor(textview.getDefaultColor());
                     }
+
                 }
 
                 View view = mParentView.getChildAt(mCurrentIndex);
-                TextView colorTextView = view.findViewById(mTextViewId);
-                if (colorTextView instanceof ColorTextView) {
-                    colorTextView.setTextColor(((ColorTextView) colorTextView).getChangeColor());
+                ColorTextView colorTextView = view.findViewById(mTextViewId);
+                if (colorTextView != null) {
+                    colorTextView.setTextColor(colorTextView.getChangeColor());
                 }
             }
         }
@@ -169,66 +190,62 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         /**
-         * position 当前第一页的索引，比较有意思的是，当右滑时，position 表示当前页面，当左滑时，为当前页面减1；
-         * positionOffset 当前页面移动的百分比
-         * positionOffsetPixels 当前页面移动的像素
+         * 为了避免卡顿，当点击时，我们不应该让它持续变化，比如从0，点击到 9；
+         * 那么动画会从 0 执行到 9，如果此时加上 scrollto 移动 view 等操作，那么
+         * 整个动画会变得卡顿，这点从 profiler 就能拿到，因此，如果是点击的控件与
+         * 上次相差超过 1，则不执行这个指令，直接在点击的时候，就呈现改效果。
          */
-
-
+        Log.d(TAG, "zsr - onPageScrolled: "+positionOffset+" "+isClickMore+" "+mParentView);
         if (mParentView != null) {
             View curView = mParentView.getChildAt(position);
             float offset = curView.getMeasuredWidth() * positionOffset;
             int scrollX = (int) (curView.getLeft() + offset);
             if (offset > 0 && positionOffset > 0) {
-                if (position < mParentView.getChildCount() - 1) {
-                    //要偏移的view
-                    final View transView = mParentView.getChildAt(position + 1);
-                    //大小渐变
-                    if (Math.abs(mCurrentIndex - mLastIndex) == 1) {
+                if (!isClickMore) {
+                    if (position < mParentView.getChildCount() - 1) {
+                        //要偏移的view
+                        final View transView = mParentView.getChildAt(position + 1);
+                        //大小渐变效果
+
                         if (mIsAutoScale && mScaleFactor > 0) {
                             float factor = mScaleFactor % 1;
                             float transScale = 1 + factor * positionOffset;
                             float curScale = 1 + factor * (1 - positionOffset);
-                            transView.animate().scaleX(transScale).scaleY(transScale).setDuration(0).start();
-                            curView.animate().scaleX(curScale).scaleY(curScale).setDuration(0).start();
+                            transView.setScaleX(transScale);
+                            transView.setScaleY(transScale);
+                            curView.setScaleX(curScale);
+                            curView.setScaleY(curScale);
                         }
-                    }
+                        //左边偏移量
+                        float left = curView.getLeft() + positionOffset * (transView.getLeft() - curView.getLeft());
+                        //右边表示宽度变化
+                        float right = curView.getRight() + positionOffset * (transView.getRight() - curView.getRight());
 
-                    //左边偏移量
-                    float left = curView.getLeft() + positionOffset * (transView.getLeft() - curView.getLeft());
-                    //右边表示宽度变化
-                    float right = curView.getRight() + positionOffset * (transView.getRight() - curView.getRight());
+                        if (mTabWidth != -1) {
+                            //拿到左边初始坐标
+                            int width = curView.getMeasuredWidth();
+                            //todo 动态改变rect大小的，后面再看看
+                            left = curView.getLeft() + (width - mTabWidth) / 2;
+                            //再拿到偏移坐标
+                            left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
+                            right = left + mTabWidth;
+                        }
+                        mRect.left = left;
+                        mRect.right = right;
+                        valueChange(new TabValue(mRect.left, mRect.right));
 
+                        mParentView.postInvalidate();
 
-                    if (mTabWidth != -1) {
-                        //拿到左边初始坐标
-                        int width = curView.getMeasuredWidth();
-                        //todo 动态改变rect大小的，后面再看看
-                        //(transView.getWidth() - width) * positionOffset
-                        left = curView.getLeft() + (width - mTabWidth) / 2;
-                        //再拿到偏移坐标
-                        left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
-                        right = left + mTabWidth;
-                    }
-                    mRect.left = left;
-                    mRect.right = right;
-                    valueChange(new TabValue(mRect.left, mRect.right));
-
-
-                    //处理颜色渐变
-                    if (mTextViewId != -1 && isColorText) {
-                        View leftView = curView.findViewById(mTextViewId);
-                        View rightView = transView.findViewById(mTextViewId);
-                        if (leftView instanceof ColorTextView && rightView instanceof ColorTextView) {
+                        //处理颜色渐变
+                        if (mTextViewId != -1 && isColorText) {
+                            View leftView = curView.findViewById(mTextViewId);
+                            View rightView = transView.findViewById(mTextViewId);
                             ColorTextView colorLeft = (ColorTextView) leftView;
                             ColorTextView colorRight = (ColorTextView) rightView;
-                            if (Math.abs(mCurrentIndex - mLastIndex) == 1) {
-                                colorLeft.setprogress(1 - positionOffset, ColorTextView.DEC_RIGHT);
-                                colorRight.setprogress(positionOffset, ColorTextView.DEC_LEFT);
-                            }
+                            colorLeft.setprogress(1 - positionOffset, ColorTextView.DEC_RIGHT);
+                            colorRight.setprogress(positionOffset, ColorTextView.DEC_LEFT);
                         }
                     }
-
                 }
                 //超过中间了，让父控件也跟着移动
                 if (mParentView.isCanMove()) {
@@ -244,37 +261,49 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     } else {
                         mParentView.scrollTo(0, 0);
                     }
+
+
                 }
 
             }
-
-
         }
-
     }
-
     @Override
     public void onPageSelected(int position) {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         chooseSelectedPosition(position);
+        Log.d(TAG, "zsr - onPageSelected: "+position);
     }
 
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
         /**
-         * 滚动结束时，再来改变colortextview，防止闪烁问题和卡顿问题
+         * 这里的处理是因为外部调用了 setCurrentItem ，此时 item 之间的差值也大于1;
+         * 但因为没有回调 onItemClick，所以 draw 、动画等效果没法实现，所以，可以先通过
+         * Viewpager 拿到 setCurrentItem(position) 中的position，赋值给当前的 mCurrentIndex；
+         * 且两者之间大于1时，直接使用draw和动画效果；不再让 onPageScrolled 去执行动画，避免卡顿
          */
-        if (state == ViewPager.SCROLL_STATE_IDLE && mTextViewId != -1 && isColorText) {
-            if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
-                /**
-                 * 在这里加这个，是为了多个 flowlayout 跟 同个 viewpager 结合时；使用了 viewpager
-                 * 的 setCurrentItem，但是却没清其他 textview 的颜色值，所以在这里做个保险；
-                 */
-                clearColorText();
+        if (state == ViewPager.SCROLL_STATE_SETTLING){
+            if (!isTabClick && mViewPager != null){
+                mLastIndex = mCurrentIndex;
+                mCurrentIndex = mViewPager.getCurrentItem();
+                if (Math.abs(mCurrentIndex - mLastIndex) > 1){
+                    isClickMore = true;
+                    clearColorText();
+                    doAnim(mLastIndex, mCurrentIndex);
+                    autoScaleView();
+                }
             }
         }
+
+        if (state == ViewPager.SCROLL_STATE_IDLE){
+            isClickMore = false;
+            isTabClick = false;
+        }
+
 
     }
 
@@ -365,20 +394,18 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     public void chooseSelectedPosition(int position) {
         if (mTextViewId != -1 && mParentView != null) {
-            int childCount = mParentView.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View view = mParentView.getChildAt(i);
-                View textView = view.findViewById(mTextViewId);
-                if (!(textView instanceof ColorTextView)) {
-                    if (textView instanceof TextView) {
-                        if (i == position) {
-                            ((TextView) textView).setTextColor(mSelectedColor);
-                        } else {
-                            ((TextView) textView).setTextColor(mUnSelectedColor);
-                        }
+            if (isTextView && !isColorText) {
+                int childCount = mParentView.getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    View view = mParentView.getChildAt(i);
+                    TextView textView = view.findViewById(mTextViewId);
+
+                    if (i == position) {
+                        textView.setTextColor(mSelectedColor);
+                    } else {
+                        textView.setTextColor(mUnSelectedColor);
                     }
                 }
-
             }
         }
     }

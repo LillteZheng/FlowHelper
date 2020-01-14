@@ -55,4 +55,18 @@ public class ViewPagerHelperUtils {
         }
     }
 
+    public static int getViewPageClickItem(ViewPager viewPager){
+        if (viewPager != null) {
+            try {
+                Class<?> zClass = viewPager.getClass();
+                Field mCurItem = zClass.getDeclaredField("mCurItem");
+                mCurItem.setAccessible(true);
+                return mCurItem.getInt(viewPager);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
 }

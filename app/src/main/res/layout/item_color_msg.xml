@@ -20,6 +20,7 @@
         android:textSize="14sp"
         app:colortext_default_color="@color/unselect"
         app:colortext_change_color="@color/colorAccent"
+        android:gravity="center"
         android:layout_height="wrap_content"/>
 
     <TextView

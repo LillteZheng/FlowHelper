@@ -93,11 +93,18 @@ public class TabFlowLayout extends ScrollFlowLayout {
                  */
                 if (isFirst) {
                     isFirst = false;
+
+                    Log.d(TAG, "zsr - onGlobalLayout: "+mAction+" ");
+                    if (mAction != null) {
+                        mAction.config(TabFlowLayout.this);
+                    }
+
+
                     if (mViewPager != null) {
                         if (mAction != null) {
                             mAction.chooseSelectedPosition(mCurrentIndex);
-                            if (mCurrentIndex != mLastIndex) {
-                                mAction.doAnim(mLastIndex, mCurrentIndex);
+                            if (mAction != null && mCurrentIndex > 0) {
+                                mAction.onItemClick(mLastIndex, mCurrentIndex);
                             }
                         }
 
@@ -106,15 +113,15 @@ public class TabFlowLayout extends ScrollFlowLayout {
                             mAction.onItemClick(mLastIndex, mCurrentIndex);
                         }
                     }
+
+                    //让它滚动到对应的位置
                     View view = getChildAt(mCurrentIndex);
                     if (view != null) {
                         updateScroll(view);
                         invalidate();
                     }
 
-                    if (mAction != null) {
-                        mAction.config(TabFlowLayout.this);
-                    }
+
                 }
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
@@ -364,11 +371,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 if (mViewPager != null && mAction != null) {
                     mLastIndex = mAction.getCurrentIndex();
                 }
-                if (mAdapter != null) {
-                    mAdapter.onItemClick(view, mAdapter.getDatas().get(i), i);
-                }
                 if (mAction != null) {
                     mAction.onItemClick(mLastIndex, i);
+                }
+                if (mAdapter != null) {
+                    mAdapter.onItemClick(view, mAdapter.getDatas().get(i), i);
                 }
                 mLastIndex = mCurrentIndex;
                 /**

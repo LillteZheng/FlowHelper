@@ -5,9 +5,12 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.TextView;
 
 import com.zhengsr.tablib.R;
@@ -46,7 +49,7 @@ public class ColorTextView extends AppCompatTextView {
     public ColorTextView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
 
-
+        setIncludeFontPadding(false);
 
     }
 
@@ -59,32 +62,38 @@ public class ColorTextView extends AppCompatTextView {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-
         mPaint.setTextSize(getTextSize());
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mWidth = w;
-        mHeight = h;
+      //  mWidth = w;
+      //  mHeight = h;
 
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
     }
 
     /**
      * 公布出去，可以手动设置颜色和字体大小
      * @param defaultColor
      * @param changeColor
-     * @param textsize
      */
-    public void setCusTextColor(int defaultColor, int changeColor, int textsize){
+    public void setCusTextColor(int defaultColor, int changeColor){
         mDefaultColor = defaultColor;
         mChangeColor = changeColor;
-        mPaint.setTextSize(textsize);
+        isUseUserColor = false;
         invalidate();
     }
     private float mProgress = 0;
     public void setprogress(float progress,int decection) {
+        isUseUserColor = false;
         mDecection = decection;
         mProgress = progress;
         invalidate();
@@ -100,8 +109,7 @@ public class ColorTextView extends AppCompatTextView {
     @Override
     protected void onDraw(Canvas canvas) {
         if (isUseUserColor){
-            drawText(canvas,0,mWidth,getCurrentTextColor());
-            isUseUserColor = false;
+          super.onDraw(canvas);
         }else {
             if (mDecection == DEC_RIGHT) {
                 //绘制一遍黑色
@@ -119,7 +127,7 @@ public class ColorTextView extends AppCompatTextView {
     private void drawText(Canvas canvas,int start,int end,int color){
         mPaint.setColor(color);
         canvas.save();
-        canvas.clipRect(start,0,end,getHeight());
+        canvas.clipRect(start,0,end,mHeight);
         String text = getText().toString();
 
         //绘制颜色居中
@@ -128,6 +136,7 @@ public class ColorTextView extends AppCompatTextView {
         Paint.FontMetrics metrics = mPaint.getFontMetrics();
         float dy = (metrics.descent+metrics.ascent)/2;
         float ty = mHeight/2 - dy;
+
 
         canvas.drawText(text,x,ty,mPaint);
         canvas.restore();

@@ -31,6 +31,8 @@ import me.yokeyword.fragmentation.SupportActivity;
 
 public class NetTestActivity extends SupportActivity {
     private static final String TAG = "NetTestActivity";
+    private ViewPager mViewPager;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +40,15 @@ public class NetTestActivity extends SupportActivity {
         setContentView(R.layout.activity_net_test);
 
         TabFlowLayout flowLayout = findViewById(R.id.tabflow);
-        final ViewPager viewPager  = findViewById(R.id.viewpager);
+        mViewPager = findViewById(R.id.viewpager);
 
-        viewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(3);
         final List<String> titles = new ArrayList<>();
         final List<Fragment> fragments = new ArrayList<>();
 
 
         final TabFlowAdapter adapter ;
-        flowLayout.setViewPager(viewPager,R.id.item_text, 1,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setViewPager(mViewPager,R.id.item_text, 1,getResources().getColor(R.color.unselect),Color.WHITE);
         flowLayout.setAdapter(adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
 
             @Override
@@ -57,7 +59,7 @@ public class NetTestActivity extends SupportActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                viewPager.setCurrentItem(position);
+                mViewPager.setCurrentItem(position);
             }
         });
 
@@ -69,13 +71,14 @@ public class NetTestActivity extends SupportActivity {
                     @Override
                     public void onNext(BaseResponse<List<NaviBean>> baseResponse) {
                         List<NaviBean> data = baseResponse.getData();
-
-                        for (NaviChildrenBean child : data.get(1).getChildren()) {
+                        // 可以通过 page 获取不同的参数
+                        int page = 1;
+                        for (NaviChildrenBean child : data.get(page).getChildren()) {
                             String title = child.getName().replaceAll("&amp;","和");
                             titles.add(title);
                             fragments.add(RecyclerFragment.newInstance(child));
                         }
-                        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments));
+                        mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments));
                             adapter.notifyDataChanged();
 
 
@@ -95,6 +98,10 @@ public class NetTestActivity extends SupportActivity {
 
 
 
+    }
+
+    public void test(View view) {
+        mViewPager.setCurrentItem(2);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
