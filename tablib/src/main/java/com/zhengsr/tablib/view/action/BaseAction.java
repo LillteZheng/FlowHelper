@@ -9,12 +9,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
@@ -51,6 +48,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     private int mSelectedColor = -1;
     private int mCurrentIndex;
     private int mLastIndex;
+    private boolean isColorText = false;
     /**
      * attrs
      */
@@ -65,7 +63,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     protected boolean mIsAutoScale = false;
     protected float mScaleFactor;
 
-
     public BaseAction() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -73,7 +70,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
     public void config(TabFlowLayout parentView) {
-        if (mRect.isEmpty()) {
+        if (mRect.isEmpty() && parentView.getChildCount() > 0) {
             mParentView = parentView;
             mContext = mParentView.getContext();
             mViewWidth = mParentView.getViewWidth();
@@ -89,10 +86,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 if (mTextViewId != -1) {
                     TextView textView = child.findViewById(mTextViewId);
                     if (textView instanceof ColorTextView) {
+                        isColorText = true;
                         textView.setTextColor(((ColorTextView) textView).getChangeColor());
                     }
                 }
-                if (mIsAutoScale && mScaleFactor >1) {
+                if (mIsAutoScale && mScaleFactor > 1) {
                     child.animate()
                             .scaleX(mScaleFactor)
                             .scaleY(mScaleFactor)
@@ -132,11 +130,14 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public void onItemClick(int lastIndex, int curIndex) {
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
-        autoScaleView();
         if (mViewPager == null) {
             doAnim(lastIndex, curIndex);
+            autoScaleView();
         } else {
             clearColorText();
+            if (Math.abs(mCurrentIndex - mLastIndex) > 1) {
+                autoScaleView();
+            }
         }
     }
 
@@ -144,22 +145,23 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * 为了防止 colortextView 滚动时的残留，先清掉
      */
     public void clearColorText() {
-
-        if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
-            int childCount = mParentView.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View view = mParentView.getChildAt(i);
-                View textview = view.findViewById(mTextViewId);
-                if (textview instanceof ColorTextView) {
-                    ColorTextView colorTextView = (ColorTextView) textview;
-                    colorTextView.setTextColor(colorTextView.getDefaultColor());
+        if (isColorText) {
+            if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
+                int childCount = mParentView.getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    View view = mParentView.getChildAt(i);
+                    View textview = view.findViewById(mTextViewId);
+                    if (textview instanceof ColorTextView) {
+                        ColorTextView colorTextView = (ColorTextView) textview;
+                        colorTextView.setTextColor(colorTextView.getDefaultColor());
+                    }
                 }
-            }
 
-            View view = mParentView.getChildAt(mCurrentIndex);
-            TextView colorTextView = view.findViewById(mTextViewId);
-            if (colorTextView instanceof ColorTextView) {
-                colorTextView.setTextColor(((ColorTextView) colorTextView).getChangeColor());
+                View view = mParentView.getChildAt(mCurrentIndex);
+                TextView colorTextView = view.findViewById(mTextViewId);
+                if (colorTextView instanceof ColorTextView) {
+                    colorTextView.setTextColor(((ColorTextView) colorTextView).getChangeColor());
+                }
             }
         }
     }
@@ -173,7 +175,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
          */
 
 
-
         if (mParentView != null) {
             View curView = mParentView.getChildAt(position);
             float offset = curView.getMeasuredWidth() * positionOffset;
@@ -182,6 +183,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 if (position < mParentView.getChildCount() - 1) {
                     //要偏移的view
                     final View transView = mParentView.getChildAt(position + 1);
+                    //大小渐变
                     if (Math.abs(mCurrentIndex - mLastIndex) == 1) {
                         if (mIsAutoScale && mScaleFactor > 0) {
                             float factor = mScaleFactor % 1;
@@ -211,11 +213,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     mRect.left = left;
                     mRect.right = right;
                     valueChange(new TabValue(mRect.left, mRect.right));
-                    mParentView.postInvalidate();
 
 
                     //处理颜色渐变
-                    if (mTextViewId != -1) {
+                    if (mTextViewId != -1 && isColorText) {
                         View leftView = curView.findViewById(mTextViewId);
                         View rightView = transView.findViewById(mTextViewId);
                         if (leftView instanceof ColorTextView && rightView instanceof ColorTextView) {
@@ -265,7 +266,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         /**
          * 滚动结束时，再来改变colortextview，防止闪烁问题和卡顿问题
          */
-        if (state == ViewPager.SCROLL_STATE_IDLE && mTextViewId != -1) {
+        if (state == ViewPager.SCROLL_STATE_IDLE && mTextViewId != -1 && isColorText) {
             if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
                 /**
                  * 在这里加这个，是为了多个 flowlayout 跟 同个 viewpager 结合时；使用了 viewpager
@@ -278,8 +279,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
 
-    private void autoScaleView(){
-        if (mIsAutoScale && mScaleFactor > 1){
+    private void autoScaleView() {
+        if (mParentView != null && mIsAutoScale && mScaleFactor > 1) {
             View lastView = mParentView.getChildAt(mLastIndex);
             View curView = mParentView.getChildAt(mCurrentIndex);
             lastView.animate()
@@ -305,7 +306,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     public void doAnim(int lastIndex, final int curIndex) {
         if (mAnimator != null) {
-            mAnimator.cancel();
             mAnimator.end();
             mAnimator = null;
         }
@@ -345,15 +345,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     if (mParentView != null && mViewPager == null) {
                         TabFlowAdapter adapter = mParentView.getAdapter();
                         if (adapter != null) {
-                            int childCount = mParentView.getChildCount();
-                            for (int i = 0; i < childCount; i++) {
-                                View view = mParentView.getChildAt(i);
-                                if (i == mCurrentIndex) {
-                                    adapter.onItemSelectState(view, true);
-                                } else {
-                                    adapter.onItemSelectState(view, false);
-                                }
-                            }
+                            View lastView = mParentView.getChildAt(mLastIndex);
+                            View curView = mParentView.getChildAt(mCurrentIndex);
+                            adapter.onItemSelectState(curView, true);
+                            adapter.onItemSelectState(lastView, false);
                         }
                     }
                 }
@@ -422,8 +417,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mMarginRight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_r, 0);
         mMarginBottom = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_b, 0);
         mAnimTime = ta.getInteger(R.styleable.TabFlowLayout_tab_click_animTime, 300);
-        mIsAutoScale = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale,false);
-        mScaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor,1);
+        mIsAutoScale = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale, false);
+        mScaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor, 1);
     }
 
     /**
@@ -468,9 +463,14 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             mMarginBottom = bean.tabMarginBottom;
         }
 
+        mIsAutoScale = bean.autoScale;
+        mScaleFactor = bean.scaleFactor;
+
     }
 
     public ViewPager getViewPager() {
         return mViewPager;
     }
+
+
 }

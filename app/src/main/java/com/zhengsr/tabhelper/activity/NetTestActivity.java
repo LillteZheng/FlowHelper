@@ -27,8 +27,9 @@ import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.ResourceObserver;
 import io.reactivex.schedulers.Schedulers;
+import me.yokeyword.fragmentation.SupportActivity;
 
-public class NetTestActivity extends AppCompatActivity {
+public class NetTestActivity extends SupportActivity {
     private static final String TAG = "NetTestActivity";
     @SuppressLint("CheckResult")
     @Override
@@ -39,13 +40,13 @@ public class NetTestActivity extends AppCompatActivity {
         TabFlowLayout flowLayout = findViewById(R.id.tabflow);
         final ViewPager viewPager  = findViewById(R.id.viewpager);
 
-
+        viewPager.setOffscreenPageLimit(3);
         final List<String> titles = new ArrayList<>();
         final List<Fragment> fragments = new ArrayList<>();
 
 
         final TabFlowAdapter adapter ;
-        flowLayout.setViewPager(viewPager,R.id.item_text, getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setViewPager(viewPager,R.id.item_text, 1,getResources().getColor(R.color.unselect),Color.WHITE);
         flowLayout.setAdapter(adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
 
             @Override

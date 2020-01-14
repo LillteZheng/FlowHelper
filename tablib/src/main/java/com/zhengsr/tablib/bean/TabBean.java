@@ -41,6 +41,16 @@ public class TabBean {
      */
     public int tabItemRes = -1;
 
+    /**
+     * 是否自动放大缩小的效果
+     */
+    public boolean autoScale = false;
+
+    /**
+     * 放大倍数
+     */
+    public float scaleFactor = 1;
+
     @Override
     public String toString() {
         return "TabBean{" +

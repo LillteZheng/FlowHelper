@@ -39,6 +39,7 @@ public class TabActivity extends AppCompatActivity {
             mFragments.add(CusFragment.newInStance(s));
         }
         mViewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(3);
         rectFlow();
         triFlow();
         roundFlow();
@@ -134,6 +135,8 @@ public class TabActivity extends AppCompatActivity {
         bean.tabMarginTop = 12;
         bean.tabMarginRight = 5;
         bean.tabMarginBottom = 10;
+        bean.autoScale = true;
+        bean.scaleFactor = 1.2f;
         flowLayout.setTabBean(bean);
 
         flowLayout.setViewPager(mViewPager);

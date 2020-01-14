@@ -14,11 +14,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tab_type="rect"
+        app:tab_type="round"
         app:tab_color="@color/colorPrimary"
-        app:tab_height="3dp"
-        app:tab_margin_b="3dp"
-        app:tab_width="25dp"
+        app:tab_item_autoScale="true"
+        app:tab_scale_factor="1.2"
         android:layout_height="wrap_content"
         />
 

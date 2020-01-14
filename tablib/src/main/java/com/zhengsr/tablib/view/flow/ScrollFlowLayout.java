@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewParent;
 import android.widget.Scroller;
 
 import com.zhengsr.tablib.view.flow.FlowLayout;
@@ -61,7 +62,6 @@ class ScrollFlowLayout extends FlowLayout {
             mRightBound = child.getRight() + getPaddingRight();
         }
 
-        //判断是否可移动
 
         //说明控件没有满屏或者固定宽度
         if (mViewWidth < mScreenWidth){
@@ -95,13 +95,31 @@ class ScrollFlowLayout extends FlowLayout {
                     mScroller.abortAnimation();
                 }
 
+                if (mVelocityTracker != null) {
+                    mVelocityTracker.recycle();
+                    mVelocityTracker = null;
+                }
+
+                mVelocityTracker = VelocityTracker.obtain();
+
+                mVelocityTracker.addMovement(ev);
+
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 float dx = ev.getX() - mLastX;
                 if (Math.abs(dx) >= mTouchSlop) {
-                    //由父控件接管触摸事件
 
+                    final ViewParent parent = getParent();
+                    if (parent != null) {
+                        parent.requestDisallowInterceptTouchEvent(true);
+                    }
+
+                    if (mVelocityTracker == null){
+                        mVelocityTracker = VelocityTracker.obtain();
+                    }
+                    mVelocityTracker.addMovement(ev);
+                    //由父控件接管触摸事件
                     return true;
                 }
                 mLastX = ev.getX();
@@ -125,6 +143,12 @@ class ScrollFlowLayout extends FlowLayout {
             case MotionEvent.ACTION_MOVE:
                 //scroller 向右为负，向左为正
                 int dx = (int) (mMoveX - event.getX());
+                if (Math.abs(dx) > mTouchSlop){
+                    final ViewParent parent = getParent();
+                    if (parent != null) {
+                        parent.requestDisallowInterceptTouchEvent(true);
+                    }
+                }
                 /**
                  * 判断左右边界
                  */
@@ -149,8 +173,14 @@ class ScrollFlowLayout extends FlowLayout {
                 int velocityX = (int) mVelocityTracker.getXVelocity();
                 if (Math.abs(velocityX) >= mMinimumVelocity) {
                     mCurScrollX = getScrollX();
+
+                    int width = getWidth() - getPaddingRight() - getPaddingLeft();
+                    int right = getChildAt(0).getWidth();
+
+
                     mScroller.fling(mCurScrollX, 0, velocityX, 0, 0, getWidth(), 0, 0);
                     if (mVelocityTracker != null) {
+                        mVelocityTracker.clear();
                         mVelocityTracker.recycle();
                         mVelocityTracker = null;
                     }

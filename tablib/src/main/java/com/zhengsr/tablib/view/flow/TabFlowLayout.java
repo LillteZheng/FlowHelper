@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.callback.FlowListener;
 import com.zhengsr.tablib.view.action.ColorAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
@@ -80,6 +81,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mScroller = new Scroller(getContext());
         chooseTabTpye(tabStyle);
 
+        setLayerType(LAYER_TYPE_SOFTWARE,null);
+
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -106,11 +109,17 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     View view = getChildAt(mCurrentIndex);
                     if (view != null) {
                         updateScroll(view);
+                        invalidate();
+                    }
+
+                    if (mAction != null) {
+                        mAction.config(TabFlowLayout.this);
                     }
                 }
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+
     }
 
     /**
@@ -164,9 +173,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
             }
         }
         //配置自定义属性给 action
-        if (mAction != null && !isTypeArrayRecycler()) {
-            mAction.configAttrs(mTypeArray);
-            mTypeArray.recycle();
+        if (mAction != null ) {
+            if (!isTypeArrayRecycler()) {
+                mAction.configAttrs(mTypeArray);
+                mTypeArray.recycle();
+            }
         }
 
     }
@@ -201,20 +212,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-        if (mAction != null) {
-            mAction.config(TabFlowLayout.this);
-        }
-    }
-
     /**
      * 添加adapter，
      *
@@ -237,8 +234,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
     public void setCusAction(BaseAction action) {
         mAction = action;
-        mAction.configAttrs(mTypeArray);
-        mTypeArray.recycle();
+        if (!isTypeArrayRecycler()) {
+            mAction.configAttrs(mTypeArray);
+            mTypeArray.recycle();
+        }
 
         if (mAction != null){
             if (mViewPager != null && mAction.getViewPager() == null){
@@ -306,10 +305,12 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mTextId = textId;
         mCurrentIndex = selectedIndex;
 
-        if (mAction != null && !isTypeArrayRecycler()) {
+        if (mAction != null) {
             if (mTabBean != null) {
-                mAction.configAttrs(mTypeArray);
-                mTypeArray.recycle();
+                if (!isTypeArrayRecycler()) {
+                    mAction.configAttrs(mTypeArray);
+                    mTypeArray.recycle();
+                }
                 mAction.setBean(mTabBean);
             }
         }
@@ -336,6 +337,12 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 @Override
                 public void run() {
                     reAdjustLayoutParams();
+                    if (mAction != null) {
+                        mAction.config(TabFlowLayout.this);
+                        if (mViewPager != null) {
+                            mViewPager.setCurrentItem(mCurrentIndex);
+                        }
+                    }
                 }
             },5);
         }
@@ -369,6 +376,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                  */
                 if (mViewPager == null) {
                     updateScroll(view);
+                    invalidate();
                 }
             }
         });
@@ -400,7 +408,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
                      dx = scrollX - mLastScrollX;
                     mScroller.startScroll(getScrollX(), 0, dx, 0);
                     mLastScrollX = scrollX;
-                    Log.d(TAG, "zsr - updateScroll r: "+dx+" "+mLastScrollX+" "+scrollX);
                 } else {
                     dx = mRightBound - mWidth - getScrollX();
                     if (getScrollX() >= mRightBound - mWidth) {
@@ -420,7 +427,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
     @Override
     public void computeScroll() {
         super.computeScroll();
-        if (mScroller.computeScrollOffset()) {
+
+        if (mViewPager == null && mScroller.computeScrollOffset()) {
             //有边界
             int dx = mScroller.getCurrX();
             if (dx >= mRightBound - mWidth){
@@ -430,6 +438,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 dx = 0;
             }
             scrollTo(dx, 0);
+            postInvalidate();
         }
     }
 

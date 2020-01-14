@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +28,16 @@ import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
  */
-public class RecyclerFragment extends Fragment {
+public class RecyclerFragment extends SupportFragment {
+    private static final String TAG = "RecyclerFragment";
+    private NaviChildrenBean mBean;
+    private ArticleAdapter mAdapter;
 
     @Nullable
     @Override
@@ -52,18 +57,10 @@ public class RecyclerFragment extends Fragment {
         return fragment;
     }
 
-    private void initView(View view) {
-        Bundle arguments = getArguments();
-        NaviChildrenBean bean = (NaviChildrenBean) arguments.getSerializable("bean");
-
-        RecyclerView recyclerView = view.findViewById(R.id.recycler);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(manager);
-        final ArticleAdapter articleAdapter = new ArticleAdapter(R.layout.item_article_recy_layout, mArticleBeans);
-        recyclerView.setAdapter(articleAdapter);
-
-
-        HttpCreate.getServer().getNaviDetail(0,bean.getId())
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        HttpCreate.getServer().getNaviDetail(0,mBean.getId())
                 .compose(RxUtils.<BaseResponse<PageDataInfo<List<ArticleData>>>>rxScheduers())
                 .subscribe(new Observer<BaseResponse<PageDataInfo<List<ArticleData>>>>() {
                     @Override
@@ -75,7 +72,7 @@ public class RecyclerFragment extends Fragment {
                     public void onNext(BaseResponse<PageDataInfo<List<ArticleData>>> pageDataInfoBaseResponse) {
                         PageDataInfo<List<ArticleData>> data = pageDataInfoBaseResponse.getData();
                         List<ArticleData> datas = data.getDatas();
-                        articleAdapter.setNewData(datas);
+                        mAdapter.setNewData(datas);
                     }
 
                     @Override
@@ -88,6 +85,20 @@ public class RecyclerFragment extends Fragment {
 
                     }
                 });
+    }
+
+    private void initView(View view) {
+        Bundle arguments = getArguments();
+        mBean = (NaviChildrenBean) arguments.getSerializable("bean");
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(manager);
+        mAdapter = new ArticleAdapter(R.layout.item_article_recy_layout, mArticleBeans);
+        recyclerView.setAdapter(mAdapter);
+
+
+
 
     }
 
