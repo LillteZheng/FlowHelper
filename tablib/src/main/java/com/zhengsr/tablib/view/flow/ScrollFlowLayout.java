@@ -173,11 +173,6 @@ class ScrollFlowLayout extends FlowLayout {
                 int velocityX = (int) mVelocityTracker.getXVelocity();
                 if (Math.abs(velocityX) >= mMinimumVelocity) {
                     mCurScrollX = getScrollX();
-
-                    int width = getWidth() - getPaddingRight() - getPaddingLeft();
-                    int right = getChildAt(0).getWidth();
-
-
                     mScroller.fling(mCurScrollX, 0, velocityX, 0, 0, getWidth(), 0, 0);
                     if (mVelocityTracker != null) {
                         mVelocityTracker.clear();

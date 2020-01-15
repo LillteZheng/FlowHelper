@@ -50,7 +50,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     private int mTextViewId = -1;
     private int mUnSelectedColor = -1;
     private int mSelectedColor = -1;
-    private int mCurrentIndex;
+    protected int mCurrentIndex;
     private int mLastIndex;
     private boolean isColorText = false;
     private boolean isTextView = false;
@@ -77,7 +77,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     public void config(TabFlowLayout parentView) {
         mParentView = parentView;
-        Log.d(TAG, "zsr - config: "+parentView.getChildCount());
         if (parentView.getChildCount() > 0) {
             mContext = mParentView.getContext();
             mViewWidth = mParentView.getViewWidth();
@@ -103,12 +102,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
                 }
                 if (mIsAutoScale && mScaleFactor > 1) {
-                    child.animate()
-                            .scaleX(mScaleFactor)
-                            .scaleY(mScaleFactor)
-                            .setDuration(mAnimTime)
-                            .setInterpolator(new LinearInterpolator())
-                            .start();
+                    child.setScaleX(mScaleFactor);
+                    child.setScaleY(mScaleFactor);
                 }
             }
         }
@@ -148,14 +143,14 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
         if (mViewPager == null) {
-            doAnim(lastIndex, curIndex);
             autoScaleView();
+            doAnim(lastIndex, curIndex,mAnimTime);
         } else {
             clearColorText();
             if (Math.abs(mCurrentIndex - mLastIndex) > 1) {
                 isClickMore = true;
-                doAnim(lastIndex, curIndex);
                 autoScaleView();
+                doAnim(lastIndex, curIndex,mAnimTime);
             }
         }
     }
@@ -195,7 +190,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
          * 整个动画会变得卡顿，这点从 profiler 就能拿到，因此，如果是点击的控件与
          * 上次相差超过 1，则不执行这个指令，直接在点击的时候，就呈现改效果。
          */
-        Log.d(TAG, "zsr - onPageScrolled: "+positionOffset+" "+isClickMore+" "+mParentView);
         if (mParentView != null) {
             View curView = mParentView.getChildAt(position);
             float offset = curView.getMeasuredWidth() * positionOffset;
@@ -273,7 +267,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         chooseSelectedPosition(position);
-        Log.d(TAG, "zsr - onPageSelected: "+position);
     }
 
 
@@ -293,7 +286,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 if (Math.abs(mCurrentIndex - mLastIndex) > 1){
                     isClickMore = true;
                     clearColorText();
-                    doAnim(mLastIndex, mCurrentIndex);
+                    doAnim(mLastIndex, mCurrentIndex,mAnimTime);
                     autoScaleView();
                 }
             }
@@ -308,22 +301,27 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
 
-    private void autoScaleView() {
+    /**
+     * 放大缩小效果
+     */
+    public void autoScaleView() {
         if (mParentView != null && mIsAutoScale && mScaleFactor > 1) {
             View lastView = mParentView.getChildAt(mLastIndex);
             View curView = mParentView.getChildAt(mCurrentIndex);
-            lastView.animate()
-                    .scaleX(1)
-                    .scaleY(1)
-                    .setDuration(mAnimTime)
-                    .setInterpolator(new LinearInterpolator())
-                    .start();
-            curView.animate()
-                    .scaleX(mScaleFactor)
-                    .scaleY(mScaleFactor)
-                    .setDuration(mAnimTime)
-                    .setInterpolator(new LinearInterpolator())
-                    .start();
+            if (lastView != null && curView != null) {
+                lastView.animate()
+                        .scaleX(1)
+                        .scaleY(1)
+                        .setDuration(mAnimTime)
+                        .setInterpolator(new LinearInterpolator())
+                        .start();
+                curView.animate()
+                        .scaleX(mScaleFactor)
+                        .scaleY(mScaleFactor)
+                        .setDuration(mAnimTime)
+                        .setInterpolator(new LinearInterpolator())
+                        .start();
+            }
         }
     }
 
@@ -333,7 +331,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * @param lastIndex
      * @param curIndex
      */
-    public void doAnim(int lastIndex, final int curIndex) {
+    public void doAnim(int lastIndex, final int curIndex,int animTime) {
         if (mAnimator != null) {
             mAnimator.end();
             mAnimator = null;
@@ -341,47 +339,56 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         if (mParentView != null) {
             final View curView = mParentView.getChildAt(curIndex);
             final View lastView = mParentView.getChildAt(lastIndex);
-            TabValue lastValue = getValue(lastView);
-            TabValue curValue = getValue(curView);
-            if (mTabWidth != -1) {
-                lastValue.left = mRect.left;
-                lastValue.right = mRect.right;
-                int width = curView.getMeasuredWidth();
-                if (mType == FlowConstants.RECT) {
-                    curValue.left = (1 - mOffset) * width / 2 + curView.getLeft();
-                    curValue.right = width * mOffset + curValue.left;
-                } else {
-                    curValue.left = (width - mTabWidth) / 2 + curView.getLeft();
-                    curValue.right = mTabWidth + curValue.left;
-                }
-            }
-            mAnimator = ObjectAnimator.ofObject(new TabTypeEvaluator(), lastValue, curValue);
-            mAnimator.setDuration(mAnimTime);
-            mAnimator.setInterpolator(new LinearInterpolator());
-            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    TabValue value = (TabValue) animation.getAnimatedValue();
-                    valueChange(value);
-                    mParentView.postInvalidate();
-                }
-            });
-            mAnimator.start();
-            mAnimator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    if (mParentView != null && mViewPager == null) {
-                        TabFlowAdapter adapter = mParentView.getAdapter();
-                        if (adapter != null) {
-                            View lastView = mParentView.getChildAt(mLastIndex);
-                            View curView = mParentView.getChildAt(mCurrentIndex);
-                            adapter.onItemSelectState(curView, true);
-                            adapter.onItemSelectState(lastView, false);
-                        }
+            if (curView != null && lastView != null) {
+                TabValue lastValue = getValue(lastView);
+                TabValue curValue = getValue(curView);
+                if (mTabWidth != -1) {
+                    lastValue.left = mRect.left;
+                    lastValue.right = mRect.right;
+                    int width = curView.getMeasuredWidth();
+                    if (mType == FlowConstants.RECT) {
+                        curValue.left = (1 - mOffset) * width / 2 + curView.getLeft();
+                        curValue.right = width * mOffset + curValue.left;
+                    } else {
+                        curValue.left = (width - mTabWidth) / 2 + curView.getLeft();
+                        curValue.right = mTabWidth + curValue.left;
                     }
                 }
-            });
+                mAnimator = ObjectAnimator.ofObject(new TabTypeEvaluator(), lastValue, curValue);
+                mAnimator.setDuration(animTime);
+                mAnimator.setInterpolator(new LinearInterpolator());
+                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        TabValue value = (TabValue) animation.getAnimatedValue();
+                        valueChange(value);
+                        mParentView.postInvalidate();
+                    }
+                });
+                mAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (mParentView != null && mViewPager == null) {
+                            TabFlowAdapter adapter = mParentView.getAdapter();
+                            if (adapter != null) {
+                                View lastView = mParentView.getChildAt(mLastIndex);
+                                View curView = mParentView.getChildAt(mCurrentIndex);
+                                adapter.onItemSelectState(curView, true);
+                                adapter.onItemSelectState(lastView, false);
+                            }
+                        }
+                    }
+                });
+                mAnimator.start();
+            }else{
+                if (mAnimator != null) {
+                    mAnimator.end();
+                    mAnimator = null;
+                }
+
+            }
+
         }
 
 
@@ -399,7 +406,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 for (int i = 0; i < childCount; i++) {
                     View view = mParentView.getChildAt(i);
                     TextView textView = view.findViewById(mTextViewId);
-
                     if (i == position) {
                         textView.setTextColor(mSelectedColor);
                     } else {
@@ -410,6 +416,65 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         }
     }
 
+
+    public void chooseIndex(int lastIndex,int curIndex){
+        mCurrentIndex = curIndex;
+        mLastIndex = lastIndex;
+        if (mViewPager != null) {
+            chooseSelectedPosition(curIndex);
+        }
+        clearColorText();
+        clearScale();
+
+        //再把以前的效果换回去
+        if (mParentView != null) {
+            View child = mParentView.getChildAt(mCurrentIndex);
+            if (child != null) {
+                doAnim(mLastIndex,mCurrentIndex,0);
+                mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
+                if (mTextViewId != -1) {
+                    View textView = child.findViewById(mTextViewId);
+                    if (textView instanceof ColorTextView) {
+                        isColorText = true;
+                        ColorTextView colorTextView = (ColorTextView) textView;
+                        colorTextView.setTextColor(colorTextView.getChangeColor());
+                    }
+                    if (textView instanceof TextView){
+                        isTextView = true;
+                    }
+
+                }
+                if (mIsAutoScale && mScaleFactor > 1) {
+                    child.setScaleX(mScaleFactor);
+                    child.setScaleY(mScaleFactor);
+                }
+            }
+        }
+
+    }
+
+
+    /**
+     * 清掉属性动画
+     */
+    private void clearScale(){
+        if (mParentView != null) {
+            if (mIsAutoScale && mScaleFactor >1) {
+                int childCount = mParentView.getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    View view = mParentView.getChildAt(i);
+                    view.setScaleY(1);
+                    view.setScaleX(1);
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取 value 的数据
+     * @param view
+     * @return
+     */
     private TabValue getValue(View view) {
         TabValue value = new TabValue();
         value.left = view.getLeft();

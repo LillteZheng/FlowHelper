@@ -51,7 +51,7 @@ public class TabActivity extends AppCompatActivity {
     }
 
     private void rectFlow(){
-        TabFlowLayout flowLayout = findViewById(R.id.rectflow);
+        final TabFlowLayout flowLayout = findViewById(R.id.rectflow);
         flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
@@ -63,6 +63,7 @@ public class TabActivity extends AppCompatActivity {
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
                 mViewPager.setCurrentItem(position);
+
             }
         });
 

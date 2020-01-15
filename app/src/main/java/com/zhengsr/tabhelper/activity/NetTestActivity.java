@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.ResourceObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -39,7 +37,7 @@ public class NetTestActivity extends SupportActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_test);
 
-        TabFlowLayout flowLayout = findViewById(R.id.tabflow);
+        final TabFlowLayout flowLayout = findViewById(R.id.tabflow);
         mViewPager = findViewById(R.id.viewpager);
 
         mViewPager.setOffscreenPageLimit(3);
@@ -59,6 +57,8 @@ public class NetTestActivity extends SupportActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
+               // mViewPager.setCurrentItem(position,false);
+                //flowLayout.setItemAnim(position);
                 mViewPager.setCurrentItem(position);
             }
         });

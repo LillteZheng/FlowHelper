@@ -19,7 +19,7 @@ public class RectAction extends BaseAction {
     public void config(TabFlowLayout parentView) {
         super.config(parentView);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        View child = parentView.getChildAt(0);
+        View child = parentView.getChildAt(mCurrentIndex);
         if (child != null && mRect.isEmpty()) {
             float l = parentView.getPaddingLeft() + mMarginLeft;
             float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabHeight - mMarginBottom;

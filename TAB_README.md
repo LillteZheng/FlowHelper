@@ -98,6 +98,9 @@ flowLayout.setViewPager(...) 即可.
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**
 - fragment 布局复杂或者网络加载数据时，建议在懒加载中去初始化或者加载数据
 - viewpager 增加缓存，setOffscreenPageLimit(3)。
+- setCurrentItem(position,false),滚动设置为false，然后用 flowLayout 实现item的动画，flowLayout.setItemAnim(position)
+
+**如果您觉得viewpager切换太快，可以使用 ViewPagerHelperUtils.initSwitchTime(getContext(), viewPager, 600) 改变滚动速度 **
 
 它有几个方法,参考这个解释就可以了。
 ```
