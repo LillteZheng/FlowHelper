@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.zhengsr.tablib.view.ColorTextView
+    <com.zhengsr.tablib.view.TabColorTextView
         android:id="@+id/item_text"
         android:layout_width="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

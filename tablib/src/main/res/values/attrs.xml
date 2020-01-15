@@ -28,7 +28,7 @@
     </declare-styleable>
 
     <!--文件渐变属性-->
-    <declare-styleable name="ColorTextView">
+    <declare-styleable name="TabColorTextView">
         <attr name="colortext_default_color" format="color|reference"/> <!--默认颜色-->
         <attr name="colortext_change_color" format="color|reference"/> <!--渐变颜色-->
     </declare-styleable>

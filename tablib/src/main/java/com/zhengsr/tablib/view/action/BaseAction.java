@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -21,12 +20,9 @@ import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
-import com.zhengsr.tablib.view.ColorTextView;
+import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
-
-import java.lang.reflect.Field;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -91,9 +87,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
                 if (mTextViewId != -1) {
                     View textView = child.findViewById(mTextViewId);
-                    if (textView instanceof ColorTextView) {
+                    if (textView instanceof TabColorTextView) {
                         isColorText = true;
-                        ColorTextView colorTextView = (ColorTextView) textView;
+                        TabColorTextView colorTextView = (TabColorTextView) textView;
                         colorTextView.setTextColor(colorTextView.getChangeColor());
                     }
                     if (textView instanceof TextView){
@@ -166,7 +162,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 int childCount = mParentView.getChildCount();
                 for (int i = 0; i < childCount; i++) {
                     View view = mParentView.getChildAt(i);
-                    ColorTextView textview = view.findViewById(mTextViewId);
+                    TabColorTextView textview = view.findViewById(mTextViewId);
                     if (textview != null) {
                         textview.setTextColor(textview.getDefaultColor());
                     }
@@ -174,7 +170,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 }
 
                 View view = mParentView.getChildAt(mCurrentIndex);
-                ColorTextView colorTextView = view.findViewById(mTextViewId);
+                TabColorTextView colorTextView = view.findViewById(mTextViewId);
                 if (colorTextView != null) {
                     colorTextView.setTextColor(colorTextView.getChangeColor());
                 }
@@ -234,10 +230,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                         if (mTextViewId != -1 && isColorText) {
                             View leftView = curView.findViewById(mTextViewId);
                             View rightView = transView.findViewById(mTextViewId);
-                            ColorTextView colorLeft = (ColorTextView) leftView;
-                            ColorTextView colorRight = (ColorTextView) rightView;
-                            colorLeft.setprogress(1 - positionOffset, ColorTextView.DEC_RIGHT);
-                            colorRight.setprogress(positionOffset, ColorTextView.DEC_LEFT);
+                            TabColorTextView colorLeft = (TabColorTextView) leftView;
+                            TabColorTextView colorRight = (TabColorTextView) rightView;
+                            colorLeft.setprogress(1 - positionOffset, TabColorTextView.DEC_RIGHT);
+                            colorRight.setprogress(positionOffset, TabColorTextView.DEC_LEFT);
                         }
                     }
                 }
@@ -434,9 +430,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
                 if (mTextViewId != -1) {
                     View textView = child.findViewById(mTextViewId);
-                    if (textView instanceof ColorTextView) {
+                    if (textView instanceof TabColorTextView) {
                         isColorText = true;
-                        ColorTextView colorTextView = (ColorTextView) textView;
+                        TabColorTextView colorTextView = (TabColorTextView) textView;
                         colorTextView.setTextColor(colorTextView.getChangeColor());
                     }
                     if (textView instanceof TextView){

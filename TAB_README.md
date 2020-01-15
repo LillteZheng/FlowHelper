@@ -19,7 +19,7 @@
 - **shape 或者 bitmap 等资源**
 - **自定义功能**
 - **放大Item效果，与上述效果可共用**
-- **颜色渐变效果，需要使用 ColorTextView 控件，与上述效果可共用**
+- **颜色渐变效果，需要使用 TabColorTextView 控件，与上述效果可共用**
 
 
 ### 1、正常使用
@@ -85,7 +85,7 @@ private void rectFlow(){
 ```
 可以看到，只需要设置 adapter 就行了，需要注意的是你要传入子控件的 layout，这样方便你自定义你的布局，比如添加一个红点点。
 
-如果你需要使用颜色渐变的效果，TextView 可以使用 ColorTextView 就可以了。
+如果你需要使用颜色渐变的效果，TextView 可以使用 TabColorTextView 就可以了。
 
 
 ### 2、结合Viewpager
@@ -109,8 +109,8 @@ flowLayout.setViewPager(...) 即可.
    * @param viewPager
    * @param textId  view 中 textview 的id
    * @param selectedIndex 默认选中的item，初始值为0，也可以从第二页或者其他 位置
-   * @param unselectedColor 没有选中的颜色 ColorTextView 中失效
-   * @param selectedColor 选中的颜色 ColorTextView 中失效
+   * @param unselectedColor 没有选中的颜色 TabColorTextView 中失效
+   * @param selectedColor 选中的颜色 TabColorTextView 中失效
    */
   public void setViewPager(ViewPager viewPager, int textId, int selectedIndex, int unselectedColor, int selectedColor) {
 
@@ -223,7 +223,7 @@ private void resFlow(){
 |tab_item_autoScale|boolean|开启放大缩小的效果|
 |tab_scale_factor|float|放大倍数|
 
-**ColorTextView**
+**TabColorTextView**
 
 | 名称 | 类型 |说明 |
 |---|---|---|

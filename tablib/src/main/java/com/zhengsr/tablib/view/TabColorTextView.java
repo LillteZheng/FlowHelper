@@ -5,13 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
-import android.widget.TextView;
 
 import com.zhengsr.tablib.R;
 
@@ -24,7 +19,7 @@ import com.zhengsr.tablib.R;
  * Describe: 颜色渐变类
  */
 
-public class ColorTextView extends AppCompatTextView {
+public class TabColorTextView extends AppCompatTextView {
     private static final String TAG = "ColorTextView";
     /**
      * const
@@ -42,22 +37,22 @@ public class ColorTextView extends AppCompatTextView {
     private int mDecection = DEC_LEFT;
 
     private boolean isUseUserColor = false;
-    public ColorTextView(Context context) {
+    public TabColorTextView(Context context) {
         this(context,null);
     }
 
-    public ColorTextView(Context context, AttributeSet attrs) {
+    public TabColorTextView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
 
         setIncludeFontPadding(false);
 
     }
 
-    public ColorTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TabColorTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ColorTextView);
-        mDefaultColor = ta.getColor(R.styleable.ColorTextView_colortext_default_color, Color.GRAY);
-        mChangeColor = ta.getColor(R.styleable.ColorTextView_colortext_change_color,Color.WHITE);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TabColorTextView);
+        mDefaultColor = ta.getColor(R.styleable.TabColorTextView_colortext_default_color, Color.GRAY);
+        mChangeColor = ta.getColor(R.styleable.TabColorTextView_colortext_change_color,Color.WHITE);
         ta.recycle();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
