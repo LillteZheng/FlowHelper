@@ -172,6 +172,10 @@ public class LabelFlowLayout extends FlowLayout {
         return null;
     }
 
+    /**
+     * 拿到选中数据
+     * @return
+     */
     public List<Integer> getSelecteds(){
         List<Integer> indexs = new ArrayList<>();
         for (int i = 0; i < getChildCount(); i++) {
@@ -181,5 +185,25 @@ public class LabelFlowLayout extends FlowLayout {
             }
         }
         return indexs;
+    }
+
+
+    /**
+     * 设置要选中的数据
+     * @param indexs
+     */
+    public void setSelects(Integer... indexs){
+        if (indexs != null && indexs.length > 0) {
+            for (int i = 0; i < indexs.length; i++) {
+                for (int j = 0; j < getChildCount(); j++) {
+                    View view = getChildAt(j);
+                    if (j == indexs[i]){
+                        view.setSelected(true);
+                        break;
+                    }
+                }
+            }
+
+        }
     }
 }

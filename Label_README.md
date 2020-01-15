@@ -12,7 +12,7 @@
 
 LabelFlowLayout 竖向布局，支持自动换行，单选、多选、长按等功能.
 
-**它的状态变化，根据 view 的 selected 来，所以大家可以写 selector 当背景也可以的。** 
+**它的状态变化，根据 view 的 selected 来，所以大家可以写 selector 当背景，或者在方法中自己设置** 
 
 ## 使用
 
@@ -57,6 +57,7 @@ public void onReachMacCount(List<Integer> ids, int count) {
     Toast.makeText(LabelActivity.this, "最多只能选中 "+count+" 个"+" 已选中坐标: "+ids, Toast.LENGTH_SHORT).show();
 }
 ```
+**如果您选默认选中其中一些item，可以使用 flowLayout.setSelects(2,3,5);**
 
 ## 长按
 其实就是长按view，至于状态的变化，由自己去写：

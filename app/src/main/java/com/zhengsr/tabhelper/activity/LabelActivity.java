@@ -1,12 +1,15 @@
 package com.zhengsr.tabhelper.activity;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zhengsr.tabhelper.CommonUtils;
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 import com.zhengsr.tablib.view.flow.LabelFlowLayout;
@@ -23,6 +26,7 @@ public class LabelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_label);
         singleFlow();
+        searchFlow();
         multiFlow();
         canLongFlow();
     }
@@ -33,16 +37,17 @@ public class LabelActivity extends AppCompatActivity {
         flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
+                setText(view,R.id.item_text,data)
+                        . setTextColor(view,R.id.item_text,getResources().getColor(R.color.unselect));
             }
+
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);
-                TextView textView = view.findViewById(R.id.item_text);
-                if (isSelected) {
-                    textView.setTextColor(Color.WHITE);
-                } else {
-                    textView.setTextColor(Color.GRAY);
+                if (isSelected){
+                    setTextColor(view,R.id.item_text,Color.BLACK);
+                }else{
+                    setTextColor(view,R.id.item_text,getResources().getColor(R.color.unselect));
                 }
             }
         });
@@ -58,6 +63,19 @@ public class LabelActivity extends AppCompatActivity {
 
     }
 
+
+    private void searchFlow(){
+        LabelFlowLayout flowLayout = findViewById(R.id.search_flow);
+        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
+            @Override
+            public void bindView(View view, String data, int position) {
+                setText(view,R.id.item_text,data)
+                        .setTextColor(view,R.id.item_text,Color.WHITE);
+                view.setBackground(CommonUtils.getColorDrawable(10));
+            }
+        });
+    }
+
     private void multiFlow(){
         LabelFlowLayout flowLayout = findViewById(R.id.multiflow);
         flowLayout.setMaxCount(3);
@@ -67,16 +85,7 @@ public class LabelActivity extends AppCompatActivity {
                 setText(view,R.id.item_text,data);
             }
 
-            @Override
-            public void onItemSelectState(View view, boolean isSelected) {
-                super.onItemSelectState(view, isSelected);
-                TextView textView = view.findViewById(R.id.item_text);
-                if (isSelected) {
-                    textView.setTextColor(Color.WHITE);
-                } else {
-                    textView.setTextColor(Color.GRAY);
-                }
-            }
+
 
             @Override
             public void onReachMacCount(List<Integer> ids, int count) {
@@ -86,6 +95,9 @@ public class LabelActivity extends AppCompatActivity {
 
 
         });
+
+        //选中默认数据
+        flowLayout.setSelects(2,3,5);
 
     }
 
