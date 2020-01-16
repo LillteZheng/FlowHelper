@@ -29,6 +29,8 @@ allprojects {
 
 ```
 implementation 'com.github.LillteZheng:FlowHelper:v1.14'
+//如果要使用 androidx，用下面这个
+implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
 ```
 
 ## TabFlowLayout 效果图
