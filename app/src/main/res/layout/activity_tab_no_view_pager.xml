@@ -66,8 +66,6 @@
 
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 

@@ -13,6 +13,8 @@ public class TabTypeEvaluator implements TypeEvaluator<TabValue> {
     public TabValue evaluate(float fraction, TabValue startValue, TabValue endValue) {
         //这里都采用匀速
         value.left = startValue.left + fraction * (endValue.left - startValue.left);
+        value.top = startValue.top + fraction * (endValue.top - startValue.top);
+        value.bottom = startValue.bottom + fraction * (endValue.bottom - startValue.bottom);
         value.right = startValue.right + fraction * (endValue.right - startValue.right);
         return value;
     }

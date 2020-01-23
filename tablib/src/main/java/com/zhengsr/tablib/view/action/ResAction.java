@@ -50,13 +50,13 @@ public class ResAction extends BaseAction {
                 mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(mBitmap);
 
-                int l = (int) (parentView.getPaddingLeft() + mMarginLeft);
-                int t = (int) (parentView.getPaddingTop() + mMarginTop);
-                int r = (int) (parentView.getPaddingLeft() + width - mMarginRight);
-                int b = (int) (parentView.getPaddingTop() + height - mMarginBottom);
+                float l = mMarginLeft + child.getLeft();
+                float t = mMarginTop + child.getTop();
+                float r = child.getRight() - mMarginRight;
+                float b = child.getBottom() - mMarginBottom;
                 mDrawable.setBounds(0, 0, width, height);
                 mDrawable.draw(canvas);
-                mRect.set(l, t, r, b);
+                mTabRect.set(l, t, r, b);
                 mSrcRect = new Rect(0, 0, width, height);
 
             }
@@ -69,15 +69,19 @@ public class ResAction extends BaseAction {
     @Override
     protected void valueChange(TabValue value) {
         //super.valueChange(value);
-        mRect.left = value.left + mMarginLeft;
-        mRect.right = value.right - mMarginRight;
+        if (isVertical()){
+            mTabRect.top = value.top ;
+            mTabRect.bottom = value.bottom ;
+        }
+        mTabRect.left = value.left ;
+        mTabRect.right = value.right ;
 
     }
 
     @Override
     public void draw(Canvas canvas) {
         if (mBitmap != null) {
-            canvas.drawBitmap(mBitmap, mSrcRect, mRect, mPaint);
+            canvas.drawBitmap(mBitmap, mSrcRect, mTabRect, mPaint);
 
         }
     }

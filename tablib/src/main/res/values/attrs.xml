@@ -20,6 +20,14 @@
         <attr name="tab_item_res" format="reference"/>
         <attr name="tab_item_autoScale" format="boolean"/>
         <attr name="tab_scale_factor" format="float"/>
+        <attr name="tab_orientation">
+            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="2"/>
+        </attr>
+        <attr name="tab_action_orientaion">
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
     </declare-styleable>
 
 

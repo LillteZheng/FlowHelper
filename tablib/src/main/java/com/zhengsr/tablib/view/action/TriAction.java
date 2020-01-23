@@ -21,19 +21,53 @@ public class TriAction extends BaseAction {
         mPath = new Path();
         View child = parentView.getChildAt(0);
         if (child != null) {
-            float l = parentView.getPaddingLeft() + mMarginLeft;
-            float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabHeight - mMarginBottom;
-            float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
-            float b = t + mTabHeight;
+            float l ;
+            float t;
+            float r;
+            float b;
+            if (isLeftAction()){
+                l = child.getLeft() + mMarginLeft;
+                t = child.getTop() + mMarginTop;
+                r = l + mTabWidth ;
+                b = t + child.getBottom() - mMarginBottom;
+                if (mTabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabHeight)/2;
+                    b = t + mTabHeight;
+                }
+            }else if (isRightAction()){
+                l = child.getRight() - mMarginRight;
+                t = child.getTop() - mMarginTop;
+                r = l - mTabWidth;
+                b = t + mTabHeight;
+                if (mTabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabHeight)/2;
+                    b = t + mTabHeight;
+                }
+            }else{
+                 l =  mMarginLeft + child.getLeft();
+                 t = mMarginTop + child.getBottom() - mTabHeight - mMarginBottom;
+                 r =  child.getRight() - mMarginRight;
+                 b = t + mTabHeight;
 
-            if (mTabWidth != -1) {
-                l += (child.getMeasuredWidth() - mTabWidth) / 2;
-                r = mTabWidth + l;
+                if (mTabWidth != -1) {
+                    l += (child.getMeasuredWidth() - mTabWidth) / 2;
+                    r = mTabWidth + l;
+                }
             }
-            mRect.set(l, t, r, b);
-            mPath.moveTo(mRect.width() / 2 + mRect.left, t);
-            mPath.lineTo(mRect.left, b);
-            mPath.lineTo(mRect.right, b);
+
+
+            mTabRect.set(l, t, r, b);
+
+            if (isVertical()){
+                mPath.moveTo(r,t + mTabHeight/2);
+                mPath.lineTo(l,t);
+                mPath.lineTo(l,b);
+            }else{
+
+                mPath.moveTo(l+mTabWidth/ 2 , t);
+                mPath.lineTo(l, b);
+                mPath.lineTo(r, b);
+            }
         }
     }
 
@@ -41,13 +75,30 @@ public class TriAction extends BaseAction {
     protected void valueChange(TabValue value) {
         super.valueChange(value);
         mPath.reset();
-        mPath.moveTo(mRect.width() / 2 + mRect.left, mRect.top);
-        mPath.lineTo(mRect.left, mRect.bottom);
-        mPath.lineTo(mRect.right, mRect.bottom);
+
+        if (isVertical()){
+            mTabRect.set(value.valueToRect());
+            float l = mTabRect.left;
+            float t = mTabRect.top;
+            float r = mTabRect.right;
+            float b = mTabRect.bottom;
+            if (isRightAction()){
+                l = r;
+                r = l - mTabWidth;
+            }
+            mPath.moveTo(r,t + mTabHeight/2);
+            mPath.lineTo(l,t);
+            mPath.lineTo(l,b);
+        }else {
+            mPath.moveTo(mTabRect.width() / 2 + mTabRect.left, mTabRect.top);
+            mPath.lineTo(mTabRect.left, mTabRect.bottom);
+            mPath.lineTo(mTabRect.right, mTabRect.bottom);
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
         canvas.drawPath(mPath, mPaint);
+      //  canvas.drawRect(mTabRect,mPaint);
     }
 }

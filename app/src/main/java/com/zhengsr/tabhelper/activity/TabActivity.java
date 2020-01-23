@@ -206,7 +206,7 @@ public class TabActivity extends AppCompatActivity {
                 float t = parentView.getPaddingTop() +  child.getMeasuredHeight() - mTabHeight/2 -mMarginBottom;
                 float r = mTabWidth + l;
                 float b = child.getMeasuredHeight() - mMarginBottom;
-                mRect.set(l,t,r,b);
+                mTabRect.set(l,t,r,b);
             }
         }
 
@@ -215,12 +215,12 @@ public class TabActivity extends AppCompatActivity {
         protected void valueChange(TabValue value) {
             super.valueChange(value);
             //由于自定义的，都是从left 开始算起的，所以这里还需要加上圆的半径
-            mRect.left = value.left + mTabWidth/2;
+            mTabRect.left = value.left + mTabWidth/2;
         }
 
         @Override
         public void draw(Canvas canvas) {
-            canvas.drawCircle(mRect.left,mRect.top,mTabWidth/2,mPaint);
+            canvas.drawCircle(mTabRect.left, mTabRect.top,mTabWidth/2,mPaint);
         }
     }
 

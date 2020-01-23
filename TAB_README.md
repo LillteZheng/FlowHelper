@@ -12,6 +12,17 @@
 
 </table>
 
+
+<table  align="center">
+ <tr>
+    <th>竖直效果</th>
+  </tr>
+   <tr>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_vertical.gif" align="left"height="789" width="479"></a></td>
+  </tr>
+
+</table>
+
 **目前TabFlowLayout 支持以下效果:**
 - **矩形**
 - **三角形**
@@ -19,7 +30,8 @@
 - **shape 或者 bitmap 等资源**
 - **自定义功能**
 - **放大Item效果，与上述效果可共用**
-- **颜色渐变效果，需要使用 TabColorTextView 控件，与上述效果可共用**
+- **颜色渐变效果，需要使用 TabColorTextView 控件，与上述效果可共用，只支持有viewpager 的情况**
+- **竖直效果，需要设置 tab_orientation = vertical **
 
 
 ### 1、正常使用
@@ -222,6 +234,10 @@ private void resFlow(){
 |tab_click_animTime|integer|点击动画的时间，默认300ms|
 |tab_item_autoScale|boolean|开启放大缩小的效果|
 |tab_scale_factor|float|放大倍数|
+|tab_orientation|integer|vertical竖直防线，horizontal横向，默认横向|
+|tab_action_orientaion|integer|left坐标，right右边，只支持 tri、rect 两种效果|
+
+
 
 **TabColorTextView**
 

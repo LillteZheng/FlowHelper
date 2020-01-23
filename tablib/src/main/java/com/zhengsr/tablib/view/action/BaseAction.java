@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ import com.zhengsr.tablib.view.flow.TabFlowLayout;
 public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     private static final String TAG = "BaseAction";
     public Paint mPaint;
-    public RectF mRect;
+    public RectF mTabRect;
     protected TabFlowLayout mParentView;
 
     /**
@@ -64,11 +65,12 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     protected int mAnimTime;
     protected boolean mIsAutoScale = false;
     protected float mScaleFactor;
+    private int mTabOrientation;
 
     public BaseAction() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mRect = new RectF();
+        mTabRect = new RectF();
     }
 
     public void config(TabFlowLayout parentView) {
@@ -84,7 +86,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
             View child = mParentView.getChildAt(0);
             if (child != null) {
-                mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
+                if (isVertical()){
+                    mOffset = mTabHeight * 1.0f / child.getMeasuredHeight();
+                }else {
+                    mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
+                }
                 if (mTextViewId != -1) {
                     View textView = child.findViewById(mTextViewId);
                     if (textView instanceof TabColorTextView) {
@@ -166,9 +172,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     if (textview != null) {
                         textview.setTextColor(textview.getDefaultColor());
                     }
-
                 }
-
                 View view = mParentView.getChildAt(mCurrentIndex);
                 TabColorTextView colorTextView = view.findViewById(mTextViewId);
                 if (colorTextView != null) {
@@ -220,9 +224,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                             left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
                             right = left + mTabWidth;
                         }
-                        mRect.left = left;
-                        mRect.right = right;
-                        valueChange(new TabValue(mRect.left, mRect.right));
+                        mTabRect.left = left;
+                        mTabRect.right = right;
+                        valueChange(new TabValue(mTabRect.left, mTabRect.right));
 
                         mParentView.postInvalidate();
 
@@ -338,18 +342,39 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             if (curView != null && lastView != null) {
                 TabValue lastValue = getValue(lastView);
                 TabValue curValue = getValue(curView);
-                if (mTabWidth != -1) {
-                    lastValue.left = mRect.left;
-                    lastValue.right = mRect.right;
-                    int width = curView.getMeasuredWidth();
-                    if (mType == FlowConstants.RECT) {
-                        curValue.left = (1 - mOffset) * width / 2 + curView.getLeft();
-                        curValue.right = width * mOffset + curValue.left;
-                    } else {
-                        curValue.left = (width - mTabWidth) / 2 + curView.getLeft();
-                        curValue.right = mTabWidth + curValue.left;
+                if (isVertical()){
+                    if (mTabHeight != -1){
+                        lastValue.top = mTabRect.top;
+                     //   lastValue.left = mTabRect.left;
+                        lastValue.bottom = mTabRect.bottom;
+                        int height = curView.getMeasuredHeight();
+                        if (mType == FlowConstants.RECT){
+                            curValue.top = (1 - mOffset) * height / 2 + curView.getTop() ;
+                            curValue.bottom = height * mOffset + curValue.top;
+                        } else {
+                            curValue.top = (height - mTabHeight) / 2 + curView.getTop();
+                            curValue.bottom = mTabHeight + curValue.top;
+                        }
+
+
+                    }
+                }else {
+                    if (mTabWidth != -1) {
+                        lastValue.left = mTabRect.left;
+                        lastValue.right = mTabRect.right;
+                        int width = curView.getMeasuredWidth();
+                        if (mType == FlowConstants.RECT) {
+                            curValue.left = (1 - mOffset) * width / 2 + curView.getLeft();
+                            curValue.right = width * mOffset + curValue.left;
+                        } else {
+                            curValue.left = (width - mTabWidth) / 2 + curView.getLeft();
+                            curValue.right = mTabWidth + curValue.left;
+                        }
                     }
                 }
+
+
+
                 mAnimator = ObjectAnimator.ofObject(new TabTypeEvaluator(), lastValue, curValue);
                 mAnimator.setDuration(animTime);
                 mAnimator.setInterpolator(new LinearInterpolator());
@@ -473,8 +498,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     private TabValue getValue(View view) {
         TabValue value = new TabValue();
-        value.left = view.getLeft();
-        value.right = view.getRight();
+        value.left = view.getLeft() + mMarginLeft;
+        value.top = view.getTop() + mMarginTop;
+        value.right = view.getRight() - mMarginRight;
+        value.bottom = view.getBottom() - mMarginBottom;
         return value;
     }
 
@@ -485,8 +512,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * @param value
      */
     protected void valueChange(TabValue value) {
-        mRect.left = value.left;
-        mRect.right = value.right;
+        mTabRect.left = value.left;
+        mTabRect.right = value.right;
     }
 
     /**
@@ -494,6 +521,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      *
      * @param ta
      */
+    private int mActionOrientation;
+
     public void configAttrs(TypedArray ta) {
         mTabWidth = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_width, -1);
         mTabHeight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_height, -1);
@@ -507,6 +536,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mAnimTime = ta.getInteger(R.styleable.TabFlowLayout_tab_click_animTime, 300);
         mIsAutoScale = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale, false);
         mScaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor, 1);
+        mTabOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
+        mActionOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_action_orientaion,-1);
     }
 
     /**
@@ -561,4 +592,18 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
 
+    /**
+     * tab 的方向
+     * @return
+     */
+    public boolean isVertical(){
+        return mTabOrientation == FlowConstants.VERTICAL;
+    }
+
+    public boolean isLeftAction(){
+        return mActionOrientation != -1 && mActionOrientation == FlowConstants.LEFT;
+    }
+    public boolean isRightAction(){
+        return mActionOrientation != -1 && mActionOrientation == FlowConstants.RIGHT;
+    }
 }

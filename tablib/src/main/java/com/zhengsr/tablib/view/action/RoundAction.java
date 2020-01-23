@@ -2,6 +2,7 @@ package com.zhengsr.tablib.view.action;
 
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.R;
@@ -37,12 +38,11 @@ public class RoundAction extends BaseAction {
         super.config(parentView);
         View child = parentView.getChildAt(0);
         if (child != null) {
-            float l = parentView.getPaddingLeft() + mMarginLeft;
-            float t = parentView.getPaddingTop() + mMarginTop;
-            float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
-            float b = parentView.getPaddingTop() + child.getMeasuredHeight() - mMarginBottom;
-            mRect.set(l, t, r, b);
-
+            float l =  mMarginLeft + child.getLeft();
+            float t = mMarginTop + child.getTop();
+            float r =  child.getRight() - mMarginRight;
+            float b =  child.getBottom() - mMarginBottom;
+            mTabRect.set(l, t, r, b);
         }
         parentView.postInvalidate();
     }
@@ -51,13 +51,17 @@ public class RoundAction extends BaseAction {
     @Override
     protected void valueChange(TabValue value) {
         //super.valueChange(value);
-        mRect.left = value.left + mMarginLeft;
-        mRect.right = value.right - mMarginRight;
+        if (isVertical()){
+            mTabRect.top = value.top ;
+            mTabRect.bottom = value.bottom ;
+        }
+        mTabRect.left = value.left ;
+        mTabRect.right = value.right ;
 
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRoundRect(mRect, mRound, mRound, mPaint);
+        canvas.drawRoundRect(mTabRect, mRound, mRound, mPaint);
     }
 }

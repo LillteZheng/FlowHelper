@@ -3,11 +3,10 @@ package com.zhengsr.tablib.view.flow;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import com.zhengsr.tablib.FlowConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,10 @@ import java.util.List;
 class FlowLayout extends ViewGroup {
     private static final String TAG = "FlowLayout";
     protected int mViewWidth;
+    protected int mViewHeight;
     private List<List<View>> mAllViews = new ArrayList<>();
     private List<Integer> mLineHeights = new ArrayList<>();
+    private int mTabOrientation;
 
     public FlowLayout(Context context) {
         this(context, null);
@@ -38,18 +39,80 @@ class FlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (isVertical()) {
+        if (isLabelFlow()) {
             measureVertical(widthMeasureSpec, heightMeasureSpec);
         } else {
-            measureHorizontal(widthMeasureSpec, heightMeasureSpec);
+            if (mTabOrientation == FlowConstants.HORIZONTATAL) {
+                measureTabHorizontal(widthMeasureSpec, heightMeasureSpec);
+            } else {
+                measureTabVertical(widthMeasureSpec, heightMeasureSpec);
+            }
         }
 
 
     }
 
-    public boolean isVertical() {
+
+    /**
+     * tabflowlayout 的方向
+     *
+     * @param orientation
+     */
+    public void setTabOrientation(int orientation) {
+        mTabOrientation = orientation;
+    }
+
+    public boolean isLabelFlow() {
         return true;
     }
+
+
+    /**
+     * 测试tabflowlayout竖直状态
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
+    private void measureTabVertical(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int childCount = getChildCount();
+        int width = 0;
+        int height = 0;
+
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+            if (child.getVisibility() == GONE) {
+                continue;
+            }
+            measureChild(child, widthMeasureSpec, heightMeasureSpec);
+            MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
+            //拿到 子控件宽高 + margin
+            int cw = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
+            int ch = child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
+
+            height += ch;
+
+            width = Math.max(width, cw);
+        }
+
+        if (MeasureSpec.EXACTLY == widthMode ) {
+            width = widthSize;
+        } else {
+            width += getPaddingLeft() + getPaddingRight();
+        }
+        if (MeasureSpec.EXACTLY == heightMode) {
+            height = heightSize;
+        } else {
+            height += getPaddingTop() + getPaddingBottom();
+        }
+
+        mViewHeight = height;
+        setMeasuredDimension(width, height);
+    }
+
 
     /**
      * 测量横向方向，比如一些搜索热词，搜索记录
@@ -58,7 +121,7 @@ class FlowLayout extends ViewGroup {
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
-    private void measureHorizontal(int widthMeasureSpec, int heightMeasureSpec) {
+    private void measureTabHorizontal(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -70,7 +133,6 @@ class FlowLayout extends ViewGroup {
         /**
          * 计算宽高
          */
-
 
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
@@ -106,7 +168,6 @@ class FlowLayout extends ViewGroup {
 
         setMeasuredDimension(width, height);
     }
-
 
 
     /**
@@ -202,6 +263,7 @@ class FlowLayout extends ViewGroup {
         } else {
             height += getPaddingTop() + getPaddingBottom();
         }
+        mViewHeight = height;
         //把测量完成的高，重设置给父控件
         setMeasuredDimension((widthMode == MeasureSpec.EXACTLY) ? widthSize : lineWidth, height);
     }
@@ -214,7 +276,7 @@ class FlowLayout extends ViewGroup {
          * 需要给每一行的 View 设置 child.layout(l,t,r,b) ，行高也要设置，
          * 这些数据从onMeasure 中已经计算好了，所以，只需要把值拿到就可以了
          */
-        if (isVertical()) {
+        if (isLabelFlow()) {
             int size = mAllViews.size();
             int left = getPaddingLeft();
             int top = getPaddingTop();
@@ -243,16 +305,34 @@ class FlowLayout extends ViewGroup {
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
                 MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
-                int cl = left + params.leftMargin;
+                int cl;
+                if (isVertical()){
+                    cl = (getWidth() - child.getMeasuredWidth())/2 + params.leftMargin;
+                 }else {
+                    cl = left + params.leftMargin;
+                }
                 int ct = top + params.topMargin;
                 int cr = cl + child.getMeasuredWidth();
                 int cb = ct + child.getMeasuredHeight();
-                //下个控件的起始位置
-                left += child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
                 child.layout(cl, ct, cr, cb);
+                //下个控件的起始位置
+                if (mTabOrientation == FlowConstants.HORIZONTATAL) {
+                    left += child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
+                } else {
+                    top += child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
+
+                }
             }
         }
 
+    }
+
+    public boolean isVertical(){
+       return mTabOrientation == FlowConstants.VERTICAL;
+    }
+
+    public boolean isVerticalMove(){
+        return isVertical() || isLabelFlow();
     }
 
 

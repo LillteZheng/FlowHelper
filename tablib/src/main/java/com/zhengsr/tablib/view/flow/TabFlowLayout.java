@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +21,9 @@ import android.widget.TextView;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
-import com.zhengsr.tablib.callback.FlowListener;
 import com.zhengsr.tablib.view.action.ColorAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
-import com.zhengsr.tablib.utils.ViewPagerHelperUtils;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.action.RectAction;
 import com.zhengsr.tablib.view.action.ResAction;
@@ -52,7 +49,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
      * 滚动
      */
     private Scroller mScroller;
-    private int mLastScrollX = 0;
+    private int mLastScrollPos = 0;
     private int mLastIndex = 0;
     private int mCurrentIndex = 0;
 
@@ -81,8 +78,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
         int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
         mAnimTime = mTypeArray.getInt(R.styleable.TabFlowLayout_tab_click_animTime, 300);
         mScroller = new Scroller(getContext());
+        int orientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
+        setTabOrientation(orientation);
         chooseTabTpye(tabStyle);
-
         setLayerType(LAYER_TYPE_SOFTWARE,null);
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -129,23 +127,25 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
     /**
-     * 如果超过了屏幕大小，且父布局是 LinearLayout ，gravity 或 自身的 layout_gravity 不是 left；
+     * 如果超过了屏幕大小，且父布局是 LinearLayout ，gravity 或 自身的 layout_gravity 不是 bottom；
      * 则需要自身去重新设置，不然初始位置是在中间开始去layout的。
      * 如果是 ConstraintLayout ，width 又是 wrap_content 的，只需要改成0即可
      */
     private void reAdjustLayoutParams() {
-        if (getWidth() > mWidth) {
-            ViewGroup parent = (ViewGroup) getParent();
-            if (parent instanceof LinearLayout) {
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
-                params.gravity = Gravity.START;
-                setLayoutParams(params);
-            }else if (parent instanceof ConstraintLayout){
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) getLayoutParams();
-                boolean isWrapContent = params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT;
-                if (isWrapContent && isCanMove()){
-                    params.width = 0;
+        if (!isVertical()) {
+            if (getWidth() > mWidth) {
+                ViewGroup parent = (ViewGroup) getParent();
+                if (parent instanceof LinearLayout) {
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+                    params.gravity = Gravity.START;
                     setLayoutParams(params);
+                } else if (parent instanceof ConstraintLayout) {
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) getLayoutParams();
+                    boolean isWrapContent = params.width == ConstraintLayout.LayoutParams.WRAP_CONTENT;
+                    if (isWrapContent && isCanMove()) {
+                        params.width = 0;
+                        setLayoutParams(params);
+                    }
                 }
             }
         }
@@ -410,42 +410,84 @@ public class TabFlowLayout extends ScrollFlowLayout {
      * @param view
      */
     private void updateScroll(View view,boolean smoothScroll) {
-        if (isCanMove() && view != null) {
+        if (isCanMove() && view != null ) {
+
+
             //超过中间了，让父控件也跟着移动
-            int scrollX = view.getLeft();
-            int dx;
-            if (scrollX != mLastScrollX) {
-                if (scrollX > mWidth / 2 - getPaddingLeft()) {
-                    scrollX -= mWidth / 2 - getPaddingLeft();
-                    //有边界提醒
-                    if (scrollX < mRightBound - mWidth) {
-                        dx = scrollX - mLastScrollX;
+            int scrollPos;
+            if (isVertical()){
+                scrollPos = view.getTop();
+            }else{
+                scrollPos = view.getLeft();
+            }
+            int offset;
+            if (scrollPos != mLastScrollPos) {
+                if (isVertical()){
+                    if (scrollPos > mHeight / 2){
+                        scrollPos -= mHeight/2;
+                        //下边界
+                        if (scrollPos < mBottomRound - mHeight){
+                            offset = scrollPos - mLastScrollPos;
+                            if (smoothScroll){
+                                mScroller.startScroll(0,getScrollY(),0,offset);
+                            }else{
+                                scrollTo(0,offset);
+                            }
+                            mLastScrollPos = scrollPos;
+                        }else{
+                            offset = mBottomRound - mHeight - getScrollY();
+                            if (getScrollY() >= mBottomRound - mHeight) {
+                                offset = 0;
+                            }
+                            if (smoothScroll) {
+                                mScroller.startScroll(0, getScrollY(),0 ,offset);
+                            } else {
+                                scrollTo(0,mBottomRound - mHeight);
+                            }
+                            mLastScrollPos = mBottomRound - mHeight - offset;
+                        }
+                    }else{
+                        offset = -scrollPos;
                         if (smoothScroll) {
-                            mScroller.startScroll(getScrollX(), 0, dx, 0);
+                            mScroller.startScroll(0, getScrollY(),0 ,offset);
                         } else {
-                            scrollTo(dx, 0);
+                            scrollTo(0, 0);
                         }
-                        mLastScrollX = scrollX;
+                        mLastScrollPos = 0;
+                    }
+                }else {
+                    if (scrollPos > mWidth / 2) {
+                        scrollPos -= mWidth / 2;
+                        //有边界提醒
+                        if (scrollPos < mRightBound - mWidth) {
+                            offset = scrollPos - mLastScrollPos;
+                            if (smoothScroll) {
+                                mScroller.startScroll(getScrollX(), 0, offset, 0);
+                            } else {
+                                scrollTo(offset, 0);
+                            }
+                            mLastScrollPos = scrollPos;
+                        } else {
+                            offset = mRightBound - mWidth - getScrollX();
+                            if (getScrollX() >= mRightBound - mWidth) {
+                                offset = 0;
+                            }
+                            if (smoothScroll) {
+                                mScroller.startScroll(getScrollX(), 0, offset, 0);
+                            } else {
+                                scrollTo(mRightBound - mWidth, 0);
+                            }
+                            mLastScrollPos = mRightBound - mWidth - offset;
+                        }
                     } else {
-                        dx = mRightBound - mWidth - getScrollX();
-                        if (getScrollX() >= mRightBound - mWidth) {
-                            dx = 0;
-                        }
+                        offset = -scrollPos;
                         if (smoothScroll) {
-                            mScroller.startScroll(getScrollX(), 0, dx, 0);
+                            mScroller.startScroll(getScrollX(), 0, offset, 0);
                         } else {
-                            scrollTo(mRightBound - mWidth, 0);
+                            scrollTo(0, 0);
                         }
-                        mLastScrollX = mRightBound - mWidth - dx;
+                        mLastScrollPos = 0;
                     }
-                } else {
-                    dx = -scrollX;
-                    if (smoothScroll) {
-                        mScroller.startScroll(getScrollX(), 0, dx, 0);
-                    } else {
-                        scrollTo(0, 0);
-                    }
-                    mLastScrollX = 0;
                 }
             }
         }
@@ -457,14 +499,28 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
         if (mViewPager == null && mScroller.computeScrollOffset()) {
             //有边界
-            int dx = mScroller.getCurrX();
-            if (dx >= mRightBound - mWidth){
-                dx = mRightBound - mWidth;
+            int offset ;
+            if (isVertical()){
+                offset = mScroller.getCurrY();
+                if (offset >= mBottomRound - mHeight){
+                    offset = mBottomRound - mHeight;
+                }
+            }else {
+                offset = mScroller.getCurrX();
+                if (offset >= mRightBound - mWidth){
+                    offset = mRightBound - mWidth;
+                }
             }
-            if (dx <= 0){
-                dx = 0;
+
+
+            if (offset <= 0){
+                offset = 0;
             }
-            scrollTo(dx, 0);
+            if (isVertical()){
+                scrollTo(0,offset);
+            }else {
+                scrollTo(offset, 0);
+            }
             postInvalidate();
         }
     }
@@ -495,7 +551,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
     @Override
-    public boolean isVertical() {
+    public boolean isLabelFlow() {
         return false;
     }
 

@@ -25,6 +25,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="TabFlowLayout 竖直效果"
+        android:textAllCaps="false"
+        android:onClick="tablayout4"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="TabFlowLayout 网络测试"
         android:textAllCaps="false"
         android:onClick="tablayout3"/>
@@ -35,6 +42,7 @@
         android:text="LabelFlowLayout 标签布局"
         android:textAllCaps="false"
         android:onClick="labelflow"/>
+
 
 
 </LinearLayout>

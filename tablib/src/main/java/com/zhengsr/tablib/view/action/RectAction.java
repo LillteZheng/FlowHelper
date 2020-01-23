@@ -2,7 +2,6 @@ package com.zhengsr.tablib.view.action;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.bean.TabValue;
@@ -20,28 +19,68 @@ public class RectAction extends BaseAction {
         super.config(parentView);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         View child = parentView.getChildAt(mCurrentIndex);
-        if (child != null && mRect.isEmpty()) {
-            float l = parentView.getPaddingLeft() + mMarginLeft;
-            float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabHeight - mMarginBottom;
-            float r = parentView.getPaddingLeft() + child.getMeasuredWidth() - mMarginRight;
-            float b = t + mTabHeight;
-            if (mTabWidth != -1) {
-                l += (child.getMeasuredWidth() - mTabWidth) / 2;
-                r = mTabWidth + l;
+        if (child != null && mTabRect.isEmpty()) {
+
+            float l =0;
+            float t=0;
+            float r=0;
+            float b=0;
+            if (isLeftAction()){
+                l = child.getLeft() + mMarginLeft;
+                t = child.getTop() + mMarginTop;
+                r = l + mTabWidth ;
+                b = t + child.getBottom() - mMarginBottom;
+                if (mTabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabHeight)/2;
+                    b = t + mTabHeight;
+                }
+            }else if (isRightAction()){
+                l = child.getRight() - mMarginRight;
+                t = child.getTop() - mMarginTop;
+                r = l - mTabWidth;
+                b = t + mTabHeight;
+                if (mTabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabHeight)/2;
+                    b = t + mTabHeight;
+                }
+            }else{
+                l =  mMarginLeft + child.getLeft();
+                t = mMarginTop + child.getBottom() - mTabHeight - mMarginBottom;
+                r =  child.getRight() - mMarginRight;
+                b = t + mTabHeight;
+                if (mTabWidth != -1) {
+                    l += (child.getMeasuredWidth() - mTabWidth) / 2 ;
+                    r = mTabWidth + l;
+                }
             }
-            mRect.set(l, t, r, b);
+
+            mTabRect.set(l, t, r, b);
         }
         parentView.postInvalidate();
     }
 
     @Override
     protected void valueChange(TabValue value) {
-        super.valueChange(value);
+       // super.valueChange(value);
+        if (isVertical()){
+            mTabRect.top = value.top ;
+            mTabRect.bottom = value.bottom ;
+            if (isLeftAction()) {
+                mTabRect.left = value.left;
+                mTabRect.right = mTabWidth + mTabRect.left;
+            }else{
+                mTabRect.left = value.right;
+                mTabRect.right = mTabRect.left - mTabWidth;
+            }
+
+        }else{
+            super.valueChange(value);
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(mRect, mPaint);
+        canvas.drawRect(mTabRect, mPaint);
     }
 
 }

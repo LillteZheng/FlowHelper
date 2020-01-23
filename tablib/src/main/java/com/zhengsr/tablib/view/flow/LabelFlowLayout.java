@@ -18,7 +18,7 @@ import java.util.List;
  * @auther by zhengshaorui on 2020/1/8
  * describe: 标签瀑布流布局，支持单选，多选
  */
-public class LabelFlowLayout extends FlowLayout {
+public class LabelFlowLayout extends ScrollFlowLayout {
     private LabelFlowAdapter mAdapter;
     private int mMaxSelectCount;
     private int mLastPosition = 0;

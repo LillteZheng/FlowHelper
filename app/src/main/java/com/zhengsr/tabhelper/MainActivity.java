@@ -10,6 +10,7 @@ import com.zhengsr.tabhelper.activity.LabelActivity;
 import com.zhengsr.tabhelper.activity.NetTestActivity;
 import com.zhengsr.tabhelper.activity.TabActivity;
 import com.zhengsr.tabhelper.activity.TabNoViewPagerActivity;
+import com.zhengsr.tabhelper.activity.VerticalTabActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-     //   startActivity(new Intent(this, LabelActivity.class));
+       // startActivity(new Intent(this, VerticalTabActivity.class));
     }
 
 
@@ -35,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void tablayout3(View view) {
         startActivity(new Intent(this, NetTestActivity.class));
+    }
+
+    public void tablayout4(View view) {
+        startActivity(new Intent(this,VerticalTabActivity.class));
     }
 }

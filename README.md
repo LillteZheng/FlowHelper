@@ -28,7 +28,7 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.14'
+implementation 'com.github.LillteZheng:FlowHelper:v1.15'
 //如果要使用 androidx，用下面这个
 implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
 ```
@@ -43,6 +43,16 @@ implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
    <tr>
     <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_click.gif" align="left"height="789" width="479"></a></td>
     <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_viewpager.gif" align="left" height="789" width="479" ></a></td>
+  </tr>
+
+</table>
+
+<table  align="center">
+ <tr>
+    <th>竖直效果</th>
+  </tr>
+   <tr>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_vertical.gif" align="left"height="789" width="479"></a></td>
   </tr>
 
 </table>

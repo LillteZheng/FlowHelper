@@ -85,7 +85,7 @@
         android:background="#6D8FB0"
         app:tab_color="#b01a1a1a"
         app:tab_round_size="4dp"
-        app:tab_margin_t="5dp"
+        app:tab_margin_t="3dp"
         app:tab_margin_b="3dp"
         app:tab_margin_l="2dp"
         app:tab_margin_r="2dp"

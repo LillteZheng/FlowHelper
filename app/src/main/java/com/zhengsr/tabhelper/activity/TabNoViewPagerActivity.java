@@ -153,7 +153,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
                 float t = parentView.getPaddingTop() +  child.getMeasuredHeight() - mTabHeight/2 -mMarginBottom;
                 float r = mTabWidth + l;
                 float b = child.getMeasuredHeight() - mMarginBottom;
-                mRect.set(l,t,r,b);
+                mTabRect.set(l,t,r,b);
             }
         }
 
@@ -167,12 +167,12 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
              * Rect 为这个偏移量的局域。
              */
             //由于自定义的，都是从left 开始算起的，所以这里还需要加上圆的半径
-            mRect.left = value.left + mTabWidth/2;
+            mTabRect.left = value.left + mTabWidth/2;
         }
 
         @Override
         public void draw(Canvas canvas) {
-            canvas.drawCircle(mRect.left,mRect.top,mTabWidth/2,mPaint);
+            canvas.drawCircle(mTabRect.left, mTabRect.top,mTabWidth/2,mPaint);
         }
     }
 
