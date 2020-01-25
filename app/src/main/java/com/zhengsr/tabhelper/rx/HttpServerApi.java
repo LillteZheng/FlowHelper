@@ -5,15 +5,13 @@ package com.zhengsr.tabhelper.rx;
 import com.zhengsr.tabhelper.bean.ArticleData;
 import com.zhengsr.tabhelper.bean.BaseResponse;
 import com.zhengsr.tabhelper.bean.NaviBean;
+import com.zhengsr.tabhelper.bean.SystematicBean;
 import com.zhengsr.tabhelper.bean.PageDataInfo;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -33,7 +31,7 @@ public interface HttpServerApi {
      * https://www.wanandroid.com/tree/json
      */
     @GET("tree/json")
-    Observable<BaseResponse<List<NaviBean>>> getTreeKnowledge();
+    Observable<BaseResponse<List<SystematicBean>>> getTreeKnowledge();
 
     /**
      * 获取系列的具体内容
@@ -41,7 +39,17 @@ public interface HttpServerApi {
      *
      */
     @GET("article/list/{page}/json")
-    Observable<BaseResponse<PageDataInfo<List<ArticleData>>>> getNaviDetail(@Path("page") int page, @Query("cid") int cid);
+    Observable<BaseResponse<PageDataInfo<List<ArticleData>>>> getSystematicDetail(@Path("page") int page, @Query("cid") int cid);
+
+
+
+
+    /**
+     * https://www.wanandroid.com/navi/json
+     * 获取导航数据
+     */
+    @GET("navi/json")
+    Observable<BaseResponse<List<NaviBean>>> getNaviData();
 
 
 }

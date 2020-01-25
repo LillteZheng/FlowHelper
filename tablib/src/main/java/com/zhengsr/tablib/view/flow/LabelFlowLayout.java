@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
-import com.zhengsr.tablib.view.adapter.BaseFlowAdapter;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ public class LabelFlowLayout extends ScrollFlowLayout {
     private LabelFlowAdapter mAdapter;
     private int mMaxSelectCount;
     private int mLastPosition = 0;
+    private boolean isAutoScroll;
+
     public LabelFlowLayout(Context context) {
         this(context,null);
     }
@@ -34,9 +35,15 @@ public class LabelFlowLayout extends ScrollFlowLayout {
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LabelFlowLayout);
         mMaxSelectCount = ta.getInteger(R.styleable.LabelFlowLayout_label_maxcount,1);
+        isAutoScroll = ta.getBoolean(R.styleable.LabelFlowLayout_label_isAutoScroll,true);
         ta.recycle();
+        setClickable(true);
     }
 
+    @Override
+    public boolean isLabelAutoScroll() {
+        return isAutoScroll;
+    }
 
     public void setAdapter(LabelFlowAdapter adapter){
         mAdapter = adapter;
@@ -138,6 +145,12 @@ public class LabelFlowLayout extends ScrollFlowLayout {
         return this;
     }
 
+    public LabelFlowLayout setAutoScroll(boolean autoScroll){
+        if (isAutoScroll != autoScroll){
+            isAutoScroll = autoScroll;
+        }
+        return this;
+    }
 
 
     /**

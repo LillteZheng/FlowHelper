@@ -1,5 +1,7 @@
 package com.zhengsr.tablib.bean;
 
+import com.zhengsr.tablib.FlowConstants;
+
 /**
  * @auther by zhengshaorui on 2020/1/9
  * describe: 用来配置tab的bean
@@ -51,6 +53,22 @@ public class TabBean {
      */
     public float scaleFactor = 1;
 
+    /**
+     * TabFlow 的方向, FlowConstants.VERTICAL 竖向，FlowConstants.HORIZONTAL 横向
+     */
+    public int tabOrientation = FlowConstants.HORIZONTATAL;
+
+    /**
+     * tab 为 rect 或者 tri 的时候，左边还是在右边，也使用 flowConstants
+     */
+    public int actionOrientation = -1;
+
+    /**
+     * 是否自动滚动
+     */
+    public boolean isAutoScroll = true;
+
+
     @Override
     public String toString() {
         return "TabBean{" +
@@ -65,6 +83,11 @@ public class TabBean {
                 ", tabMarginBottom=" + tabMarginBottom +
                 ", tabClickAnimTime=" + tabClickAnimTime +
                 ", tabItemRes=" + tabItemRes +
+                ", autoScale=" + autoScale +
+                ", scaleFactor=" + scaleFactor +
+                ", tabOrientation=" + tabOrientation +
+                ", actionOrientation=" + actionOrientation +
+                ", isAutoScroll=" + isAutoScroll +
                 '}';
     }
 }

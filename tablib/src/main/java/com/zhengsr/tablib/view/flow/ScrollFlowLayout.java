@@ -3,7 +3,6 @@ package com.zhengsr.tablib.view.flow;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -11,15 +10,12 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.widget.Scroller;
-import android.widget.TextView;
-
-import com.zhengsr.tablib.FlowConstants;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 滚动类，用来移动
  */
-public class ScrollFlowLayout extends FlowLayout {
+class ScrollFlowLayout extends FlowLayout {
     private static final String TAG = "ScrollFlowLayout";
     private int mTouchSlop;
     private float mLastPos;
@@ -89,6 +85,9 @@ public class ScrollFlowLayout extends FlowLayout {
                 //需要减去actionbar 和 状态栏的高度
                 mHeight = mHeight - getActionBarHeight(getContext()) - getStatusBarHeight();
             }
+            if (!isLabelAutoScroll() || !isTabAutoScroll()){
+                isCanMove = false;
+            }
 
         }else{
             if (!isVertical()) {
@@ -107,8 +106,13 @@ public class ScrollFlowLayout extends FlowLayout {
                     }
                     mWidth = mScreenWidth;
                 }
+                if (!isTabAutoScroll()){
+                    isCanMove = false;
+                }
             }
         }
+
+
 
 
     }
@@ -364,5 +368,13 @@ public class ScrollFlowLayout extends FlowLayout {
                     context.getResources().getDisplayMetrics());
         }
         return 0;
+    }
+
+    public boolean isLabelAutoScroll(){
+        return true;
+    }
+
+    public boolean isTabAutoScroll(){
+        return true;
     }
 }

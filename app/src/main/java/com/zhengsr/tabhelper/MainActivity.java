@@ -11,6 +11,7 @@ import com.zhengsr.tabhelper.activity.NetTestActivity;
 import com.zhengsr.tabhelper.activity.TabActivity;
 import com.zhengsr.tabhelper.activity.TabNoViewPagerActivity;
 import com.zhengsr.tabhelper.activity.VerticalTabActivity;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 public class MainActivity extends AppCompatActivity {
 

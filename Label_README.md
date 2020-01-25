@@ -124,5 +124,6 @@ public void onReachMacCount(List<Integer> ids, int count) {
 
 | 名称 | 类型 |说明 |
 |---|---|---|
-|LabelFlowLayout|integer|最大选择个数|
+|label_maxcount|integer|最大选择个数|
+|label_iaAutoScroll|boolean|是否支持自动滚动|
 

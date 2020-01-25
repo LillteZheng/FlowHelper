@@ -236,6 +236,7 @@ private void resFlow(){
 |tab_scale_factor|float|放大倍数|
 |tab_orientation|integer|vertical竖直防线，horizontal横向，默认横向|
 |tab_action_orientaion|integer|left坐标，right右边，只支持 tri、rect 两种效果|
+|tab_isAutoScroll|boolean|是否支持自动滚动,默认为true|
 
 
 

@@ -107,6 +107,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     child.setScaleX(mScaleFactor);
                     child.setScaleY(mScaleFactor);
                 }
+                mParentView.getAdapter().onItemSelectState(child,true);
             }
         }
 
@@ -332,8 +333,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * @param curIndex
      */
     public void doAnim(int lastIndex, final int curIndex,int animTime) {
+        if (mCurrentIndex == mLastIndex){
+            return;
+        }
         if (mAnimator != null) {
-            mAnimator.end();
+            mAnimator.cancel();
             mAnimator = null;
         }
         if (mParentView != null) {
@@ -584,6 +588,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
         mIsAutoScale = bean.autoScale;
         mScaleFactor = bean.scaleFactor;
+
+        if (bean.tabOrientation != -1){
+            mActionOrientation = bean.tabOrientation;
+        }
 
     }
 

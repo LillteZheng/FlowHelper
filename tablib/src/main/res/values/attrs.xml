@@ -28,11 +28,13 @@
             <enum name="left" value="1"/>
             <enum name="right" value="2"/>
         </attr>
+        <attr name="tab_isAutoScroll" format="boolean"/>
     </declare-styleable>
 
 
     <declare-styleable name="LabelFlowLayout">
         <attr name="label_maxcount" format="integer"/>
+        <attr name="label_isAutoScroll" format="boolean"/>
     </declare-styleable>
 
     <!--文件渐变属性-->

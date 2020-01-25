@@ -82,11 +82,15 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                resetAllColor(R.id.item_text,Color.BLACK);
-                setTextColor(view,R.id.item_text,Color.WHITE);
+            public void onItemSelectState(View view, boolean isSelected) {
+                super.onItemSelectState(view, isSelected);
+                if (isSelected){
+                    setTextColor(view,R.id.item_text,Color.WHITE);
+                }else{
+                    setTextColor(view,R.id.item_text,getResources().getColor(R.color.black));
+                }
             }
+
         });
     }
 

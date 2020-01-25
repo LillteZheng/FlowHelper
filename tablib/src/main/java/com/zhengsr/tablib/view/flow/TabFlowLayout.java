@@ -52,6 +52,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private int mLastScrollPos = 0;
     private int mLastIndex = 0;
     private int mCurrentIndex = 0;
+    private boolean isAutoScroll;
 
     /**
      * viewpager 相关
@@ -62,6 +63,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private int mSelectedColor = -1;
     private int mUnselectedColor = -1;
     private int mAnimTime;
+    private int mTabOrientation;
 
     public TabFlowLayout(Context context) {
         this(context, null);
@@ -73,13 +75,14 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     public TabFlowLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
+        setClickable(true);
         mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
         int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
         mAnimTime = mTypeArray.getInt(R.styleable.TabFlowLayout_tab_click_animTime, 300);
         mScroller = new Scroller(getContext());
-        int orientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
-        setTabOrientation(orientation);
+        mTabOrientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
+        isAutoScroll = mTypeArray.getBoolean(R.styleable.TabFlowLayout_tab_isAutoScroll,true);
+        setTabOrientation(mTabOrientation);
         chooseTabTpye(tabStyle);
         setLayerType(LAYER_TYPE_SOFTWARE,null);
 
@@ -253,6 +256,18 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
     }
 
+    /**
+     * 设置选中的点击事件
+     * @param position
+     */
+    public void setItemSelected(int position) {
+        isItemClick = false;
+        if (position >= 0 && position < getChildCount()){
+            View view = getChildAt(position);
+            chooseItem(position,view);
+        }
+    }
+
 
     /**
      * 监听adapter 的一些操作
@@ -323,6 +338,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
             }
         }
 
+
     }
 
     /**
@@ -373,24 +389,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex = i;
-                if (mViewPager != null && mAction != null) {
-                    mLastIndex = mAction.getCurrentIndex();
-                }
-                if (mAction != null) {
-                    mAction.onItemClick(mLastIndex, i);
-                }
-                if (mAdapter != null) {
-                    mAdapter.onItemClick(view, mAdapter.getDatas().get(i), i);
-                }
-                mLastIndex = mCurrentIndex;
-                /**
-                 * 如果没有 viewpager，则需要使用 scroller 平滑过渡
-                 */
-                if (mViewPager == null) {
-                    updateScroll(view,true);
-                    invalidate();
-                }
+                isItemClick = true;
+                chooseItem(i, view);
             }
         });
 
@@ -403,6 +403,27 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 return false;
             }
         });
+    }
+
+    private void chooseItem(int position, View view) {
+        mCurrentIndex = position;
+        if (mViewPager != null && mAction != null) {
+            mLastIndex = mAction.getCurrentIndex();
+        }
+        if (mAction != null) {
+            mAction.onItemClick(mLastIndex, position);
+        }
+        if (mAdapter != null) {
+            mAdapter.onItemClick(view, mAdapter.getDatas().get(position), position);
+        }
+        mLastIndex = mCurrentIndex;
+        /**
+         * 如果没有 viewpager，则需要使用 scroller 平滑过渡
+         */
+        if (mViewPager == null) {
+            updateScroll(view,true);
+            invalidate();
+        }
     }
 
     /**
@@ -550,10 +571,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         return bundle;
     }
 
-    @Override
-    public boolean isLabelFlow() {
-        return false;
-    }
+
 
     /**
      * 自定义属性的配置
@@ -577,6 +595,13 @@ public class TabFlowLayout extends ScrollFlowLayout {
             }
         }
 
+
+        if (mTabOrientation != bean.tabOrientation){
+            setTabOrientation(bean.tabOrientation);
+        }
+        if (isAutoScroll != bean.isAutoScroll){
+            isAutoScroll = bean.isAutoScroll;
+        }
         return this;
     }
 
@@ -584,6 +609,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
         return mAdapter;
     }
 
+    /**
+     * 设置某个item动画，不执行其他的
+     * @param position
+     */
     public void setItemAnim(int position){
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
@@ -591,5 +620,31 @@ public class TabFlowLayout extends ScrollFlowLayout {
             mAction.autoScaleView();
             mAction.doAnim(mLastIndex,mCurrentIndex,mAnimTime);
         }
+    }
+    private boolean isItemClick;
+
+    /**
+     * 是否由item的点击事件引起的，长用于列表联动
+     * @return
+     */
+    public boolean isItemClick(){
+        return isItemClick;
+    }
+
+    /**
+     * 也可以用于自己去改变 itemclick 这个状态
+     * @param isClick
+     */
+    public void setItemClickStatus(boolean isClick){
+        isItemClick = isClick;
+    }
+
+    @Override
+    public boolean isTabAutoScroll() {
+        return isAutoScroll;
+    }
+    @Override
+    public boolean isLabelFlow() {
+        return false;
     }
 }

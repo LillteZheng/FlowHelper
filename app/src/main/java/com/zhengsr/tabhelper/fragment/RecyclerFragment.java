@@ -3,11 +3,9 @@ package com.zhengsr.tabhelper.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.bean.ArticleData;
 import com.zhengsr.tabhelper.bean.BaseResponse;
-import com.zhengsr.tabhelper.bean.NaviBean;
 import com.zhengsr.tabhelper.bean.NaviChildrenBean;
 import com.zhengsr.tabhelper.bean.PageDataInfo;
 import com.zhengsr.tabhelper.rx.HttpCreate;
@@ -60,7 +57,7 @@ public class RecyclerFragment extends SupportFragment {
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        HttpCreate.getServer().getNaviDetail(0,mBean.getId())
+        HttpCreate.getServer().getSystematicDetail(0,mBean.getId())
                 .compose(RxUtils.<BaseResponse<PageDataInfo<List<ArticleData>>>>rxScheduers())
                 .subscribe(new Observer<BaseResponse<PageDataInfo<List<ArticleData>>>>() {
                     @Override

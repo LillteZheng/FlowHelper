@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.bean.BaseResponse;
-import com.zhengsr.tabhelper.bean.NaviBean;
+import com.zhengsr.tabhelper.bean.SystematicBean;
 import com.zhengsr.tabhelper.bean.NaviChildrenBean;
 import com.zhengsr.tabhelper.fragment.RecyclerFragment;
 import com.zhengsr.tabhelper.rx.HttpCreate;
@@ -67,10 +67,10 @@ public class NetTestActivity extends SupportActivity {
         HttpCreate.getServer().getTreeKnowledge()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new ResourceObserver<BaseResponse<List<NaviBean>>>() {
+                .subscribeWith(new ResourceObserver<BaseResponse<List<SystematicBean>>>() {
                     @Override
-                    public void onNext(BaseResponse<List<NaviBean>> baseResponse) {
-                        List<NaviBean> data = baseResponse.getData();
+                    public void onNext(BaseResponse<List<SystematicBean>> baseResponse) {
+                        List<SystematicBean> data = baseResponse.getData();
                         // 可以通过 page 获取不同的参数
                         int page = 1;
                         for (NaviChildrenBean child : data.get(page).getChildren()) {

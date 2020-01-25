@@ -307,7 +307,7 @@ class FlowLayout extends ViewGroup {
                 MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
                 int cl;
                 if (isVertical()){
-                    cl = (getWidth() - child.getMeasuredWidth())/2 + params.leftMargin;
+                    cl = (getWidth() - child.getMeasuredWidth())/2;
                  }else {
                     cl = left + params.leftMargin;
                 }

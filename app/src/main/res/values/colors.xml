@@ -8,4 +8,5 @@
     <color name="black_ff_bg">#b01a1a1a</color>
     <color name="black">#000000</color>
     <color name="wechat">#323232</color>
+    <color name="page_gray_cccc">#15000000</color>
 </resources>
