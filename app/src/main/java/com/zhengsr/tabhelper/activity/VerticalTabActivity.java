@@ -119,7 +119,7 @@ public class VerticalTabActivity extends AppCompatActivity {
                      * 目标在可视视图的下面
                      */
                     //该函数让它滚动到可视界面
-                    mRecyclerView.smoothScrollToPosition(position);
+                    mRecyclerView.scrollToPosition(position);
                     //此时recycler 的item还未滚动到顶端，需要重新再让它滚动改一下
                     isNeedScroll = true;
                 }
