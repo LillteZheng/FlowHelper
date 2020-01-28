@@ -185,7 +185,7 @@ private void resFlow(){
                 float t = parentView.getPaddingTop() +  child.getMeasuredHeight() - mTabHeight/2 -mMarginBottom;
                 float r = mTabWidth + l;
                 float b = child.getMeasuredHeight() - mMarginBottom;
-                mRect.set(l,t,r,b);
+                mTabRect.set(l,t,r,b);
             }
         }
 
@@ -196,10 +196,10 @@ private void resFlow(){
             
             /**
              * value 子控件在滚动时的 left 和 right，可以理解为偏移量
-             * Rect 为这个偏移量的局域。
+             * TabRect 为这个偏移量的局域。
              */
             //由于自定义的，都是从left 开始算起的，所以这里还需要加上圆的半径
-            mRect.left = value.left + mTabWidth/2;
+            mTabRect.left = value.left + mTabWidth/2;
         }
 
         @Override
