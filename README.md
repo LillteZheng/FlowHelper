@@ -11,6 +11,11 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 [实现一个可定制化的TabFlowLayout(四) -- 与ViewPager 结合，实现炫酷效果](https://blog.csdn.net/u011418943/article/details/103851359)
 
+[Recyclerview 实现双联表联动](https://blog.csdn.net/u011418943/article/details/104083568)
+
+[实现一个可定制化的FlowLayout](https://blog.csdn.net/u011418943/article/details/104091553)
+
+
 [![](https://jitpack.io/v/LillteZheng/FlowHelper.svg)](https://jitpack.io/#LillteZheng/FlowHelper)
 ![](https://img.shields.io/github/stars/LillteZheng/FlowHelper.svg) 
 ![](https://img.shields.io/github/forks/LillteZheng/FlowHelper.svg)
@@ -28,9 +33,9 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.15'
-//如果要使用 androidx，用下面这个
-implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
+implementation 'com.github.LillteZheng:FlowHelper:v1.16'
+//androidx 部分，后面再更新
+//implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
 ```
 
 ## TabFlowLayout 效果图
