@@ -16,6 +16,9 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 [实现一个可定制化的FlowLayout](https://blog.csdn.net/u011418943/article/details/104091553)
 
 
+如果您也想快速实现banner，可以使用这个库 https://github.com/LillteZheng/ViewPagerHelper
+
+
 [![](https://jitpack.io/v/LillteZheng/FlowHelper.svg)](https://jitpack.io/#LillteZheng/FlowHelper)
 ![](https://img.shields.io/github/stars/LillteZheng/FlowHelper.svg) 
 ![](https://img.shields.io/github/forks/LillteZheng/FlowHelper.svg)
@@ -31,6 +34,7 @@ allprojects {
     }
 }
 ```
+
 
 ```
 implementation 'com.github.LillteZheng:FlowHelper:v1.16'
