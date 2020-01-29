@@ -30,10 +30,18 @@ FlowLayout 使用也使用 adapter 去配置数据：
 ```
 LabelFlowLayout flowLayout = findViewById(R.id.singleflow);
 final LabelFlowAdapter adapter;
-flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
+flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textview,mTitle){
+    /**
+     * 绑定数据，可以使用 setText(..) 等快捷方式，也可以视同 view.findViewById()
+     * 同时，当你的子控件需要点击事件时，可以通过  addChildrenClick() 注册事件，
+     * 然后重写 onItemChildClick(..) 即可拿到事件，否则就自己写。
+     * 自己的点击和长按不需要注册
+     */
     @Override
     public void bindView(View view, String data, int position) {
         setText(view,R.id.item_text,data);
+        // 注册子控件的点击事件
+        //addChildrenClick(view,R.id.item_text,position);
     }
     @Override
     public void onItemSelectState(View view, boolean isSelected) {
