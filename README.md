@@ -3,6 +3,8 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 **具体原理可参考着四篇文章：**
 
+**如果你也想自己写一个，可以参考以下几篇文章**
+
 [实现一个可定制化的TabFlowLayout(一) -- 测量与布局](https://blog.csdn.net/u011418943/article/details/103804677)
 
 [实现一个可定制化的TabFlowLayout(二) -- 实现滚动和平滑过渡](https://blog.csdn.net/u011418943/article/details/103807920)
@@ -10,6 +12,10 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 [实现一个可定制化的TabFlowLayout(三) -- 动态数据添加与常用接口封装](https://blog.csdn.net/u011418943/article/details/103817967)
 
 [实现一个可定制化的TabFlowLayout(四) -- 与ViewPager 结合，实现炫酷效果](https://blog.csdn.net/u011418943/article/details/103851359)
+
+[FlowLayout 和 Recyclerview 实现双联表联动](https://blog.csdn.net/u011418943/article/details/104083568)
+
+如果您也想快速实现banner，可以使用这个库 https://github.com/LillteZheng/ViewPagerHelper
 
 [![](https://jitpack.io/v/LillteZheng/FlowHelper.svg)](https://jitpack.io/#LillteZheng/FlowHelper)
 ![](https://img.shields.io/github/stars/LillteZheng/FlowHelper.svg) 
