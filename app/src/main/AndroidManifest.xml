@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.VerticalTabActivity"></activity>
+        <activity android:name=".activity.LabelShowMoreActivity"></activity>
+        <activity android:name=".activity.VerticalTabActivity" />
         <activity android:name=".activity.NetTestActivity" />
         <activity android:name=".activity.LabelActivity" />
         <activity android:name=".activity.TabNoViewPagerActivity" />

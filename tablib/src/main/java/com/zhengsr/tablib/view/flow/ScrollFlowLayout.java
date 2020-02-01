@@ -66,7 +66,9 @@ class ScrollFlowLayout extends FlowLayout {
         }
 
 
-        //说明控件没有满屏或者固定宽度
+        /**
+         * TabFlowLayout 或者 LabelFlowLayout 的竖向滚动
+         */
         if (isVerticalMove()){
             if (mViewHeight < mScreenHeight){
                 if (mBottomRound > mViewHeight){
@@ -90,6 +92,7 @@ class ScrollFlowLayout extends FlowLayout {
             }
 
         }else{
+            //TabFlowLayout 横向布局
             if (!isVertical()) {
                 //说明控件没有满屏或者固定宽度
                 if (mViewWidth < mScreenWidth) {

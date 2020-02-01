@@ -33,8 +33,11 @@
 
 
     <declare-styleable name="LabelFlowLayout">
-        <attr name="label_maxcount" format="integer"/>
+        <attr name="label_maxSelectCount" format="integer"/>
         <attr name="label_isAutoScroll" format="boolean"/>
+        <attr name="label_showLine" format="integer"/>
+        <attr name="label_showMore_layoutId" format="reference"/>
+        <attr name="label_showMore_Color" format="color"/>
     </declare-styleable>
 
     <!--文件渐变属性-->

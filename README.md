@@ -11,14 +11,6 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 [实现一个可定制化的TabFlowLayout(四) -- 与ViewPager 结合，实现炫酷效果](https://blog.csdn.net/u011418943/article/details/103851359)
 
-[Recyclerview 实现双联表联动](https://blog.csdn.net/u011418943/article/details/104083568)
-
-[实现一个可定制化的FlowLayout](https://blog.csdn.net/u011418943/article/details/104091553)
-
-
-如果您也想快速实现banner，可以使用这个库 https://github.com/LillteZheng/ViewPagerHelper
-
-
 [![](https://jitpack.io/v/LillteZheng/FlowHelper.svg)](https://jitpack.io/#LillteZheng/FlowHelper)
 ![](https://img.shields.io/github/stars/LillteZheng/FlowHelper.svg) 
 ![](https://img.shields.io/github/forks/LillteZheng/FlowHelper.svg)
@@ -35,11 +27,10 @@ allprojects {
 }
 ```
 
-
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.16'
-//androidx 部分，后面再更新
-//implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
+implementation 'com.github.LillteZheng:FlowHelper:v1.17'
+//如果要使用 androidx，用下面这个
+implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
 ```
 
 ## TabFlowLayout 效果图
@@ -73,9 +64,11 @@ implementation 'com.github.LillteZheng:FlowHelper:v1.16'
 <table  align="center">
  <tr>
     <th>LabelFlowLayout</th>
+    <th>LabelFlowLayout 显示更多</th>
   </tr>
    <tr>
     <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label.gif" align="left" height="789" width="479"></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label_showmore.gif" align="left" height="789" width="479"></a></td>
   </tr>
 
 </table>

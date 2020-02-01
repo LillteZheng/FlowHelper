@@ -13,10 +13,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tab_type="round"
+        app:tab_type="rect"
+        app:tab_color="@color/colorPrimary"
         app:tab_orientation="vertical"
+        app:tab_width="2dp"
+        app:tab_height="20dp"
+        app:tab_action_orientaion="left"
         android:background="@color/page_gray_cccc"
-        app:tab_color="@color/white"
         />
 
     <android.support.v7.widget.RecyclerView

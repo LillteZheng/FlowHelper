@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LabelActivity extends AppCompatActivity {
-    private List<String> mTitle = new ArrayList<>(Arrays.asList("新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习", "测试后"));
+    private List<String> mTitle = new ArrayList<>(Arrays.asList("新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习", "测试后","新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习"));
     private List<String> mTitle2 = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed ".split(" ")));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class LabelActivity extends AppCompatActivity {
         singleFlow();
         searchFlow();
         multiFlow();
-        canLongFlow();
+       canLongFlow();
     }
 
     private void singleFlow(){
@@ -78,7 +79,7 @@ public class LabelActivity extends AppCompatActivity {
 
     private void multiFlow(){
         LabelFlowLayout flowLayout = findViewById(R.id.multiflow);
-        flowLayout.setMaxCount(3);
+        flowLayout.setMaxSelectCount(3);
         flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview,mTitle2) {
             @Override
             public void bindView(View view, String data, int position) {

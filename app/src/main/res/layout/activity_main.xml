@@ -43,6 +43,15 @@
         android:textAllCaps="false"
         android:onClick="labelflow"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LabelFlowLayout 支持显示更多"
+        android:textAllCaps="false"
+        android:onClick="labelflowshomore"/>
+
+
+
 
 
 </LinearLayout>

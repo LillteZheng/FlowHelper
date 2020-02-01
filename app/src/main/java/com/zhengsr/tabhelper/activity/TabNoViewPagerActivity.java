@@ -72,6 +72,11 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
     private void triFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.triflow);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle2) {
+            /**
+             * 绑定数据，可以使用 setText(..) 等快捷方式，也可以视同 view.findViewById()
+             * 同时，当你的子控件需要点击事件时，可以通过  addChildrenClick() 注册事件，
+             * 然后重写 onItemChildClick(..) 即可拿到事件，否则就自己写。
+             */
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data)
@@ -79,6 +84,10 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
                 if (position == 0){
                     setTextColor(view,R.id.item_text,Color.WHITE);
                 }
+                // 注册子控件的点击事件
+                //addChildrenClick(view,R.id.item_text,position);
+                //注册子控件的长按事件
+                //addChildrenLongClick(view,R.id.item_text,position);
             }
 
             @Override

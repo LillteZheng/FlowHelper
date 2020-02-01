@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 
 import com.zhengsr.tabhelper.activity.LabelActivity;
+import com.zhengsr.tabhelper.activity.LabelShowMoreActivity;
 import com.zhengsr.tabhelper.activity.NetTestActivity;
 import com.zhengsr.tabhelper.activity.TabActivity;
 import com.zhengsr.tabhelper.activity.TabNoViewPagerActivity;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // startActivity(new Intent(this, VerticalTabActivity.class));
+       // startActivity(new Intent(this, LabelActivity.class));
     }
 
 
@@ -41,5 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void tablayout4(View view) {
         startActivity(new Intent(this,VerticalTabActivity.class));
+    }
+
+    public void labelflowshomore(View view) {
+        startActivity(new Intent(this, LabelShowMoreActivity.class));
     }
 }

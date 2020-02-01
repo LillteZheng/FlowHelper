@@ -28,8 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            />
+            android:layout_marginTop="4dp" />
 
         <Button
             android:id="@+id/update"
@@ -51,10 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-           />
-
-
+            android:layout_marginBottom="5dp" />
 
 
         <TextView
@@ -89,7 +85,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
-            app:label_maxcount="3" />
+            app:label_maxSelectCount="3" />
     </LinearLayout>
 
 </ScrollView>
