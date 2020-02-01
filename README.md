@@ -85,22 +85,23 @@ implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
 [LabelFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/Label_README.md)
 
 
-**其实TabFlowLayout也可以支持底部导航栏，但其实没必要，可以参考这个库 https://github.com/LillteZheng/CusBottomHelper **
+**其实TabFlowLayout也可以支持底部导航栏，但其实没必要，可以参考这个库 https://github.com/LillteZheng/CusBottomHelper**
 
+<table>
  <tr>
     <th>底部凸起</th>
     <th>结合ViewPager</th>
   </tr>
    <tr>
-    <td><a href="url"><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_fragment.gif" align="left"height="789" width="479"></a></td>
-    <td><a href="url"><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_viewpager.gif" align="left" height="789" width="479" ></a></td>
+    <td><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_fragment.gif" align="left"height="789" width="479"></td>
+    <td><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_viewpager.gif" align="left" height="789" width="479" ></td>
   </tr>
-
 </table>
+
 
 ## 如果该项目对您有帮助，可赞助作者继续维护
 
-<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/wechat.png" >
-<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/alipay.jpg" >
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/wechat.png" height="320" width="240">
+
 
 
