@@ -98,5 +98,9 @@ implementation 'com.github.LillteZheng:FlowHelperX:v1.14'
 
 </table>
 
+## 如果该项目对您有帮助，可赞助作者继续维护
+
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/wechat.png" >
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/alipay.jpg" >
 
 
