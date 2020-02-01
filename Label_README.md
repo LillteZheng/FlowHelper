@@ -3,18 +3,21 @@
 <table  align="center">
  <tr>
     <th>LabelFlowLayout</th>
+    <th>LabelFlowLayout 显示更多</th>
   </tr>
    <tr>
     <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label.gif" align="left" height="789" width="479"></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label_showmore.gif" align="left" height="789" width="479"></a></td>
   </tr>
 
 </table>
 
+## 3.3 LabelFlowLayout 
 LabelFlowLayout 竖向布局，支持自动换行，单选、多选、长按等功能.
 
 **它的状态变化，根据 view 的 selected 来，所以大家可以写 selector 当背景，或者在方法中自己设置** 
 
-## 使用
+### 3.3.1 使用
 
 LabelFlowLayout 默认单选，在 xml 这样配置：
 
@@ -56,8 +59,8 @@ flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textv
 });
 ```
 
-## 多选
-其实只需要配置 flowLayout.setMaxCount(3); 就可以了，然后adapter 中重写：
+## 3.3.2 多选
+其实只需要配置 flowLayout.setMaxSelectCount(3); 就可以了，然后adapter 中重写：
 ```
 @Override
 public void onReachMacCount(List<Integer> ids, int count) {
@@ -67,7 +70,7 @@ public void onReachMacCount(List<Integer> ids, int count) {
 ```
 **如果您选默认选中其中一些item，可以使用 flowLayout.setSelects(2,3,5);**
 
-## 长按
+## 3.3.3 长按
 其实就是长按view，至于状态的变化，由自己去写：
 
 ```
@@ -121,7 +124,53 @@ public void onReachMacCount(List<Integer> ids, int count) {
 
 ```
 
-### 参考代码：
+### 3.3.5 显示更多
+
+LabelFlowLayout 还支持显示更多的功能，如图：
+
+![](https://user-gold-cdn.xitu.io/2020/2/1/170008c36fff38a8?w=359&h=175&f=png&s=12014)
+
+配置的 xml 如下：
+```
+<com.zhengsr.tablib.view.flow.LabelFlowLayout
+    android:id="@+id/labelflow"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    app:label_showLine="3"
+    app:label_showMore_layoutId="@layout/show_more"
+    app:label_showMore_Color="@color/white"/>
+```
+- label_showLine 表示最多显示的行数
+- label_showMore_layoutId 表示显示更多的layoutId，这样方便客制化
+- label_showMore_Color 表示主背景色，用来设置 shader 虚化
+
+上面的 label_showMore_Color 可能不太理解，其实就是把 **显示更多的 LayoutId** 转成bitmap，显示在下面；虚化怎么办呢？
+
+其实就是给 paint 设置一个 shader，上面为透明色，下面给背景色一样，就能达到虚化的效果。如：
+
+```
+ /**
+ * 同时加上一个 shader，让它有模糊效果
+ */
+Shader shader = new LinearGradient(0, 0, 0,
+        getHeight(), Color.TRANSPARENT, mShowMoreColor, Shader.TileMode.CLAMP);
+mPaint.setShader(shader);
+```
+
+### 3.3.6 配置自定义属性
+当然，也支持动态配置自定义属性。如下:
+
+```
+LabelBean bean = new LabelBean();
+bean.showLines = 2;
+bean.showMoreLayoutId = R.layout.show_more;
+bean.showMoreColor = Color.WHITE;
+flowLayout.setLabelBean(bean);
+```
+
+### 3.3.7参考代码：
 
 [布局代码](https://github.com/LillteZheng/FlowHelper/blob/master/app/src/main/res/layout/activity_label.xml)
 
@@ -134,4 +183,7 @@ public void onReachMacCount(List<Integer> ids, int count) {
 |---|---|---|
 |label_maxcount|integer|最大选择个数|
 |label_iaAutoScroll|boolean|是否支持自动滚动|
+|label_showLine|integer|最多显示的行数|
+|label_showMore_layoutId|integer|显示更多的layoutId|
+|label_showMore_Color|color|显示更多的背景色，为了虚化作用|
 
