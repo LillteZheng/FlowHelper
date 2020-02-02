@@ -13,6 +13,8 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 [实现一个可定制化的TabFlowLayout(四) -- 与ViewPager 结合，实现炫酷效果](https://blog.csdn.net/u011418943/article/details/103851359)
 
+[实现一个可定制化的TabFlowLayout -- 原理篇](https://juejin.im/post/5e365f52f265da3e3d511d65)
+
 [实现一个可定制化的TabFlowLayout -- 说明文档](https://juejin.im/post/5e2f9dc7e51d4558836e3f99)
 
 
