@@ -109,5 +109,14 @@ android.enableJetifier=true
 
 <img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/wechat.png" height="320" width="240">
 
+## 参考
+
+感谢以下工程的参考和帮助：
+
+[鸿洋的 flowLayout](https://github.com/hongyangAndroid/FlowLayout)
+
+[Flyco 大佬的TabLayout](https://github.com/H07000223/FlycoTabLayout)
+
+
 
 
