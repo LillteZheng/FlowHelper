@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,24 +93,23 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 reAdjustLayoutParams();
 
                 /**
-                 *  当横竖屏之后，需要重新对位置，选中 index 等恢复到原来的状态
+                 *  当横竖屏,或者异常重启之后，需要重新对位置，选中 index 等恢复到原来的状态
                  */
                 if (isFirst) {
                     isFirst = false;
 
-                    if (mAction != null) {
-                        mAction.config(TabFlowLayout.this);
+                    if (mAction == null) {
+                        return;
                     }
+                    mAction.config(TabFlowLayout.this);
+
 
                     if (mViewPager != null) {
-                        if (mAction != null) {
-                           mAction.chooseIndex(mLastIndex,mCurrentIndex);
-                        }
+                        mAction.chooseIndex(mLastIndex,mCurrentIndex);
 
                     } else {
-                        if (mAction != null && mCurrentIndex > 0) {
-                            mAction.chooseIndex(mLastIndex,mCurrentIndex);
-                        }
+                        mAction.chooseIndex(mLastIndex,mCurrentIndex);
+
                     }
 
                     //让它滚动到对应的位置
@@ -366,9 +366,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
                             mAction.config(TabFlowLayout.this);
                             if (mViewPager != null) {
                                 mViewPager.setCurrentItem(mCurrentIndex,false);
-                                mAction.chooseIndex(mLastIndex,mCurrentIndex);
-                                updateScroll(getChildAt(mCurrentIndex),false);
                             }
+                            mAction.chooseIndex(mLastIndex,mCurrentIndex);
+                            updateScroll(getChildAt(mCurrentIndex),false);
                         }
                     }
 
@@ -406,6 +406,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
     private void chooseItem(int position, View view) {
+        mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         if (mViewPager != null && mAction != null) {
             mLastIndex = mAction.getCurrentIndex();
@@ -416,7 +417,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mAdapter != null) {
             mAdapter.onItemClick(view, mAdapter.getDatas().get(position), position);
         }
-        mLastIndex = mCurrentIndex;
         /**
          * 如果没有 viewpager，则需要使用 scroller 平滑过渡
          */
@@ -565,6 +565,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mViewPager != null) {
             mCurrentIndex = mViewPager.getCurrentItem();
             mLastIndex = 0;
+        }else{
+            if (mAction != null) {
+                mLastIndex = mAction.getLastIndex();
+            }
         }
         bundle.putInt("index", mCurrentIndex);
         bundle.putInt("lastindex", mLastIndex);

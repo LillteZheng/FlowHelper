@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhengsr.tablib.view.TabColorTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_text"
@@ -10,7 +10,8 @@
     android:paddingTop="6dp"
     android:paddingEnd="12dp"
     android:paddingBottom="6dp"
-    android:textColor="@color/unselect"
+    app:colortext_default_color="@color/unselect"
+    app:colortext_change_color="@color/white"
     android:textSize="14sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

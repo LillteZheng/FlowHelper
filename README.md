@@ -39,7 +39,7 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.17'
+implementation 'com.github.LillteZheng:FlowHelper:v1.18'
 ```
 
 **如果要支持 AndroidX ，如果你的工程已经有以下代码，直接关联即可:**

@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         app:label_showLine="3"
-        app:label_showMore_layoutId="@layout/item_article_recy_layout"
-        app:label_showMore_Color="@color/wechat"/>
+        app:label_showMore_layoutId="@layout/show_more"
+        app:label_showMore_Color="@color/white"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -149,8 +149,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             autoScaleView();
             doAnim(lastIndex, curIndex,mAnimTime);
         } else {
-            clearColorText();
             if (Math.abs(mCurrentIndex - mLastIndex) > 1) {
+                clearColorText();
                 isClickMore = true;
                 autoScaleView();
                 doAnim(lastIndex, curIndex,mAnimTime);
@@ -165,7 +165,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     public void clearColorText() {
         if (isColorText) {
-            if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 1) {
+            if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 0) {
                 int childCount = mParentView.getChildCount();
                 for (int i = 0; i < childCount; i++) {
                     View view = mParentView.getChildAt(i);
@@ -276,7 +276,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
         /**
          * 这里的处理是因为外部调用了 setCurrentItem ，此时 item 之间的差值也大于1;
-         * 但因为没有回调 onItemClick，所以 draw 、动画等效果没法实现，所以，可以先通过
+         * 但因为没有回调 onItemClick，所以 draw 、动画等效果没法实现，因此，可以先通过
          * Viewpager 拿到 setCurrentItem(position) 中的position，赋值给当前的 mCurrentIndex；
          * 且两者之间大于1时，直接使用draw和动画效果；不再让 onPageScrolled 去执行动画，避免卡顿
          */
@@ -349,18 +349,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 if (isVertical()){
                     if (mTabHeight != -1){
                         lastValue.top = mTabRect.top;
-                     //   lastValue.left = mTabRect.left;
                         lastValue.bottom = mTabRect.bottom;
                         int height = curView.getMeasuredHeight();
-                        if (mType == FlowConstants.RECT){
-                            curValue.top = (1 - mOffset) * height / 2 + curView.getTop() ;
-                            curValue.bottom = height * mOffset + curValue.top;
-                        } else {
-                            curValue.top = (height - mTabHeight) / 2 + curView.getTop();
-                            curValue.bottom = mTabHeight + curValue.top;
-                        }
-
-
+                        //竖直方向不去理会
+                        curValue.top = (height - mTabHeight) / 2 + curView.getTop();
+                        curValue.bottom = mTabHeight + curValue.top;
                     }
                 }else {
                     if (mTabWidth != -1) {
@@ -397,10 +390,15 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                         if (mParentView != null && mViewPager == null) {
                             TabFlowAdapter adapter = mParentView.getAdapter();
                             if (adapter != null) {
-                                View lastView = mParentView.getChildAt(mLastIndex);
-                                View curView = mParentView.getChildAt(mCurrentIndex);
-                                adapter.onItemSelectState(curView, true);
-                                adapter.onItemSelectState(lastView, false);
+                                int count = adapter.getItemCount();
+                                for (int i = 0; i < count; i++) {
+                                    View child = mParentView.getChildAt(i);
+                                    if (i == mCurrentIndex){
+                                        adapter.onItemSelectState(child, true);
+                                    }else{
+                                        adapter.onItemSelectState(child, false);
+                                    }
+                                }
                             }
                         }
                     }
@@ -442,6 +440,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
 
+    /**
+     * 选中默认的颜色
+     * @param lastIndex
+     * @param curIndex
+     */
     public void chooseIndex(int lastIndex,int curIndex){
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
@@ -467,7 +470,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     if (textView instanceof TextView){
                         isTextView = true;
                     }
-
                 }
                 if (mIsAutoScale && mScaleFactor > 1) {
                     child.setScaleX(mScaleFactor);
@@ -554,6 +556,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         return mCurrentIndex;
     }
 
+    public int getLastIndex() {
+        return mLastIndex;
+    }
 
     /**
      * 配置动态属性

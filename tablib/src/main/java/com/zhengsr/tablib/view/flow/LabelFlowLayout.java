@@ -66,7 +66,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
         mShowMoreLines = ta.getInteger(R.styleable.LabelFlowLayout_label_showLine, -1);
         setLabelLines(mShowMoreLines);
 
-        mShowMoreColor = ta.getColor(R.styleable.LabelFlowLayout_label_showMore_Color, Color.WHITE);
+        mShowMoreColor = ta.getColor(R.styleable.LabelFlowLayout_label_showMore_Color, Color.RED);
         mShowMoreLayoutId = ta.getResourceId(R.styleable.LabelFlowLayout_label_showMore_layoutId, -1);
 
         ta.recycle();
@@ -130,7 +130,6 @@ public class LabelFlowLayout extends ScrollFlowLayout {
                  * 如果在范围内，截取该事件
                  */
                 if (mBitRect.contains(x, y)) {
-                    Log.d(TAG, "zsr onInterceptTouchEvent: ");
                     return true;
                 }
                 break;

@@ -46,7 +46,7 @@ public class NetTestActivity extends SupportActivity {
 
 
         final TabFlowAdapter adapter ;
-        flowLayout.setViewPager(mViewPager,R.id.item_text, 1,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setViewPager(mViewPager,R.id.item_text);
         flowLayout.setAdapter(adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
 
             @Override
@@ -101,7 +101,7 @@ public class NetTestActivity extends SupportActivity {
     }
 
     public void test(View view) {
-        mViewPager.setCurrentItem(2);
+        recreate();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
