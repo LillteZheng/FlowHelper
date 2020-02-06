@@ -113,7 +113,7 @@ android.enableJetifier=true
 
 ## 参考
 
-感谢以下工程的参考和帮助：
+本工程参考以下优秀项目：
 
 [鸿洋的 flowLayout](https://github.com/hongyangAndroid/FlowLayout)
 
