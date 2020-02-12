@@ -63,8 +63,8 @@ flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textv
 其实只需要配置 flowLayout.setMaxSelectCount(3); 就可以了，然后adapter 中重写：
 ```
 @Override
-public void onReachMacCount(List<Integer> ids, int count) {
-    super.onReachMacCount(ids, count);
+public void onReachMaxCount(List<Integer> ids, int count) {
+    super.onReachMaxCount(ids, count);
     Toast.makeText(LabelActivity.this, "最多只能选中 "+count+" 个"+" 已选中坐标: "+ids, Toast.LENGTH_SHORT).show();
 }
 ```

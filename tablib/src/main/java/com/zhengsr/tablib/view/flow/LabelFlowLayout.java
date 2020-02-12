@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -140,7 +139,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (event.getAction() == MotionEvent.ACTION_UP){
+        if (event.getAction() == MotionEvent.ACTION_UP) {
             float x = event.getX();
             float y = event.getY();
             if (mBitRect.contains(x, y)) {
@@ -256,7 +255,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
                     if (getSelectedCount() > mMaxSelectCount) {
                         v.setSelected(false);
                         adapter.onItemSelectState(v, false);
-                        adapter.onReachMacCount(getSelecteds(), mMaxSelectCount);
+                        adapter.onReachMaxCount(getSelecteds(), mMaxSelectCount);
                         return;
                     }
                 }
@@ -319,6 +318,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
             View view = getChildAt(i);
             if (view.isSelected()) {
                 indexs.add(i);
+
             }
         }
         return indexs;
@@ -332,12 +332,21 @@ public class LabelFlowLayout extends ScrollFlowLayout {
      */
     public void setSelects(Integer... indexs) {
         if (indexs != null && indexs.length > 0) {
+
             for (int i = 0; i < indexs.length; i++) {
                 for (int j = 0; j < getChildCount(); j++) {
                     View view = getChildAt(j);
                     if (j == indexs[i]) {
                         view.setSelected(true);
+                        mLastPosition = j;
+                        if (mAdapter != null) {
+                            mAdapter.onItemSelectState(view, true);
+                        }
                         break;
+                    } else {
+                        if (mAdapter != null) {
+                            mAdapter.onItemSelectState(view, false);
+                        }
                     }
                 }
             }

@@ -1,13 +1,9 @@
 package com.zhengsr.tabhelper.activity;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhengsr.tabhelper.CommonUtils;
@@ -20,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LabelActivity extends AppCompatActivity {
-    private List<String> mTitle = new ArrayList<>(Arrays.asList("新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习", "测试后","新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习"));
+    private List<String> mTitle = new ArrayList<>(Arrays.asList("新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习"));
     private List<String> mTitle2 = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed ".split(" ")));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +58,8 @@ public class LabelActivity extends AppCompatActivity {
             }
         });
 
+        flowLayout.setSelects(6);
+
     }
 
 
@@ -75,6 +73,7 @@ public class LabelActivity extends AppCompatActivity {
                 view.setBackground(CommonUtils.getColorDrawable(10));
             }
         });
+
     }
 
     private void multiFlow(){
@@ -89,8 +88,8 @@ public class LabelActivity extends AppCompatActivity {
 
 
             @Override
-            public void onReachMacCount(List<Integer> ids, int count) {
-                super.onReachMacCount(ids, count);
+            public void onReachMaxCount(List<Integer> ids, int count) {
+                super.onReachMaxCount(ids, count);
                 Toast.makeText(LabelActivity.this, "最多只能选中 "+count+" 个"+" 已选中坐标: "+ids, Toast.LENGTH_SHORT).show();
             }
 

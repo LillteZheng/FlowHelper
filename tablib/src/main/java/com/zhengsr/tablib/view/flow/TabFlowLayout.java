@@ -533,7 +533,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 }
             }
 
-
             if (offset <= 0){
                 offset = 0;
             }

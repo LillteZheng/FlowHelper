@@ -19,7 +19,7 @@ public abstract class LabelFlowAdapter<T> extends TemplateAdapter<T> {
      * @param ids
      * @param count
      */
-    public  void onReachMacCount(List<Integer> ids, int count){}
+    public  void onReachMaxCount(List<Integer> ids, int count){}
 
     /**
      * 上个焦点和当前焦点的焦点情况，方便自定义动画，或者其他属性
