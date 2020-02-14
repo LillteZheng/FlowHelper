@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -135,7 +134,7 @@ public class VerticalTabActivity extends AppCompatActivity {
 
                     int firstPosition = mManager.findFirstVisibleItemPosition();
                     if (!mTabFlowLayout.isItemClick()) {
-                        mTabFlowLayout.setItemSelected(firstPosition);
+                        mTabFlowLayout.setItemClickByOutSet(firstPosition);
                         mTabFlowLayout.setItemClickStatus(true);
                     }else{
                         /**

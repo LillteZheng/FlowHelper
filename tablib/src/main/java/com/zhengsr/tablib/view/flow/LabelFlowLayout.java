@@ -30,7 +30,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "LabelFlowLayout";
     private LabelFlowAdapter mAdapter;
     private int mMaxSelectCount;
-    private int mLastPosition = 0;
+    private int mLastPosition = -1;
     /**
      * attrs
      */

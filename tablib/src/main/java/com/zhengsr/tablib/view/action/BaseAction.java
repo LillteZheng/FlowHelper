@@ -114,23 +114,42 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     }
 
     /**
-     * 设置 viewpager 的点击选中颜色效果
+     * 设置 viewpager
      *
-     * @param viewPager
-     * @param textId
-     * @param unselectedColor
-     * @param selectedColor
      */
-    public void setViewPager(final ViewPager viewPager, int textId, int unselectedColor, int selectedColor) {
+    public BaseAction setViewPager(final ViewPager viewPager) {
         mViewPager = viewPager;
         viewPager.addOnPageChangeListener(null);
         viewPager.addOnPageChangeListener(this);
-        mTextViewId = textId;
-        mUnSelectedColor = unselectedColor;
-        mSelectedColor = selectedColor;
+        return this;
 
     }
 
+    /**
+     * 设置textview 的id ，不然颜色不起作用
+     * @param textId
+     */
+    public  BaseAction setTextId(int textId){
+        mTextViewId = textId;
+        return this;
+    }
+
+    /**
+     * 设置选中颜色，在 TabTextColorView 不起作用
+     * @param selectedColor
+     */
+    public BaseAction setSelectedColor(int selectedColor) {
+        this.mSelectedColor = selectedColor;
+        return this;
+    }
+    /**
+     * 设置默认颜色，在 TabTextColorView 不起作用
+     * @param unSelectedColor
+     */
+    public BaseAction setUnSelectedColor(int unSelectedColor) {
+        this.mUnSelectedColor = unSelectedColor;
+        return this;
+    }
 
     /**
      * 点击事件
@@ -619,4 +638,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     public boolean isRightAction(){
         return mActionOrientation != -1 && mActionOrientation == FlowConstants.RIGHT;
     }
+
+
 }

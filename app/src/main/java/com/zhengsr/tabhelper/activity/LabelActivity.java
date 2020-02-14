@@ -25,7 +25,7 @@ public class LabelActivity extends AppCompatActivity {
         singleFlow();
         searchFlow();
         multiFlow();
-       canLongFlow();
+        canLongFlow();
     }
 
     private void singleFlow(){
@@ -58,7 +58,7 @@ public class LabelActivity extends AppCompatActivity {
             }
         });
 
-        flowLayout.setSelects(6);
+    //    flowLayout.setSelects(6);
 
     }
 

@@ -37,6 +37,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
     private void rectFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.rectflow);
+        flowLayout.setDefaultPosition(2);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void onItemSelectState(View view, boolean isSelected) {

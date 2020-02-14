@@ -170,29 +170,26 @@ private void rectFlow(){
 ```
 
 
-### 3.1.1、结合Viewpager
+### 3.1.1、结合Viewpager 以及一些常用配置
 结合 ViewPager 非常简单，如下：
 ```
-flowLayout.setViewPager(...) 即可.
+flowLayout.setViewPager(viewpager) .
 
 ```
-
-它有几个方法,参考这个解释就可以了。
+如果您想要配置默认位置，或者 TextView 的颜色变化，可以参考以下设置，支持链式调用 :
 ```
   /**
-   * 配置viewpager
-   * @param viewPager
-   * @param textId  view 中 textview 的id,用于TextView的颜色变化
-   * @param selectedIndex 默认选中的item，初始值为0，也可以从第二页或者其他 位置
-   * @param unselectedColor 没有选中的颜色，如果为 TabColorTextView 不需要些这个
-   * @param selectedColor 选中的颜色，如果为 TabColorTextView 不需要些这个
+   * @ setViewPager 设置 viewpager
+   * @ setTextId  view 中 textview 的id,用于TextView的颜色变化
+   * @ setDefaultPosition 默认选中的item，初始值为0，也可以从第二页或者其他 位置
+   * @ setSelectedColor //选中的颜色，如果为 TabColorTextView 不需要些这个
+   * @ setUnSelectedColor //没有选中的颜色，如果为 TabColorTextView 不需要些这个
    */
-  public void setViewPager(
-                        ViewPager viewPager,
-                        int textId, 
-                        int selectedIndex, 
-                        int unselectedColor, 
-                        int selectedColor) {}
+ flowLayout.setViewPager(mViewPager)
+            .setTextId(R.id.item_text) 
+            .setSelectedColor(Color.WHITE) 
+            .setUnSelectedColor(getResources().getColor(R.color.unselect)) 
+            .setDefaultPosition(2); 
 ```
 
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**

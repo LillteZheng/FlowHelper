@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +61,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private ViewPager mViewPager;
     private int mTextId = -1;
     private int mSelectedColor = -1;
-    private int mUnselectedColor = -1;
+    private int mUnSelectedColor = -1;
     private int mAnimTime;
     private int mTabOrientation;
 
@@ -120,6 +119,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                         }
 
                     }
+
 
 
                 }
@@ -251,22 +251,16 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
         if (mAction != null){
             if (mViewPager != null && mAction.getViewPager() == null){
-                mAction.setViewPager(mViewPager,mTextId,mUnselectedColor,mSelectedColor);
+               // mAction.setViewPager(mViewPager,mTextId, mUnSelectedColor,mSelectedColor);
+                mAction.setViewPager(mViewPager)
+                        .setTextId(mTextId)
+                        .setSelectedColor(mSelectedColor)
+                        .setUnSelectedColor(mUnSelectedColor);
             }
         }
     }
 
-    /**
-     * 设置选中的点击事件
-     * @param position
-     */
-    public void setItemSelected(int position) {
-        isItemClick = false;
-        if (position >= 0 && position < getChildCount()){
-            View view = getChildAt(position);
-            chooseItem(position,view);
-        }
-    }
+
 
 
     /**
@@ -294,18 +288,70 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     }
 
+    /**
+     * 设置默认位置
+     * @param position
+     */
+    public TabFlowLayout setDefaultPosition(int position){
+        mCurrentIndex = position;
+        return this;
+    }
 
-    public void setViewPager(ViewPager viewPager) {
-        setViewPager(viewPager, -1, 0, 0, 0);
+    /**
+     * 设置 viewpager
+     * @param viewPager
+     * @return
+     */
+    public TabFlowLayout setViewPager(ViewPager viewPager){
+        if (viewPager == null) {
+            return this;
+        }
+        mViewPager = viewPager;
+        if (mAction != null) {
+            mAction.setViewPager(viewPager);
+        }
+        return this;
+    }
+
+    /**
+     * 设置 textId，不然颜色选择不起作用
+     * @param textId
+     * @return
+     */
+    public TabFlowLayout setTextId(int textId){
+        mTextId = textId;
+        if (mAction != null) {
+            mAction.setTextId(textId);
+        }
+        return this;
+    }
+
+    /**
+     * 设置选中颜色，在 TabTextColorView 不起作用
+     * @param selectedColor
+     */
+    public TabFlowLayout setSelectedColor(int selectedColor) {
+        mSelectedColor = selectedColor;
+        if (mAction != null) {
+            mAction.setSelectedColor(selectedColor);
+        }
+        return this;
+    }
+    /**
+     * 设置默认颜色，在 TabTextColorView 不起作用
+     * @param unSelectedColor
+     */
+    public TabFlowLayout setUnSelectedColor(int unSelectedColor) {
+        mUnSelectedColor = unSelectedColor;
+        if (mAction != null) {
+            mAction.setUnSelectedColor(unSelectedColor);
+        }
+        return this;
     }
 
 
-    public void setViewPager(ViewPager viewPager, int textId) {
-        setViewPager(viewPager, textId, 0, -1, -1);
-    }
-    public void setViewPager(ViewPager viewPager, int textId, int unselectedColor, int selectedColor) {
-        setViewPager(viewPager, textId, 0, unselectedColor, selectedColor);
-    }
+
+
 
 
     /**
@@ -316,15 +362,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
      * @param unselectedColor 没有选中的颜色 ColorTextView 中失效
      * @param selectedColor 选中的颜色 ColorTextView 中失效
      */
-    public void setViewPager(ViewPager viewPager, int textId, int selectedIndex, int unselectedColor, int selectedColor) {
-        if (viewPager != null) {
-            mViewPager = viewPager;
-            if (mAction != null) {
-                mAction.setViewPager(viewPager, textId, unselectedColor, selectedColor);
-            }
-        }
+   /* public void setViewPager(ViewPager viewPager, int textId, int selectedIndex, int unselectedColor, int selectedColor) {
+
         mSelectedColor = selectedColor;
-        mUnselectedColor = unselectedColor;
+        mUnSelectedColor = unselectedColor;
         mTextId = textId;
         mCurrentIndex = selectedIndex;
 
@@ -337,9 +378,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 mAction.setBean(mTabBean);
             }
         }
-
-
-    }
+    }*/
 
     /**
      * 数据变化
@@ -379,12 +418,23 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
 
     /**
+     * 由外部设置位置，为不是自身点击的
+     * 这个常用于 recyclerview 的联动效果
+     * @param position
+     */
+    public void setItemClickByOutSet(int position) {
+        isItemClick = false;
+        if (position >= 0 && position < getChildCount()){
+            View view = getChildAt(position);
+            chooseItem(position,view);
+        }
+    }
+
+    /**
      * 配置 点击和长按事件
-     *
      * @param view
      * @param i
      */
-
     private void configClick(final View view, final int i) {
         view.setOnClickListener(new OnClickListener() {
             @Override
@@ -405,6 +455,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
         });
     }
 
+    /**
+     * 选中某个tab
+     * @param position
+     * @param view
+     */
     private void chooseItem(int position, View view) {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
@@ -432,7 +487,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
     private void updateScroll(View view,boolean smoothScroll) {
         if (isCanMove() && view != null ) {
-
 
             //超过中间了，让父控件也跟着移动
             int scrollPos;
@@ -593,7 +647,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
             if (mTabBean != null) {
                 mAction.setBean(mTabBean);
                 if (mViewPager != null && mAction.getViewPager() == null){
-                    mAction.setViewPager(mViewPager,mTextId,mUnselectedColor,mSelectedColor);
+                    //mAction.setViewPager(mViewPager,mTextId, mUnSelectedColor,mSelectedColor);
+                    mAction.setViewPager(mViewPager)
+                            .setTextId(mTextId)
+                            .setSelectedColor(mSelectedColor)
+                            .setUnSelectedColor(mUnSelectedColor);
                 }
             }
         }

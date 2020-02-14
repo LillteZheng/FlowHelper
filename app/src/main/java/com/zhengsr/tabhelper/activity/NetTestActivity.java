@@ -1,7 +1,6 @@
 package com.zhengsr.tabhelper.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -46,7 +45,9 @@ public class NetTestActivity extends SupportActivity {
 
 
         final TabFlowAdapter adapter ;
-        flowLayout.setViewPager(mViewPager,R.id.item_text);
+        flowLayout.setViewPager(mViewPager)
+                .setTextId(R.id.item_text)
+                .setDefaultPosition(2);
         flowLayout.setAdapter(adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
 
             @Override
@@ -57,10 +58,9 @@ public class NetTestActivity extends SupportActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-               // mViewPager.setCurrentItem(position,false);
-                //flowLayout.setItemAnim(position);
                 mViewPager.setCurrentItem(position);
             }
+
         });
 
 

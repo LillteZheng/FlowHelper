@@ -52,7 +52,11 @@ public class TabActivity extends AppCompatActivity {
 
     private void rectFlow(){
         final TabFlowLayout flowLayout = findViewById(R.id.rectflow);
-        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+       // flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setViewPager(mViewPager)
+                .setTextId(R.id.item_text)
+                .setSelectedColor(Color.WHITE)
+                .setUnSelectedColor(getResources().getColor(R.color.unselect));
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -69,7 +73,11 @@ public class TabActivity extends AppCompatActivity {
 
 
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-        flowLayout2.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+       // flowLayout2.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout2.setViewPager(mViewPager)
+                .setTextId(R.id.item_text)
+                .setSelectedColor(Color.WHITE)
+                .setUnSelectedColor(getResources().getColor(R.color.unselect));
         flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -91,7 +99,8 @@ public class TabActivity extends AppCompatActivity {
 
     private void triFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.triflow);
-        flowLayout.setViewPager(mViewPager,R.id.item_text);
+        flowLayout.setViewPager(mViewPager)
+                .setTextId(R.id.item_text);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -107,7 +116,10 @@ public class TabActivity extends AppCompatActivity {
     }
     private void roundFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.roundflow);
-        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
+        flowLayout.setViewPager(mViewPager)
+                .setTextId(R.id.item_text)
+                .setSelectedColor(Color.WHITE)
+                .setUnSelectedColor(getResources().getColor(R.color.unselect));
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -157,7 +169,8 @@ public class TabActivity extends AppCompatActivity {
 
     private void colorFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.colorflow);
-        flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.RED);
+        flowLayout.setViewPager(mViewPager)
+                .setTextId(R.id.item_text);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_color_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
