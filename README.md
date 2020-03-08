@@ -20,7 +20,7 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 [FlowLayout 和 Recyclerview 实现双联表联动](https://blog.csdn.net/u011418943/article/details/104083568)
 
-如果您也想快速实现banner，可以使用这个库 https://github.com/LillteZheng/ViewPagerHelper
+如果您也想快速实现 **Banner 轮播图**，可以使用这个库 https://github.com/LillteZheng/ViewPagerHelper
 
 [![](https://jitpack.io/v/LillteZheng/FlowHelper.svg)](https://jitpack.io/#LillteZheng/FlowHelper)
 ![](https://img.shields.io/github/stars/LillteZheng/FlowHelper.svg) 
