@@ -38,6 +38,7 @@
         <attr name="label_showLine" format="integer"/>
         <attr name="label_showMore_layoutId" format="reference"/>
         <attr name="label_showMore_Color" format="color"/>
+        <attr name="label_handUp_layoutId" format="reference"/>
     </declare-styleable>
 
     <!--文件渐变属性-->

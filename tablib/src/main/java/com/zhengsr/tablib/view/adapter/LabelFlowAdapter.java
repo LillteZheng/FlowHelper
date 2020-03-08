@@ -29,7 +29,17 @@ public abstract class LabelFlowAdapter<T> extends TemplateAdapter<T> {
     public  void onFocusChanged(View oldView, View newView){}
 
 
+    /**
+     * 显示更多
+     * @param view
+     */
     public void onShowMoreClick(View view){};
+
+    /**
+     * 收起
+     * @param view
+     */
+    public void onHandUpClick(View view){};
 
 
     /**

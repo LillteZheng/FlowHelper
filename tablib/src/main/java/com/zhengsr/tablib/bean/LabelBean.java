@@ -24,12 +24,17 @@ public class LabelBean {
     /**
      * 显示更多的layoutId
      */
-    public int showMoreLayoutId;
+    public int showMoreLayoutId = -1;
 
     /**
      * 显示更多的背景色，建议与主布局的背景色一直
      */
     public int showMoreColor = -2;
+
+    /**
+     * 收起的 layoutId
+     */
+    public int handUpLayoutId = -1;
 
 
 }

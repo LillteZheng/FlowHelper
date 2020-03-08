@@ -28,25 +28,33 @@ import java.util.List;
  */
 public class LabelFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "LabelFlowLayout";
+    /**
+     * logic
+     */
     private LabelFlowAdapter mAdapter;
     private int mMaxSelectCount;
     private int mLastPosition = -1;
+    private boolean isHasMoreView;
+    private boolean isHasHandUpView;
+
     /**
      * attrs
      */
     private boolean isAutoScroll;
     private int mShowMoreColor;
     private int mShowMoreLayoutId;
+    private int mHandUpLayoutId;
 
 
     /**
      * canvas
      */
     private Paint mPaint;
-    private View mView;
+    private View mMoreView;
     private Bitmap mBitmap;
     private RectF mBitRect;
     private int mShowMoreLines = -1;
+    private View mHandUpView;
 
 
     public LabelFlowLayout(Context context) {
@@ -68,11 +76,19 @@ public class LabelFlowLayout extends ScrollFlowLayout {
         mShowMoreColor = ta.getColor(R.styleable.LabelFlowLayout_label_showMore_Color, Color.RED);
         mShowMoreLayoutId = ta.getResourceId(R.styleable.LabelFlowLayout_label_showMore_layoutId, -1);
 
+        mHandUpLayoutId = ta.getResourceId(R.styleable.LabelFlowLayout_label_handUp_layoutId,-1);
+
         ta.recycle();
 
         if (mShowMoreLayoutId != -1) {
-            mView = LayoutInflater.from(getContext()).inflate(mShowMoreLayoutId, LabelFlowLayout.this, false);
+            mMoreView = LayoutInflater.from(getContext()).inflate(mShowMoreLayoutId, LabelFlowLayout.this, false);
+            isHasMoreView = true;
         }
+
+        if (mHandUpLayoutId != -1){
+            mHandUpView = LayoutInflater.from(getContext()).inflate(mHandUpLayoutId,LabelFlowLayout.this,false);
+        }
+
         setClickable(true);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -86,6 +102,10 @@ public class LabelFlowLayout extends ScrollFlowLayout {
         return isAutoScroll;
     }
 
+    /**
+     * 设置 lable 的 adapter 数据
+     * @param adapter
+     */
     public void setAdapter(LabelFlowAdapter adapter) {
         mAdapter = adapter;
         mAdapter.setListener(new LabelListener());
@@ -117,7 +137,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (mView == null || !isLabelMoreLine()) {
+        if (mMoreView == null || !isLabelMoreLine()) {
             return super.onInterceptTouchEvent(ev);
         }
 
@@ -144,10 +164,28 @@ public class LabelFlowLayout extends ScrollFlowLayout {
             float y = event.getY();
             if (mBitRect.contains(x, y)) {
                 if (mAdapter != null) {
-                    //显示全部了
-                    setLabelLines(-1);
+                    mBitmap = null;
+                    if (isHasMoreView){
+                        //显示全部了
+                        setLabelLines(-1);
+                        mAdapter.onShowMoreClick(mMoreView);
+                        if (mHandUpView != null){
+                            isHasHandUpView = true;
+                            isHasMoreView = false;
+
+                        }
+                    }else if (isHasHandUpView){
+                        setLabelLines(mShowMoreLines);
+                        mAdapter.onHandUpClick(mHandUpView);
+                        if (mMoreView != null) {
+                            isHasHandUpView = false;
+                            isHasMoreView = true;
+                        }
+
+                    }
+
                     requestLayout();
-                    mAdapter.onShowMoreClick(mView);
+
                 }
             }
         }
@@ -157,21 +195,31 @@ public class LabelFlowLayout extends ScrollFlowLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if (mBitmap == null && mView != null) {
+        if (isHasMoreView && mBitmap == null && mMoreView != null) {
             /**
              * 拿到 view 的 bitmap
              */
-            mView.layout(0, 0, getWidth(), mView.getMeasuredHeight());
-            mView.buildDrawingCache();
-            mBitmap = mView.getDrawingCache();
+            mMoreView.layout(0, 0, getWidth(), mMoreView.getMeasuredHeight());
+            mMoreView.buildDrawingCache();
+            mBitmap = mMoreView.getDrawingCache();
             /**
              * 同时加上一个 shader，让它有模糊效果
              */
             Shader shader = new LinearGradient(0, 0, 0,
                     getHeight(), Color.TRANSPARENT, mShowMoreColor, Shader.TileMode.CLAMP);
             mPaint.setShader(shader);
-            mBitRect.set(l, getHeight() - mView.getMeasuredHeight(), r, getHeight());
+            mBitRect.set(l, getHeight() - mMoreView.getMeasuredHeight(), r, getHeight());
+        }else if (isHasHandUpView && mBitmap == null){
+            /**
+             * 拿到 view 的 bitmap
+             */
+            mHandUpView.layout(0, 0, getWidth(), mHandUpView.getMeasuredHeight());
+            mHandUpView.buildDrawingCache();
+            mBitmap = mHandUpView.getDrawingCache();
+            mBitRect.set(l, getHeight() - mMoreView.getMeasuredHeight(), r, getHeight());
         }
+
+
 
     }
 
@@ -179,8 +227,10 @@ public class LabelFlowLayout extends ScrollFlowLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (isLabelMoreLine() && mBitmap != null) {
+        if (isLabelMoreLine() && isHasMoreView && mBitmap != null) {
             canvas.drawPaint(mPaint);
+            canvas.drawBitmap(mBitmap, mBitRect.left, mBitRect.top, null);
+        }else if (isHasHandUpView && mBitmap != null){
             canvas.drawBitmap(mBitmap, mBitRect.left, mBitRect.top, null);
         }
 
@@ -193,12 +243,19 @@ public class LabelFlowLayout extends ScrollFlowLayout {
          * layoutId 需要父控件即 LabelFlowLayout 去帮助测量，才能通过
          * getMeasuredxxx 拿到正确的宽高、
          */
-        if (mView != null) {
-            measureChild(mView, widthMeasureSpec, heightMeasureSpec);
+        if (isHasMoreView) {
+            measureChild(mMoreView, widthMeasureSpec, heightMeasureSpec);
             //添加它的 1/2 来变模糊
-            mViewHeight += mView.getMeasuredHeight() / 2;
+            mViewHeight += mMoreView.getMeasuredHeight() / 2;
             setMeasuredDimension(mLineWidth, mViewHeight);
         }
+
+        if (isHasHandUpView){
+            measureChild(mHandUpView,widthMeasureSpec,heightMeasureSpec);
+            mViewHeight += mHandUpView.getMeasuredHeight();
+            setMeasuredDimension(mLineWidth,mViewHeight);
+        }
+
 
     }
 
@@ -391,10 +448,16 @@ public class LabelFlowLayout extends ScrollFlowLayout {
 
         if (bean.showMoreLayoutId != -1) {
             mShowMoreLayoutId = bean.showMoreLayoutId;
-            mView = LayoutInflater.from(getContext()).inflate(mShowMoreLayoutId, this, false);
+            mMoreView = LayoutInflater.from(getContext()).inflate(mShowMoreLayoutId, this, false);
+            isHasMoreView = true;
         }
         if (bean.showMoreColor != -2) {
             mShowMoreColor = bean.showMoreColor;
+        }
+
+        if (bean.handUpLayoutId != -1){
+            mHandUpLayoutId = bean.handUpLayoutId;
+            mHandUpView = LayoutInflater.from(getContext()).inflate(mHandUpLayoutId, this, false);
         }
 
     }

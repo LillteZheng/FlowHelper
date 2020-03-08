@@ -3,6 +3,7 @@ package com.zhengsr.tablib.view.flow;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -127,6 +128,7 @@ class ScrollFlowLayout extends FlowLayout {
         if (!isCanMove){
             return super.onInterceptTouchEvent(ev);
         }
+        final ViewParent parent = getParent();
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (isVertical()){
@@ -153,6 +155,10 @@ class ScrollFlowLayout extends FlowLayout {
                 mVelocityTracker = VelocityTracker.obtain();
 
                 mVelocityTracker.addMovement(ev);
+                //如果能滚动，应该要屏蔽父控件的触摸事件
+                if (parent != null) {
+                    parent.requestDisallowInterceptTouchEvent(true);
+                }
 
                 break;
 
@@ -164,7 +170,6 @@ class ScrollFlowLayout extends FlowLayout {
                     offset = ev.getX() - mLastPos;
                 }
                 if (Math.abs(offset) >= mTouchSlop) {
-                    final ViewParent parent = getParent();
                     if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
@@ -182,6 +187,7 @@ class ScrollFlowLayout extends FlowLayout {
                     mLastPos = ev.getX();
                 }
                 break;
+
             default:
                 break;
         }
@@ -194,9 +200,11 @@ class ScrollFlowLayout extends FlowLayout {
             mVelocityTracker = VelocityTracker.obtain();
         }
         mVelocityTracker.addMovement(event);
+        final ViewParent parent = getParent();
         
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                
                 break;
             case MotionEvent.ACTION_MOVE:
                 //scroller 向右为负，向左为正
@@ -207,7 +215,7 @@ class ScrollFlowLayout extends FlowLayout {
                     offset = (int) (mMovePos - event.getX());
                 }
                 if (Math.abs(offset) > mTouchSlop){
-                    final ViewParent parent = getParent();
+                  
                     if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
@@ -250,7 +258,6 @@ class ScrollFlowLayout extends FlowLayout {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-
                 mVelocityTracker.computeCurrentVelocity(1000,mMaximumVelocity);
                 int velocityPos ;
                 if (isVerticalMove()){

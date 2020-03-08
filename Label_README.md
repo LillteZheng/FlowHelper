@@ -124,27 +124,31 @@ public void onReachMaxCount(List<Integer> ids, int count) {
 
 ```
 
-### 3.3.5 显示更多
+### 3.3.5 显示更多和收起
 
-LabelFlowLayout 还支持显示更多的功能，如图：
+LabelFlowLayout 还支持显示更多和收起的功能，如图：
 
-![](https://user-gold-cdn.xitu.io/2020/2/1/170008c36fff38a8?w=359&h=175&f=png&s=12014)
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label_showmore.gif" align="left" height="789" width="479">
 
 配置的 xml 如下：
 ```
-<com.zhengsr.tablib.view.flow.LabelFlowLayout
-    android:id="@+id/labelflow"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginStart="10dp"
-    app:label_showLine="3"
-    app:label_showMore_layoutId="@layout/show_more"
-    app:label_showMore_Color="@color/white"/>
+    <com.zhengsr.tablib.view.flow.LabelFlowLayout
+        android:id="@+id/labelflow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        app:label_showLine="3"
+        app:label_handUp_layoutId="@layout/handup"
+        app:label_showMore_layoutId="@layout/show_more"
+        app:label_showMore_Color="@color/white"/>
 ```
 - label_showLine 表示最多显示的行数
 - label_showMore_layoutId 表示显示更多的layoutId，这样方便客制化
 - label_showMore_Color 表示主背景色，用来设置 shader 虚化
+- label_handUp_layoutId 收起的 LayoutId，方便自己客制化
 
 上面的 label_showMore_Color 可能不太理解，其实就是把 **显示更多的 LayoutId** 转成bitmap，显示在下面；虚化怎么办呢？
 
@@ -186,4 +190,5 @@ flowLayout.setLabelBean(bean);
 |label_showLine|integer|最多显示的行数|
 |label_showMore_layoutId|integer|显示更多的layoutId|
 |label_showMore_Color|color|显示更多的背景色，为了虚化作用|
+|label_handUp_layoutId|integer|收起的layoutId|
 

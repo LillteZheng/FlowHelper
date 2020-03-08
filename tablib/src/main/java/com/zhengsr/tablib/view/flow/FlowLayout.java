@@ -61,6 +61,10 @@ class FlowLayout extends ViewGroup {
 
     }
 
+    /**
+     * 设置行数
+     * @param lines
+     */
     protected void setLabelLines(int lines){
         mLabelLines = lines;
     }
