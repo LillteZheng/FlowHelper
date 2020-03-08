@@ -22,7 +22,7 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 
 如果您也想快速实现 **Banner 轮播图**，可以使用这个库 https://github.com/LillteZheng/ViewPagerHelper
 
-**工程使用APP - 玩Android 客户端 : https://github.com/LillteZheng/WanAndroid**
+**工程实际使用 - 玩Android 客户端 : https://github.com/LillteZheng/WanAndroid**
 
 
 [![](https://jitpack.io/v/LillteZheng/FlowHelper.svg)](https://jitpack.io/#LillteZheng/FlowHelper)
