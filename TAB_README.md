@@ -292,8 +292,7 @@ private void resFlow(){
 上面中，item_layout 的宽度都是通过测量自身的，如果想要均分宽度怎么做呢？
 
 可以设置 tab_visual_count ，当前可视个数来试下，比如当前可视界面只显示3个：
-
-<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.png"  >
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.png" >
 
 
 
