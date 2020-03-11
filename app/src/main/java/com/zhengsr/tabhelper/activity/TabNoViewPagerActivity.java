@@ -62,7 +62,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         });
 
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-        flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_test,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);

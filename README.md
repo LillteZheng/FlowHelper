@@ -42,7 +42,7 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.21'
+implementation 'com.github.LillteZheng:FlowHelper:v1.22'
 ```
 
 **如果要支持 AndroidX ，如果你的工程已经有以下代码，直接关联即可:**
@@ -77,6 +77,17 @@ android.enableJetifier=true
 
 </table>
 
+**目前TabFlowLayout 支持以下效果:**
+- **矩形**
+- **三角形**
+- **圆角**
+- **shape 或者 bitmap 等资源**
+- **自定义功能**
+- **放大Item效果，与上述效果可共用**
+- **颜色渐变效果，需要使用 TabColorTextView 控件，与上述效果可共用，只支持有viewpager 的情况**
+- **竖直效果，需要设置 tab_orientation = vertical**
+- **宽度均分**
+
 [TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README.md)
 
 ## LabelFlowLayout 效果图
@@ -92,6 +103,15 @@ android.enableJetifier=true
   </tr>
 
 </table>
+
+
+**LabelFlowLayout 支持以下效果:**
+- **单选**
+- **多选**
+- **长按**
+- **显示更多**
+- **收起**
+
 
 [LabelFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/Label_README.md)
 

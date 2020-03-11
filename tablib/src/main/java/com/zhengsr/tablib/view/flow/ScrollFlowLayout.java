@@ -70,6 +70,7 @@ class ScrollFlowLayout extends FlowLayout {
         /**
          * TabFlowLayout 或者 LabelFlowLayout 的竖向滚动
          */
+        //todo 这是什么魔性 if else 找机会改一下
         if (isVerticalMove()){
             if (mViewHeight < mScreenHeight){
                 if (mBottomRound > mViewHeight){
@@ -95,22 +96,32 @@ class ScrollFlowLayout extends FlowLayout {
         }else{
             //TabFlowLayout 横向布局
             if (!isVertical()) {
-                //说明控件没有满屏或者固定宽度
-                if (mViewWidth < mScreenWidth) {
-                    if (mRightBound > mViewWidth) {
+                //如果是固定宽度
+                if (mVisualCount != -1){
+                    if (getChildCount() > mVisualCount){
                         isCanMove = true;
-                    } else {
+                    }else{
                         isCanMove = false;
                     }
                     mWidth = mViewWidth;
-                } else {
-                    //再确认一遍
-                    if (mRightBound > mScreenWidth) {
-                        isCanMove = true;
+                }else {
+                    //说明控件没有满屏或者固定宽度
+                    if (mViewWidth < mScreenWidth) {
+                        if (mRightBound > mViewWidth) {
+                            isCanMove = true;
+                        } else {
+                            isCanMove = false;
+                        }
+                        mWidth = mViewWidth;
+                    } else {
+                        //再确认一遍
+                        if (mRightBound > mScreenWidth) {
+                            isCanMove = true;
+                        }
+                        mWidth = mScreenWidth;
                     }
-                    mWidth = mScreenWidth;
                 }
-                if (!isTabAutoScroll()){
+                if (!isTabAutoScroll()) {
                     isCanMove = false;
                 }
             }

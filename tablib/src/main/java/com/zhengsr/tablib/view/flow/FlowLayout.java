@@ -22,9 +22,13 @@ class FlowLayout extends ViewGroup {
     private static final String TAG = "FlowLayout";
     protected int mViewWidth;
     protected int mViewHeight;
-    private int mTabOrientation;
     /**
-     * label
+     * tabflowlayout
+     */
+    private int mTabOrientation;
+    protected int mVisualCount = -1;
+    /**
+     * labelflowlayout
      */
     private List<Integer> mLineHeights = new ArrayList<>();
     private List<List<View>> mAllViews = new ArrayList<>();
@@ -59,6 +63,9 @@ class FlowLayout extends ViewGroup {
         }
 
 
+    }
+    public void setVisualCount(int visualCount){
+        mVisualCount = visualCount;
     }
 
     /**
@@ -150,7 +157,17 @@ class FlowLayout extends ViewGroup {
          * 计算宽高
          */
 
+
+        int widthPixels = getResources().getDisplayMetrics().widthPixels;
+        if (MeasureSpec.EXACTLY == widthMode) {
+            widthPixels = widthSize;
+        }
+
+
         for (int i = 0; i < childCount; i++) {
+
+
+
             View child = getChildAt(i);
             if (child.getVisibility() == View.GONE) {
                 continue;
@@ -158,14 +175,23 @@ class FlowLayout extends ViewGroup {
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
 
             MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
-
             //拿到 子控件宽高 + margin
-            int cw = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
+            int cw;
+            if (mVisualCount != -1){
+                cw = widthPixels/mVisualCount;
+                params.width = cw;
+                child.setLayoutParams(params);
+                width = widthPixels;
+            }else{
+                cw = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
+                width += cw;
+            }
             int ch = child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
-
-            width += cw;
             //拿到 子控件高度，拿到最大的那个高度
             height = Math.max(height, ch);
+
+
+
 
         }
 

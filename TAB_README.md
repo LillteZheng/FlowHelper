@@ -32,6 +32,7 @@
 - **放大Item效果，与上述效果可共用**
 - **颜色渐变效果，需要使用 TabColorTextView 控件，与上述效果可共用，只支持有viewpager 的情况**
 - **竖直效果，需要设置 tab_orientation = vertical**
+- **宽度均分**
 
 
 ## 三、使用
@@ -286,7 +287,16 @@ private void resFlow(){
 ```
 通过重写 valueChange 拿到移动偏移量，然后通过 flowLayout.setAction(new CircleAction()) 即可。如果是竖直方向，拿到 value.top，value.bottom 再去写逻辑即可。
 
-### 3.1.4、参考代码
+### 3.1.4 宽度均分
+
+上面中，item_layout 的宽度都是通过测量自身的，如果想要均分宽度怎么做呢？
+
+可以设置 tab_visual_count ，当前可视个数来试下，比如当前可视界面只显示3个：
+
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.gif" align="left" height="789" width="479">
+
+
+### 3.1.5、参考代码
 
 上面的效果，可以参考以下代码：
 
@@ -343,7 +353,7 @@ private void resFlow(){
 |tab_orientation|integer|vertical竖直防线，horizontal横向，默认横向|
 |tab_action_orientaion|integer|left坐标，right右边，只支持 tri、rect 两种效果|
 |tab_isAutoScroll|boolean|是否支持自动滚动,默认为true|
-
+|tab_visual_count|integer|可视化个数，比如有一排，我们就只要显示4个，此时宽度均分|
 
 
 **TabColorTextView**

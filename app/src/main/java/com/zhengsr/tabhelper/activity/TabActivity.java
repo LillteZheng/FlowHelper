@@ -57,7 +57,7 @@ public class TabActivity extends AppCompatActivity {
                 .setTextId(R.id.item_text)
                 .setSelectedColor(Color.WHITE)
                 .setUnSelectedColor(getResources().getColor(R.color.unselect));
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_test,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
                 setText(view,R.id.item_text,data);

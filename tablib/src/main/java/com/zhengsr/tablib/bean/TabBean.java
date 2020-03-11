@@ -68,6 +68,11 @@ public class TabBean {
      */
     public boolean isAutoScroll = true;
 
+    /**
+     * 可视个数
+     */
+    public int visualCount = -1;
+
 
     @Override
     public String toString() {

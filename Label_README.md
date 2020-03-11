@@ -17,6 +17,14 @@ LabelFlowLayout 竖向布局，支持自动换行，单选、多选、长按等�
 
 **它的状态变化，根据 view 的 selected 来，所以大家可以写 selector 当背景，或者在方法中自己设置** 
 
+
+**LabelFlowLayout 支持以下效果:**
+- **单选**
+- **多选**
+- **长按**
+- **显示更多**
+- **收起**
+
 ### 3.3.1 使用
 
 LabelFlowLayout 默认单选，在 xml 这样配置：

@@ -29,6 +29,8 @@
         android:background="@color/black_ff_bg"
         app:tab_scale_factor="1.2"
         app:tab_item_autoScale="true"
+        app:tab_visual_count="4"
+        android:layout_marginStart="20dp"
         android:layout_height="wrap_content"/>
     <TextView
         android:layout_width="wrap_content"

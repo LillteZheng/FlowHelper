@@ -82,6 +82,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mScroller = new Scroller(getContext());
         mTabOrientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
         isAutoScroll = mTypeArray.getBoolean(R.styleable.TabFlowLayout_tab_isAutoScroll,true);
+        int visualCount = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_visual_count, -1);
+        setVisualCount(visualCount);
         setTabOrientation(mTabOrientation);
         chooseTabTpye(tabStyle);
         setLayerType(LAYER_TYPE_SOFTWARE,null);
@@ -117,11 +119,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                         if (mViewPager == null) {
                             updateScroll(view, false);
                         }
-
                     }
-
-
-
                 }
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
@@ -662,6 +660,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
         if (isAutoScroll != bean.isAutoScroll){
             isAutoScroll = bean.isAutoScroll;
+        }
+        if (bean.visualCount != -1){
+            setVisualCount(bean.visualCount);
         }
         return this;
     }
