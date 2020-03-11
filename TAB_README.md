@@ -293,7 +293,8 @@ private void resFlow(){
 
 可以设置 tab_visual_count ，当前可视个数来试下，比如当前可视界面只显示3个：
 
-<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.gif" align="left" height="789" width="479">
+<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.png"  >
+
 
 
 ### 3.1.5、参考代码
