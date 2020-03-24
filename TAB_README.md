@@ -40,6 +40,14 @@
 ### 3.1 TabFlowLayout
 首先是在 xml 中，填写 TabFlowLayout 控件，它支持横竖排列，默认横向，可以使用tab_orientation = "vertical" 更换成竖直排列，一个不带效果,支持横向的 TabFlowLayout 如下：
 
+**关于宽度，以下请须知：**
+
+- **设置了 tab_visual_count  ，则根据固定宽度或者屏幕宽度的宽度去均分；其他则是根据子控件的大小去累加宽度，所以需要写好子控件的大小**
+
+- **用到约束布局，或者 LinearLayout，当你是居中而没有向左对齐，当子控件过多，则代码会手动让它向左对齐，这样滚动和布局才会正常**
+
+- **如果需要 TabFlowlayout 和其他控件配置，写好约束问题就好了**
+
 **XML**
 ```
 <com.zhengsr.tablib.view.flow.TabFlowLayout
