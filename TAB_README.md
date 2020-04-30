@@ -201,6 +201,8 @@ flowLayout.setViewPager(viewpager) .
             .setDefaultPosition(2); 
 ```
 
+**其中，如果TextView有颜色变化，setTextId()是必须要设置的!**
+
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**
 - fragment 布局复杂或者网络加载数据时，建议在懒加载中去初始化或者加载数据
 - viewpager 增加缓存，setOffscreenPageLimit(3)。
