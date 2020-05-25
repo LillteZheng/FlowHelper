@@ -11,7 +11,7 @@
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/tabflow"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginTop="5dp"
         app:layout_constraintTop_toTopOf="@id/normal_view"
         app:layout_constraintStart_toStartOf="@id/normal_view"

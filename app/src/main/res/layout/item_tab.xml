@@ -13,6 +13,7 @@
     app:colortext_default_color="@color/unselect"
     app:colortext_change_color="@color/white"
     android:textSize="14sp"
+    android:gravity="center"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

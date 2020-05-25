@@ -190,10 +190,8 @@ class FlowLayout extends ViewGroup {
             //拿到 子控件高度，拿到最大的那个高度
             height = Math.max(height, ch);
 
-
-
-
         }
+
 
         //具体大小，padding不受影响
         if (MeasureSpec.EXACTLY == heightMode) {

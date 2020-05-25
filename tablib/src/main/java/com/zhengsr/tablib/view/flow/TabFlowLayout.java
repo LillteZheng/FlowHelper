@@ -56,7 +56,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * viewpager 相关
-     *
      */
     private ViewPager mViewPager;
     private int mTextId = -1;
@@ -80,13 +79,13 @@ public class TabFlowLayout extends ScrollFlowLayout {
         int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
         mAnimTime = mTypeArray.getInt(R.styleable.TabFlowLayout_tab_click_animTime, 300);
         mScroller = new Scroller(getContext());
-        mTabOrientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
-        isAutoScroll = mTypeArray.getBoolean(R.styleable.TabFlowLayout_tab_isAutoScroll,true);
+        mTabOrientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation, FlowConstants.HORIZONTATAL);
+        isAutoScroll = mTypeArray.getBoolean(R.styleable.TabFlowLayout_tab_isAutoScroll, true);
         int visualCount = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_visual_count, -1);
         setVisualCount(visualCount);
         setTabOrientation(mTabOrientation);
         chooseTabTpye(tabStyle);
-        setLayerType(LAYER_TYPE_SOFTWARE,null);
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -106,10 +105,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
 
                     if (mViewPager != null) {
-                        mAction.chooseIndex(mLastIndex,mCurrentIndex);
+                        mAction.chooseIndex(mLastIndex, mCurrentIndex);
 
                     } else {
-                        mAction.chooseIndex(mLastIndex,mCurrentIndex);
+                        mAction.chooseIndex(mLastIndex, mCurrentIndex);
 
                     }
 
@@ -153,9 +152,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
 
-
     /**
      * 选中不同的 action
+     *
      * @param tabStyle
      */
     private void chooseTabTpye(int tabStyle) {
@@ -181,7 +180,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
             }
         }
         //配置自定义属性给 action
-        if (mAction != null ) {
+        if (mAction != null) {
             if (!isTypeArrayRecycler()) {
                 mAction.configAttrs(mTypeArray);
                 mTypeArray.recycle();
@@ -192,13 +191,14 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 判断typeArray 是否被回收
+     *
      * @return
      */
-    private boolean isTypeArrayRecycler(){
+    private boolean isTypeArrayRecycler() {
         if (mTypeArray != null) {
             try {
                 Class<?> typeArrayClass = mTypeArray.getClass();
-                Field mRecycled  = typeArrayClass.getDeclaredField("mRecycled");
+                Field mRecycled = typeArrayClass.getDeclaredField("mRecycled");
                 mRecycled.setAccessible(true);
                 return mRecycled.getBoolean(mTypeArray);
 
@@ -247,9 +247,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
             mTypeArray.recycle();
         }
 
-        if (mAction != null){
-            if (mViewPager != null && mAction.getViewPager() == null){
-               // mAction.setViewPager(mViewPager,mTextId, mUnSelectedColor,mSelectedColor);
+        if (mAction != null) {
+            if (mViewPager != null && mAction.getViewPager() == null) {
+                // mAction.setViewPager(mViewPager,mTextId, mUnSelectedColor,mSelectedColor);
                 mAction.setViewPager(mViewPager)
                         .setTextId(mTextId)
                         .setSelectedColor(mSelectedColor)
@@ -257,8 +257,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
             }
         }
     }
-
-
 
 
     /**
@@ -288,19 +286,21 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 设置默认位置
+     *
      * @param position
      */
-    public TabFlowLayout setDefaultPosition(int position){
+    public TabFlowLayout setDefaultPosition(int position) {
         mCurrentIndex = position;
         return this;
     }
 
     /**
      * 设置 viewpager
+     *
      * @param viewPager
      * @return
      */
-    public TabFlowLayout setViewPager(ViewPager viewPager){
+    public TabFlowLayout setViewPager(ViewPager viewPager) {
         if (viewPager == null) {
             return this;
         }
@@ -313,10 +313,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 设置 textId，不然颜色选择不起作用
+     *
      * @param textId
      * @return
      */
-    public TabFlowLayout setTextId(int textId){
+    public TabFlowLayout setTextId(int textId) {
         mTextId = textId;
         if (mAction != null) {
             mAction.setTextId(textId);
@@ -326,6 +327,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 设置选中颜色，在 TabTextColorView 不起作用
+     *
      * @param selectedColor
      */
     public TabFlowLayout setSelectedColor(int selectedColor) {
@@ -335,8 +337,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
         return this;
     }
+
     /**
      * 设置默认颜色，在 TabTextColorView 不起作用
+     *
      * @param unSelectedColor
      */
     public TabFlowLayout setUnSelectedColor(int unSelectedColor) {
@@ -346,10 +350,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
         return this;
     }
-
-
-
-
 
 
     /**
@@ -392,25 +392,25 @@ public class TabFlowLayout extends ScrollFlowLayout {
             addView(view);
         }
 
-        //如果此时 width 为0，则是加载完布局，但是数据还没有导入，则需要重新适配一下；
-        if (mWidth == 0 && getWidth() == 0){
+        //如果此时 width 为 0，则是加载完布局，但是数据还没有导入，则需要重新适配一下；
+        if (mWidth == 0 && getWidth() == 0 || mVisualCount > 0) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (getChildCount()>0) {
+                    if (getChildCount() > 0) {
                         reAdjustLayoutParams();
                         if (mAction != null) {
                             mAction.config(TabFlowLayout.this);
                             if (mViewPager != null) {
-                                mViewPager.setCurrentItem(mCurrentIndex,false);
+                                mViewPager.setCurrentItem(mCurrentIndex, false);
                             }
-                            mAction.chooseIndex(mLastIndex,mCurrentIndex);
-                            updateScroll(getChildAt(mCurrentIndex),false);
+                            mAction.chooseIndex(mLastIndex, mCurrentIndex);
+                            updateScroll(getChildAt(mCurrentIndex), false);
                         }
                     }
 
                 }
-            },5);
+            }, 5);
         }
     }
 
@@ -418,18 +418,20 @@ public class TabFlowLayout extends ScrollFlowLayout {
     /**
      * 由外部设置位置，为不是自身点击的
      * 这个常用于 recyclerview 的联动效果
+     *
      * @param position
      */
     public void setItemClickByOutSet(int position) {
         isItemClick = false;
-        if (position >= 0 && position < getChildCount()){
+        if (position >= 0 && position < getChildCount()) {
             View view = getChildAt(position);
-            chooseItem(position,view);
+            chooseItem(position, view);
         }
     }
 
     /**
      * 配置 点击和长按事件
+     *
      * @param view
      * @param i
      */
@@ -446,7 +448,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
             @Override
             public boolean onLongClick(View v) {
                 if (mAdapter != null) {
-                    return mAdapter.onItemLongClick(view,i);
+                    return mAdapter.onItemLongClick(view, i);
                 }
                 return false;
             }
@@ -455,6 +457,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 选中某个tab
+     *
      * @param position
      * @param view
      */
@@ -474,61 +477,62 @@ public class TabFlowLayout extends ScrollFlowLayout {
          * 如果没有 viewpager，则需要使用 scroller 平滑过渡
          */
         if (mViewPager == null) {
-            updateScroll(view,true);
+            updateScroll(view, true);
             invalidate();
         }
     }
 
     /**
      * 更新滚动
+     *
      * @param view
      */
-    private void updateScroll(View view,boolean smoothScroll) {
-        if (isCanMove() && view != null ) {
+    private void updateScroll(View view, boolean smoothScroll) {
+        if (isCanMove() && view != null) {
 
             //超过中间了，让父控件也跟着移动
             int scrollPos;
-            if (isVertical()){
+            if (isVertical()) {
                 scrollPos = view.getTop();
-            }else{
+            } else {
                 scrollPos = view.getLeft();
             }
             int offset;
             if (scrollPos != mLastScrollPos) {
-                if (isVertical()){
-                    if (scrollPos > mHeight / 2){
-                        scrollPos -= mHeight/2;
+                if (isVertical()) {
+                    if (scrollPos > mHeight / 2) {
+                        scrollPos -= mHeight / 2;
                         //下边界
-                        if (scrollPos < mBottomRound - mHeight){
+                        if (scrollPos < mBottomRound - mHeight) {
                             offset = scrollPos - mLastScrollPos;
-                            if (smoothScroll){
-                                mScroller.startScroll(0,getScrollY(),0,offset);
-                            }else{
-                                scrollTo(0,offset);
+                            if (smoothScroll) {
+                                mScroller.startScroll(0, getScrollY(), 0, offset);
+                            } else {
+                                scrollTo(0, offset);
                             }
                             mLastScrollPos = scrollPos;
-                        }else{
+                        } else {
                             offset = mBottomRound - mHeight - getScrollY();
                             if (getScrollY() >= mBottomRound - mHeight) {
                                 offset = 0;
                             }
                             if (smoothScroll) {
-                                mScroller.startScroll(0, getScrollY(),0 ,offset);
+                                mScroller.startScroll(0, getScrollY(), 0, offset);
                             } else {
-                                scrollTo(0,mBottomRound - mHeight);
+                                scrollTo(0, mBottomRound - mHeight);
                             }
                             mLastScrollPos = mBottomRound - mHeight - offset;
                         }
-                    }else{
+                    } else {
                         offset = -scrollPos;
                         if (smoothScroll) {
-                            mScroller.startScroll(0, getScrollY(),0 ,offset);
+                            mScroller.startScroll(0, getScrollY(), 0, offset);
                         } else {
                             scrollTo(0, 0);
                         }
                         mLastScrollPos = 0;
                     }
-                }else {
+                } else {
                     if (scrollPos > mWidth / 2) {
                         scrollPos -= mWidth / 2;
                         //有边界提醒
@@ -572,25 +576,25 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
         if (mViewPager == null && mScroller.computeScrollOffset()) {
             //有边界
-            int offset ;
-            if (isVertical()){
+            int offset;
+            if (isVertical()) {
                 offset = mScroller.getCurrY();
-                if (offset >= mBottomRound - mHeight){
+                if (offset >= mBottomRound - mHeight) {
                     offset = mBottomRound - mHeight;
                 }
-            }else {
+            } else {
                 offset = mScroller.getCurrX();
-                if (offset >= mRightBound - mWidth){
+                if (offset >= mRightBound - mWidth) {
                     offset = mRightBound - mWidth;
                 }
             }
 
-            if (offset <= 0){
+            if (offset <= 0) {
                 offset = 0;
             }
-            if (isVertical()){
-                scrollTo(0,offset);
-            }else {
+            if (isVertical()) {
+                scrollTo(0, offset);
+            } else {
                 scrollTo(offset, 0);
             }
             postInvalidate();
@@ -616,7 +620,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mViewPager != null) {
             mCurrentIndex = mViewPager.getCurrentItem();
             mLastIndex = 0;
-        }else{
+        } else {
             if (mAction != null) {
                 mLastIndex = mAction.getLastIndex();
             }
@@ -627,12 +631,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
     }
 
 
-
     /**
      * 自定义属性的配置
      */
 
-    public TabFlowLayout setTabBean(TabBean bean){
+    public TabFlowLayout setTabBean(TabBean bean) {
         mTabBean = bean;
         if (bean == null) {
             return this;
@@ -644,7 +647,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mAction != null) {
             if (mTabBean != null) {
                 mAction.setBean(mTabBean);
-                if (mViewPager != null && mAction.getViewPager() == null){
+                if (mViewPager != null && mAction.getViewPager() == null) {
                     //mAction.setViewPager(mViewPager,mTextId, mUnSelectedColor,mSelectedColor);
                     mAction.setViewPager(mViewPager)
                             .setTextId(mTextId)
@@ -655,13 +658,13 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
 
 
-        if (mTabOrientation != bean.tabOrientation){
+        if (mTabOrientation != bean.tabOrientation) {
             setTabOrientation(bean.tabOrientation);
         }
-        if (isAutoScroll != bean.isAutoScroll){
+        if (isAutoScroll != bean.isAutoScroll) {
             isAutoScroll = bean.isAutoScroll;
         }
-        if (bean.visualCount != -1){
+        if (bean.visualCount != -1) {
             setVisualCount(bean.visualCount);
         }
         return this;
@@ -673,31 +676,35 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 设置某个item动画，不执行其他的
+     *
      * @param position
      */
-    public void setItemAnim(int position){
+    public void setItemAnim(int position) {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         if (mAction != null) {
             mAction.autoScaleView();
-            mAction.doAnim(mLastIndex,mCurrentIndex,mAnimTime);
+            mAction.doAnim(mLastIndex, mCurrentIndex, mAnimTime);
         }
     }
+
     private boolean isItemClick;
 
     /**
      * 是否由item的点击事件引起的，长用于列表联动
+     *
      * @return
      */
-    public boolean isItemClick(){
+    public boolean isItemClick() {
         return isItemClick;
     }
 
     /**
      * 也可以用于自己去改变 itemclick 这个状态
+     *
      * @param isClick
      */
-    public void setItemClickStatus(boolean isClick){
+    public void setItemClickStatus(boolean isClick) {
         isItemClick = isClick;
     }
 
@@ -705,6 +712,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public boolean isTabAutoScroll() {
         return isAutoScroll;
     }
+
     @Override
     public boolean isLabelFlow() {
         return false;

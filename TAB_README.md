@@ -42,7 +42,7 @@
 
 **关于宽度，以下请须知：**
 
-- **设置了 tab_visual_count  ，则根据固定宽度或者屏幕宽度的宽度去均分；其他则是根据子控件的大小去累加宽度，所以需要写好子控件的大小**
+- **设置了 tab_visual_count,宽度需要设置成**match_parent或者固定宽度**；其他则是根据子控件的大小去累加宽度，一般建议子控件为 wrap_content**
 
 - **用到约束布局，或者 LinearLayout，当你是居中而没有向左对齐，当子控件过多，则代码会手动让它向左对齐，这样滚动和布局才会正常**
 
@@ -301,7 +301,8 @@ private void resFlow(){
 
 上面中，item_layout 的宽度都是通过测量自身的，如果想要均分宽度怎么做呢？
 
-可以设置 tab_visual_count ，当前可视个数来试下，比如当前可视界面只显示3个：
+可以设置 tab_visual_count ，宽度需要设置成**match_parent或者固定宽度**,如果是子控件是 textview，建议 gravity 设置成
+center居中，比如当前可视界面只显示3个：
 <img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.png" >
 
 

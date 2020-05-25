@@ -47,7 +47,8 @@ public class NetTestActivity extends SupportActivity {
         final TabFlowAdapter adapter ;
         flowLayout.setViewPager(mViewPager)
                 .setTextId(R.id.item_text)
-                .setDefaultPosition(2);
+                .setDefaultPosition(2)
+                .setVisualCount(4);
         flowLayout.setAdapter(adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
 
             @Override
@@ -79,7 +80,8 @@ public class NetTestActivity extends SupportActivity {
                             fragments.add(RecyclerFragment.newInstance(child));
                         }
                         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments));
-                            adapter.notifyDataChanged();
+                        //刷新数据
+                        adapter.notifyDataChanged();
 
 
                     }
