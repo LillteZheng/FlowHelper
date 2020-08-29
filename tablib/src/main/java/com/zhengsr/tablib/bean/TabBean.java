@@ -95,4 +95,5 @@ public class TabBean {
                 ", isAutoScroll=" + isAutoScroll +
                 '}';
     }
+
 }

@@ -548,7 +548,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     private int mActionOrientation;
 
-    public void configAttrs(TypedArray ta) {
+    public void configAttrs(TabBean bean) {
         mTabWidth = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_width, -1);
         mTabHeight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_height, -1);
         int color = ta.getColor(R.styleable.TabFlowLayout_tab_color, Color.RED);

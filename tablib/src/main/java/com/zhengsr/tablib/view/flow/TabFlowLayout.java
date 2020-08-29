@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.utils.AttrsUtils;
 import com.zhengsr.tablib.view.action.ColorAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
@@ -42,7 +43,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private BaseAction mAction;
 
     private boolean isFirst = true;
-    private TypedArray mTypeArray;
+    //private TypedArray mTypeArray;
     private TabBean mTabBean;
 
     /**
@@ -63,6 +64,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private int mUnSelectedColor = -1;
     private int mAnimTime;
     private int mTabOrientation;
+    private TabBean mTabBean;
 
     public TabFlowLayout(Context context) {
         this(context, null);
@@ -75,16 +77,12 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public TabFlowLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setClickable(true);
-        mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
-        int tabStyle = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
-        mAnimTime = mTypeArray.getInt(R.styleable.TabFlowLayout_tab_click_animTime, 300);
+        TypedArray ta  = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
+        mTabBean = AttrsUtils.getTabBean(ta);
         mScroller = new Scroller(getContext());
-        mTabOrientation = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_orientation, FlowConstants.HORIZONTATAL);
-        isAutoScroll = mTypeArray.getBoolean(R.styleable.TabFlowLayout_tab_isAutoScroll, true);
-        int visualCount = mTypeArray.getInteger(R.styleable.TabFlowLayout_tab_visual_count, -1);
-        setVisualCount(visualCount);
+        setVisualCount(mTabBean.tabOrientation);
         setTabOrientation(mTabOrientation);
-        chooseTabTpye(tabStyle);
+        chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -181,35 +179,11 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
         //配置自定义属性给 action
         if (mAction != null) {
-            if (!isTypeArrayRecycler()) {
-                mAction.configAttrs(mTypeArray);
-                mTypeArray.recycle();
-            }
+            mAction.configAttrs(mTabBean);
         }
 
     }
 
-    /**
-     * 判断typeArray 是否被回收
-     *
-     * @return
-     */
-    private boolean isTypeArrayRecycler() {
-        if (mTypeArray != null) {
-            try {
-                Class<?> typeArrayClass = mTypeArray.getClass();
-                Field mRecycled = typeArrayClass.getDeclaredField("mRecycled");
-                mRecycled.setAccessible(true);
-                return mRecycled.getBoolean(mTypeArray);
-
-            } catch (Exception e) {
-                //e.printStackTrace();
-                return false;
-
-            }
-        }
-        return false;
-    }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
@@ -242,10 +216,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
     public void setCusAction(BaseAction action) {
         mAction = action;
-        if (!isTypeArrayRecycler()) {
-            mAction.configAttrs(mTypeArray);
-            mTypeArray.recycle();
-        }
+        mAction.configAttrs(mTabBean);
+
 
         if (mAction != null) {
             if (mViewPager != null && mAction.getViewPager() == null) {
@@ -636,6 +608,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
 
     public TabFlowLayout setTabBean(TabBean bean) {
+        //todo 带
         mTabBean = bean;
         if (bean == null) {
             return this;
