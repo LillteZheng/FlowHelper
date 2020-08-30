@@ -18,11 +18,7 @@ public class RoundAction extends BaseAction {
     private static final String TAG = "RoundAction";
     private float mRound;
 
-    @Override
-    public void configAttrs(TypedArray ta) {
-        super.configAttrs(ta);
-        mRound = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_round_size, 10);
-    }
+
 
     @Override
     public void setBean(TabBean bean) {
@@ -38,10 +34,10 @@ public class RoundAction extends BaseAction {
         super.config(parentView);
         View child = parentView.getChildAt(0);
         if (child != null) {
-            float l =  mMarginLeft + child.getLeft();
-            float t = mMarginTop + child.getTop();
-            float r =  child.getRight() - mMarginRight;
-            float b =  child.getBottom() - mMarginBottom;
+            float l =  mTabBean.tabMarginLeft + child.getLeft();
+            float t = mTabBean.tabMarginTop + child.getTop();
+            float r =  child.getRight() - mTabBean.tabMarginRight;
+            float b =  child.getBottom() - mTabBean.tabMarginBottom;
             mTabRect.set(l, t, r, b);
         }
         parentView.postInvalidate();

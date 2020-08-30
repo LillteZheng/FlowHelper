@@ -43,8 +43,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private BaseAction mAction;
 
     private boolean isFirst = true;
-    //private TypedArray mTypeArray;
-    private TabBean mTabBean;
 
     /**
      * 滚动
@@ -179,6 +177,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
         //配置自定义属性给 action
         if (mAction != null) {
+            mAction.setContext(this.getContext());
             mAction.configAttrs(mTabBean);
         }
 
@@ -604,11 +603,10 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
 
     /**
-     * 自定义属性的配置
+     * 自定义属性的配置,设置该属性会覆盖xml的属性
      */
 
     public TabFlowLayout setTabBean(TabBean bean) {
-        //todo 带
         mTabBean = bean;
         if (bean == null) {
             return this;

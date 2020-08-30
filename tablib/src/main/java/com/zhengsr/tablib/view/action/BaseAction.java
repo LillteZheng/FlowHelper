@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -52,20 +53,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     private boolean isColorText = false;
     private boolean isTextView = false;
     private boolean isTabClick = false;
-    /**
-     * attrs
-     */
-    protected float mMarginLeft;
-    protected float mMarginTop;
-    protected float mMarginRight;
-    protected float mMarginBottom;
-    protected int mType;
-    protected int mTabWidth = -1;
-    protected int mTabHeight = -1;
-    protected int mAnimTime;
-    protected boolean mIsAutoScale = false;
-    protected float mScaleFactor;
-    private int mTabOrientation;
+
+    protected TabBean mTabBean;
 
     public BaseAction() {
         mPaint = new Paint();
@@ -75,7 +64,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     public void config(TabFlowLayout parentView) {
         mParentView = parentView;
-        if (parentView.getChildCount() > 0) {
+        if (parentView.getChildCount() > 0 && mTabBean!= null) {
             mContext = mParentView.getContext();
             mViewWidth = mParentView.getViewWidth();
             int childCount = mParentView.getChildCount();
@@ -87,9 +76,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             View child = mParentView.getChildAt(0);
             if (child != null) {
                 if (isVertical()){
-                    mOffset = mTabHeight * 1.0f / child.getMeasuredHeight();
+                    mOffset = mTabBean.tabHeight * 1.0f / child.getMeasuredHeight();
                 }else {
-                    mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
+                    mOffset = mTabBean.tabWidth * 1.0f / child.getMeasuredWidth();
                 }
                 if (mTextViewId != -1) {
                     View textView = child.findViewById(mTextViewId);
@@ -103,9 +92,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     }
 
                 }
-                if (mIsAutoScale && mScaleFactor > 1) {
-                    child.setScaleX(mScaleFactor);
-                    child.setScaleY(mScaleFactor);
+                if (mTabBean.isAutoScroll && mTabBean.scaleFactor > 1) {
+                    child.setScaleX(mTabBean.scaleFactor);
+                    child.setScaleY(mTabBean.scaleFactor);
                 }
                 mParentView.getAdapter().onItemSelectState(child,true);
             }
@@ -166,13 +155,13 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mLastIndex = lastIndex;
         if (mViewPager == null) {
             autoScaleView();
-            doAnim(lastIndex, curIndex,mAnimTime);
+            doAnim(lastIndex, curIndex,mTabBean.tabClickAnimTime);
         } else {
             if (Math.abs(mCurrentIndex - mLastIndex) > 1) {
                 clearColorText();
                 isClickMore = true;
                 autoScaleView();
-                doAnim(lastIndex, curIndex,mAnimTime);
+                doAnim(lastIndex, curIndex,mTabBean.tabClickAnimTime);
             }
         }
     }
@@ -221,8 +210,8 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                         final View transView = mParentView.getChildAt(position + 1);
                         //大小渐变效果
 
-                        if (mIsAutoScale && mScaleFactor > 0) {
-                            float factor = mScaleFactor % 1;
+                        if (mTabBean.autoScale && mTabBean.scaleFactor > 0) {
+                            float factor = mTabBean.scaleFactor % 1;
                             float transScale = 1 + factor * positionOffset;
                             float curScale = 1 + factor * (1 - positionOffset);
                             transView.setScaleX(transScale);
@@ -235,14 +224,14 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                         //右边表示宽度变化
                         float right = curView.getRight() + positionOffset * (transView.getRight() - curView.getRight());
 
-                        if (mTabWidth != -1) {
+                        if (mTabBean.tabWidth != -1) {
                             //拿到左边初始坐标
                             int width = curView.getMeasuredWidth();
                             //todo 动态改变rect大小的，后面再看看
-                            left = curView.getLeft() + (width - mTabWidth) / 2;
+                            left = curView.getLeft() + (width - mTabBean.tabWidth) / 2;
                             //再拿到偏移坐标
                             left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
-                            right = left + mTabWidth;
+                            right = left + mTabBean.tabWidth;
                         }
                         mTabRect.left = left;
                         mTabRect.right = right;
@@ -306,7 +295,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 if (Math.abs(mCurrentIndex - mLastIndex) > 1){
                     isClickMore = true;
                     clearColorText();
-                    doAnim(mLastIndex, mCurrentIndex,mAnimTime);
+                    doAnim(mLastIndex, mCurrentIndex,mTabBean.tabClickAnimTime);
                     autoScaleView();
                 }
             }
@@ -325,20 +314,20 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * 放大缩小效果
      */
     public void autoScaleView() {
-        if (mParentView != null && mIsAutoScale && mScaleFactor > 1) {
+        if (mParentView != null && mTabBean.autoScale && mTabBean.scaleFactor > 1) {
             View lastView = mParentView.getChildAt(mLastIndex);
             View curView = mParentView.getChildAt(mCurrentIndex);
             if (lastView != null && curView != null) {
                 lastView.animate()
                         .scaleX(1)
                         .scaleY(1)
-                        .setDuration(mAnimTime)
+                        .setDuration(mTabBean.tabWidth)
                         .setInterpolator(new LinearInterpolator())
                         .start();
                 curView.animate()
-                        .scaleX(mScaleFactor)
-                        .scaleY(mScaleFactor)
-                        .setDuration(mAnimTime)
+                        .scaleX(mTabBean.scaleFactor)
+                        .scaleY(mTabBean.scaleFactor)
+                        .setDuration(mTabBean.tabWidth)
                         .setInterpolator(new LinearInterpolator())
                         .start();
             }
@@ -366,25 +355,25 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 TabValue lastValue = getValue(lastView);
                 TabValue curValue = getValue(curView);
                 if (isVertical()){
-                    if (mTabHeight != -1){
+                    if (mTabBean.tabHeight != -1){
                         lastValue.top = mTabRect.top;
                         lastValue.bottom = mTabRect.bottom;
                         int height = curView.getMeasuredHeight();
                         //竖直方向不去理会
-                        curValue.top = (height - mTabHeight) / 2 + curView.getTop();
-                        curValue.bottom = mTabHeight + curValue.top;
+                        curValue.top = (height - mTabBean.tabHeight) / 2 + curView.getTop();
+                        curValue.bottom = mTabBean.tabHeight + curValue.top;
                     }
                 }else {
-                    if (mTabWidth != -1) {
+                    if (mTabBean.tabWidth != -1) {
                         lastValue.left = mTabRect.left;
                         lastValue.right = mTabRect.right;
                         int width = curView.getMeasuredWidth();
-                        if (mType == FlowConstants.RECT) {
+                        if (mTabBean.tabType == FlowConstants.RECT) {
                             curValue.left = (1 - mOffset) * width / 2 + curView.getLeft();
                             curValue.right = width * mOffset + curValue.left;
                         } else {
-                            curValue.left = (width - mTabWidth) / 2 + curView.getLeft();
-                            curValue.right = mTabWidth + curValue.left;
+                            curValue.left = (width - mTabBean.tabWidth) / 2 + curView.getLeft();
+                            curValue.right = mTabBean.tabWidth + curValue.left;
                         }
                     }
                 }
@@ -478,7 +467,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
             View child = mParentView.getChildAt(mCurrentIndex);
             if (child != null) {
                 doAnim(mLastIndex,mCurrentIndex,0);
-                mOffset = mTabWidth * 1.0f / child.getMeasuredWidth();
+                mOffset = mTabBean.tabWidth * 1.0f / child.getMeasuredWidth();
                 if (mTextViewId != -1) {
                     View textView = child.findViewById(mTextViewId);
                     if (textView instanceof TabColorTextView) {
@@ -490,9 +479,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                         isTextView = true;
                     }
                 }
-                if (mIsAutoScale && mScaleFactor > 1) {
-                    child.setScaleX(mScaleFactor);
-                    child.setScaleY(mScaleFactor);
+                if (mTabBean.autoScale && mTabBean.scaleFactor > 1) {
+                    child.setScaleX(mTabBean.scaleFactor);
+                    child.setScaleY(mTabBean.scaleFactor);
                 }
             }
         }
@@ -505,7 +494,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     private void clearScale(){
         if (mParentView != null) {
-            if (mIsAutoScale && mScaleFactor >1) {
+            if (mTabBean.autoScale && mTabBean.scaleFactor >1) {
                 int childCount = mParentView.getChildCount();
                 for (int i = 0; i < childCount; i++) {
                     View view = mParentView.getChildAt(i);
@@ -523,10 +512,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     private TabValue getValue(View view) {
         TabValue value = new TabValue();
-        value.left = view.getLeft() + mMarginLeft;
-        value.top = view.getTop() + mMarginTop;
-        value.right = view.getRight() - mMarginRight;
-        value.bottom = view.getBottom() - mMarginBottom;
+        value.left = view.getLeft() + mTabBean.tabMarginLeft;
+        value.top = view.getTop() + mTabBean.tabMarginTop;
+        value.right = view.getRight() - mTabBean.tabMarginRight;
+        value.bottom = view.getBottom() - mTabBean.tabMarginBottom;
         return value;
     }
 
@@ -544,25 +533,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
     /**
      * 拿到自定义属性
      *
-     * @param ta
+     * @param bean
      */
-    private int mActionOrientation;
-
     public void configAttrs(TabBean bean) {
-        mTabWidth = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_width, -1);
-        mTabHeight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_height, -1);
-        int color = ta.getColor(R.styleable.TabFlowLayout_tab_color, Color.RED);
-        mPaint.setColor(color);
-        mType = ta.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
-        mMarginLeft = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_l, 0);
-        mMarginTop = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_t, 0);
-        mMarginRight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_r, 0);
-        mMarginBottom = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_b, 0);
-        mAnimTime = ta.getInteger(R.styleable.TabFlowLayout_tab_click_animTime, 300);
-        mIsAutoScale = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale, false);
-        mScaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor, 1);
-        mTabOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_orientation,FlowConstants.HORIZONTATAL);
-        mActionOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_action_orientaion,-1);
+        mTabBean = bean;
     }
 
     /**
@@ -581,42 +555,11 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     /**
      * 配置动态属性
-     *
+     * xml的属性会被替换
      * @param bean
      */
     public void setBean(TabBean bean) {
-        if (bean.tabColor != -2) {
-            mPaint.setColor(bean.tabColor);
-        }
-        if (bean.tabWidth != -1) {
-            mTabWidth = bean.tabWidth;
-        }
-        if (bean.tabHeight != -1) {
-            mTabHeight = bean.tabHeight;
-        }
-        if (bean.tabClickAnimTime != -1) {
-            mAnimTime = bean.tabClickAnimTime;
-        }
-        if (bean.tabMarginLeft != -1) {
-            mMarginLeft = bean.tabMarginLeft;
-        }
-        if (bean.tabMarginTop != -1) {
-            mMarginTop = bean.tabMarginTop;
-        }
-        if (bean.tabMarginRight != -1) {
-            mMarginRight = bean.tabMarginRight;
-        }
-        if (bean.tabMarginBottom != -1) {
-            mMarginBottom = bean.tabMarginBottom;
-        }
-
-        mIsAutoScale = bean.autoScale;
-        mScaleFactor = bean.scaleFactor;
-
-        if (bean.tabOrientation != -1){
-            mActionOrientation = bean.tabOrientation;
-        }
-
+        mTabBean = bean;
     }
 
     public ViewPager getViewPager() {
@@ -629,15 +572,17 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      * @return
      */
     public boolean isVertical(){
-        return mTabOrientation == FlowConstants.VERTICAL;
+        return mTabBean.tabOrientation == FlowConstants.VERTICAL;
     }
 
     public boolean isLeftAction(){
-        return mActionOrientation != -1 && mActionOrientation == FlowConstants.LEFT;
+        return mTabBean.actionOrientation != -1 && mTabBean.actionOrientation == FlowConstants.LEFT;
     }
     public boolean isRightAction(){
-        return mActionOrientation != -1 && mActionOrientation == FlowConstants.RIGHT;
+        return mTabBean.actionOrientation != -1 && mTabBean.actionOrientation == FlowConstants.RIGHT;
     }
 
-
+    public  void setContext(Context context){
+        mContext = context;
+    }
 }

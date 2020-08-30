@@ -6,6 +6,9 @@ import android.graphics.Color;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
+import java.text.AttributedString;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * @author by zhengshaorui 2020/8/29 11:17
@@ -36,8 +39,12 @@ public class AttrsUtils {
         bean.isAutoScroll = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale, false);
         bean.scaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor, 1);
         bean.actionOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_action_orientaion,-1);
+        bean.tabRoundSize = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_round_size,10);
+        bean.tabItemRes = ta.getResourceId(R.styleable.TabFlowLayout_tab_item_res,-1);
         ta.recycle();
-
         return bean;
     }
+
+
+
 }

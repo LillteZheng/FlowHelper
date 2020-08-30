@@ -26,32 +26,32 @@ public class TriAction extends BaseAction {
             float r;
             float b;
             if (isLeftAction()){
-                l = child.getLeft() + mMarginLeft;
-                t = child.getTop() + mMarginTop;
-                r = l + mTabWidth ;
-                b = t + child.getBottom() - mMarginBottom;
-                if (mTabHeight != -1){
-                    t += (child.getMeasuredHeight() - mTabHeight)/2;
-                    b = t + mTabHeight;
+                l = child.getLeft() + mTabBean.tabMarginLeft;
+                t = child.getTop() + mTabBean.tabMarginTop;
+                r = l + mTabBean.tabWidth ;
+                b = t + child.getBottom() - mTabBean.tabMarginBottom;
+                if (mTabBean.tabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabBean.tabHeight)/2;
+                    b = t + mTabBean.tabHeight;
                 }
             }else if (isRightAction()){
-                l = child.getRight() - mMarginRight;
-                t = child.getTop() - mMarginTop;
-                r = l - mTabWidth;
-                b = t + mTabHeight;
-                if (mTabHeight != -1){
-                    t += (child.getMeasuredHeight() - mTabHeight)/2;
-                    b = t + mTabHeight;
+                l = child.getRight() - mTabBean.tabMarginRight;
+                t = child.getTop() - mTabBean.tabMarginTop;
+                r = l - mTabBean.tabWidth;
+                b = t + mTabBean.tabHeight;
+                if (mTabBean.tabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabBean.tabHeight)/2;
+                    b = t + mTabBean.tabHeight;
                 }
             }else{
-                 l =  mMarginLeft + child.getLeft();
-                 t = mMarginTop + child.getBottom() - mTabHeight - mMarginBottom;
-                 r =  child.getRight() - mMarginRight;
-                 b = t + mTabHeight;
+                 l =  mTabBean.tabMarginLeft + child.getLeft();
+                 t = mTabBean.tabMarginTop + child.getBottom() - mTabBean.tabHeight - mTabBean.tabMarginBottom;
+                 r =  child.getRight() - mTabBean.tabMarginRight;
+                 b = t + mTabBean.tabHeight;
 
-                if (mTabWidth != -1) {
-                    l += (child.getMeasuredWidth() - mTabWidth) / 2;
-                    r = mTabWidth + l;
+                if (mTabBean.tabWidth != -1) {
+                    l += (child.getMeasuredWidth() - mTabBean.tabWidth) / 2;
+                    r = mTabBean.tabWidth + l;
                 }
             }
 
@@ -59,12 +59,12 @@ public class TriAction extends BaseAction {
             mTabRect.set(l, t, r, b);
 
             if (isVertical()){
-                mPath.moveTo(r,t + mTabHeight/2);
+                mPath.moveTo(r,t + mTabBean.tabHeight/2);
                 mPath.lineTo(l,t);
                 mPath.lineTo(l,b);
             }else{
 
-                mPath.moveTo(l+mTabWidth/ 2 , t);
+                mPath.moveTo(l+mTabBean.tabWidth/ 2 , t);
                 mPath.lineTo(l, b);
                 mPath.lineTo(r, b);
             }
@@ -84,9 +84,9 @@ public class TriAction extends BaseAction {
             float b = mTabRect.bottom;
             if (isRightAction()){
                 l = r;
-                r = l - mTabWidth;
+                r = l - mTabBean.tabWidth;
             }
-            mPath.moveTo(r,t + mTabHeight/2);
+            mPath.moveTo(r,t + mTabBean.tabHeight/2);
             mPath.lineTo(l,t);
             mPath.lineTo(l,b);
         }else {

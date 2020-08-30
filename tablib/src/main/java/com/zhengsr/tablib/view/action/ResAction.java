@@ -24,9 +24,11 @@ public class ResAction extends BaseAction {
     private int mRes = -1;
 
     @Override
-    public void configAttrs(TypedArray ta) {
-        super.configAttrs(ta);
-        mDrawable = ta.getDrawable(R.styleable.TabFlowLayout_tab_item_res);
+    public void configAttrs(TabBean bean) {
+        super.configAttrs(bean);
+        if (bean.tabItemRes != -1) {
+            mDrawable = mContext.getResources().getDrawable(bean.tabItemRes);
+        }
     }
 
     @Override
@@ -50,10 +52,10 @@ public class ResAction extends BaseAction {
                 mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(mBitmap);
 
-                float l = mMarginLeft + child.getLeft();
-                float t = mMarginTop + child.getTop();
-                float r = child.getRight() - mMarginRight;
-                float b = child.getBottom() - mMarginBottom;
+                float l = mTabBean.tabMarginLeft + child.getLeft();
+                float t = mTabBean.tabMarginTop + child.getTop();
+                float r = child.getRight() - mTabBean.tabMarginRight;
+                float b = child.getBottom() - mTabBean.tabMarginBottom;
                 mDrawable.setBounds(0, 0, width, height);
                 mDrawable.draw(canvas);
                 mTabRect.set(l, t, r, b);

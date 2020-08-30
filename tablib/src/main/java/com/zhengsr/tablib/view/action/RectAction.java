@@ -26,31 +26,31 @@ public class RectAction extends BaseAction {
             float r=0;
             float b=0;
             if (isLeftAction()){
-                l = child.getLeft() + mMarginLeft;
-                t = child.getTop() + mMarginTop;
-                r = l + mTabWidth ;
-                b = t + child.getBottom() - mMarginBottom;
-                if (mTabHeight != -1){
-                    t += (child.getMeasuredHeight() - mTabHeight)/2;
-                    b = t + mTabHeight;
+                l = child.getLeft() + mTabBean.tabMarginLeft;
+                t = child.getTop() + mTabBean.tabMarginTop;
+                r = l + mTabBean.tabWidth ;
+                b = t + child.getBottom() - mTabBean.tabMarginBottom;
+                if (mTabBean.tabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabBean.tabHeight)/2;
+                    b = t + mTabBean.tabHeight;
                 }
             }else if (isRightAction()){
-                l = child.getRight() - mMarginRight;
-                t = child.getTop() - mMarginTop;
-                r = l - mTabWidth;
-                b = t + mTabHeight;
-                if (mTabHeight != -1){
-                    t += (child.getMeasuredHeight() - mTabHeight)/2;
-                    b = t + mTabHeight;
+                l = child.getRight() - mTabBean.tabMarginRight;
+                t = child.getTop() - mTabBean.tabMarginTop;
+                r = l - mTabBean.tabWidth;
+                b = t + mTabBean.tabHeight;
+                if (mTabBean.tabHeight != -1){
+                    t += (child.getMeasuredHeight() - mTabBean.tabHeight)/2;
+                    b = t + mTabBean.tabHeight;
                 }
             }else{
-                l =  mMarginLeft + child.getLeft();
-                t = mMarginTop + child.getBottom() - mTabHeight - mMarginBottom;
-                r =  child.getRight() - mMarginRight;
-                b = t + mTabHeight;
-                if (mTabWidth != -1) {
-                    l += (child.getMeasuredWidth() - mTabWidth) / 2 ;
-                    r = mTabWidth + l;
+                l =  mTabBean.tabMarginLeft + child.getLeft();
+                t = mTabBean.tabMarginTop + child.getBottom() - mTabBean.tabHeight - mTabBean.tabMarginBottom;
+                r =  child.getRight() - mTabBean.tabMarginRight;
+                b = t + mTabBean.tabHeight;
+                if (mTabBean.tabWidth != -1) {
+                    l += (child.getMeasuredWidth() - mTabBean.tabWidth) / 2 ;
+                    r = mTabBean.tabWidth + l;
                 }
             }
 
@@ -67,10 +67,10 @@ public class RectAction extends BaseAction {
             mTabRect.bottom = value.bottom ;
             if (isLeftAction()) {
                 mTabRect.left = value.left;
-                mTabRect.right = mTabWidth + mTabRect.left;
+                mTabRect.right = mTabBean.tabWidth + mTabRect.left;
             }else{
                 mTabRect.left = value.right;
-                mTabRect.right = mTabRect.left - mTabWidth;
+                mTabRect.right = mTabRect.left - mTabBean.tabWidth;
             }
 
         }else{
