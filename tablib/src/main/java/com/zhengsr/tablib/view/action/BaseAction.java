@@ -62,6 +62,10 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         mTabRect = new RectF();
     }
 
+    /**
+     * 配置数据
+     * @param parentView
+     */
     public void config(TabFlowLayout parentView) {
         mParentView = parentView;
         if (parentView.getChildCount() > 0 && mTabBean!= null) {
@@ -92,7 +96,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                     }
 
                 }
-                if (mTabBean.isAutoScroll && mTabBean.scaleFactor > 1) {
+                if (mTabBean.autoScale && mTabBean.scaleFactor > 1) {
                     child.setScaleX(mTabBean.scaleFactor);
                     child.setScaleY(mTabBean.scaleFactor);
                 }
@@ -321,13 +325,13 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
                 lastView.animate()
                         .scaleX(1)
                         .scaleY(1)
-                        .setDuration(mTabBean.tabWidth)
+                        .setDuration(mTabBean.tabClickAnimTime)
                         .setInterpolator(new LinearInterpolator())
                         .start();
                 curView.animate()
                         .scaleX(mTabBean.scaleFactor)
                         .scaleY(mTabBean.scaleFactor)
-                        .setDuration(mTabBean.tabWidth)
+                        .setDuration(mTabBean.tabClickAnimTime)
                         .setInterpolator(new LinearInterpolator())
                         .start();
             }
@@ -532,7 +536,6 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
 
     /**
      * 拿到自定义属性
-     *
      * @param bean
      */
     public void configAttrs(TabBean bean) {
@@ -553,14 +556,7 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
         return mLastIndex;
     }
 
-    /**
-     * 配置动态属性
-     * xml的属性会被替换
-     * @param bean
-     */
-    public void setBean(TabBean bean) {
-        mTabBean = bean;
-    }
+
 
     public ViewPager getViewPager() {
         return mViewPager;

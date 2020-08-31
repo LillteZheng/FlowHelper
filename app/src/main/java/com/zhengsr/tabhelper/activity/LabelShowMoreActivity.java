@@ -27,13 +27,13 @@ public class LabelShowMoreActivity extends AppCompatActivity {
         LabelFlowLayout flowLayout = findViewById(R.id.labelflow);
 
         //自定义属性
-       /* LabelBean bean = new LabelBean();
+        LabelBean bean = new LabelBean();
         bean.showLines = 3;
         bean.showMoreLayoutId = R.layout.show_more;
         bean.showMoreColor = Color.WHITE;
         bean.handUpLayoutId = R.layout.handup;
 
-        flowLayout.setLabelBean(bean);*/
+        flowLayout.setLabelBean(bean);
         flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {

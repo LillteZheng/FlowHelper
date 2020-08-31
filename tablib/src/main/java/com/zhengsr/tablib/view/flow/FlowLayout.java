@@ -30,7 +30,7 @@ class FlowLayout extends ViewGroup {
     /**
      * labelflowlayout
      */
-    private List<Integer> mLineHeights = new ArrayList<>();
+    protected List<Integer> mLineHeights = new ArrayList<>();
     private List<List<View>> mAllViews = new ArrayList<>();
     private int mLabelLines = -1;
     private boolean isLabelMoreLine;
@@ -273,7 +273,7 @@ class FlowLayout extends ViewGroup {
              * 确定是否换行
              */
 
-            if (lineWidth + cWidth > widthSize - (getPaddingLeft() + getPaddingRight())) {
+            if (lineWidth + cWidth > (widthSize - (getPaddingLeft() + getPaddingRight()))) {
 
                 //换行
                 height += lineHeight;
@@ -326,7 +326,7 @@ class FlowLayout extends ViewGroup {
         mViewHeight = height;
         //把测量完成的高，重设置给父控件
 
-        setMeasuredDimension((widthMode == MeasureSpec.EXACTLY) ? widthSize : lineWidth, height);
+        setMeasuredDimension( widthSize, height);
     }
 
 

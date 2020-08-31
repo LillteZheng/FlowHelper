@@ -165,7 +165,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
             if (mBitRect.contains(x, y)) {
                 if (mAdapter != null) {
                     mBitmap = null;
-                    if (isHasMoreView){
+                    if (isHasMoreView && isLabelMoreLine()){
                         //显示全部了
                         setLabelLines(-1);
                         mAdapter.onShowMoreClick(mMoreView);

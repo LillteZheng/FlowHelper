@@ -62,6 +62,12 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
+**后期计划(加入了新公司，只能空闲时间搞了)**
+
+- 兼容kotlin、androidx和support
+- 添加 ViewPager2
+- 多行 Tab 的效果
+
 ## TabFlowLayout 效果图
 
 <table  align="center">

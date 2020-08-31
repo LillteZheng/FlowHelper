@@ -195,7 +195,7 @@ flowLayout.setViewPager(viewpager) .
    * @ setUnSelectedColor //没有选中的颜色，如果为 TabColorTextView 不需要些这个
    */
  flowLayout.setViewPager(mViewPager)
-            .setTextId(R.id.item_text) 
+            .setTextId(R.id.item_text)  //必填，不然 Textview 没效果
             .setSelectedColor(Color.WHITE) 
             .setUnSelectedColor(getResources().getColor(R.color.unselect)) 
             .setDefaultPosition(2); 

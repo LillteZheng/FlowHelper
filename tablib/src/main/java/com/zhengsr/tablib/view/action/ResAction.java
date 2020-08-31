@@ -26,17 +26,11 @@ public class ResAction extends BaseAction {
     @Override
     public void configAttrs(TabBean bean) {
         super.configAttrs(bean);
-        if (bean.tabItemRes != -1) {
-            mDrawable = mContext.getResources().getDrawable(bean.tabItemRes);
-        }
-    }
-
-    @Override
-    public void setBean(TabBean bean) {
-        super.setBean(bean);
         mRes = bean.tabItemRes;
 
     }
+
+
 
     @Override
     public void config(TabFlowLayout parentView) {

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private int mLastScrollPos = 0;
     private int mLastIndex = 0;
     private int mCurrentIndex = 0;
-    private boolean isAutoScroll;
 
     /**
      * viewpager 相关
@@ -60,8 +60,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private int mTextId = -1;
     private int mSelectedColor = -1;
     private int mUnSelectedColor = -1;
-    private int mAnimTime;
-    private int mTabOrientation;
     private TabBean mTabBean;
 
     public TabFlowLayout(Context context) {
@@ -78,8 +76,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
         TypedArray ta  = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
         mTabBean = AttrsUtils.getTabBean(ta);
         mScroller = new Scroller(getContext());
-        setVisualCount(mTabBean.tabOrientation);
-        setTabOrientation(mTabOrientation);
+        setVisualCount(mTabBean.visualCount);
+        setTabOrientation(mTabBean.tabOrientation);
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
@@ -100,13 +98,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     mAction.config(TabFlowLayout.this);
 
 
-                    if (mViewPager != null) {
-                        mAction.chooseIndex(mLastIndex, mCurrentIndex);
-
-                    } else {
-                        mAction.chooseIndex(mLastIndex, mCurrentIndex);
-
-                    }
+                    mAction.chooseIndex(mLastIndex, mCurrentIndex);
 
                     //让它滚动到对应的位置
                     final View view = getChildAt(mCurrentIndex);
@@ -607,17 +599,18 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
 
     public TabFlowLayout setTabBean(TabBean bean) {
-        mTabBean = bean;
         if (bean == null) {
             return this;
         }
+        mTabBean = AttrsUtils.diffTabBean(mTabBean,bean);
         if (bean.tabType != -1) {
             chooseTabTpye(bean.tabType);
         }
 
+        Log.d(TAG, "zsr setTabBean: "+mTabBean);
         if (mAction != null) {
             if (mTabBean != null) {
-                mAction.setBean(mTabBean);
+                mAction.configAttrs(mTabBean);
                 if (mViewPager != null && mAction.getViewPager() == null) {
                     //mAction.setViewPager(mViewPager,mTextId, mUnSelectedColor,mSelectedColor);
                     mAction.setViewPager(mViewPager)
@@ -629,12 +622,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
         }
 
 
-        if (mTabOrientation != bean.tabOrientation) {
-            setTabOrientation(bean.tabOrientation);
-        }
-        if (isAutoScroll != bean.isAutoScroll) {
-            isAutoScroll = bean.isAutoScroll;
-        }
+        setTabOrientation(bean.tabOrientation);
+
         if (bean.visualCount != -1) {
             setVisualCount(bean.visualCount);
         }
@@ -655,7 +644,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mCurrentIndex = position;
         if (mAction != null) {
             mAction.autoScaleView();
-            mAction.doAnim(mLastIndex, mCurrentIndex, mAnimTime);
+            mAction.doAnim(mLastIndex, mCurrentIndex, mTabBean.tabClickAnimTime);
         }
     }
 
@@ -681,7 +670,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     @Override
     public boolean isTabAutoScroll() {
-        return isAutoScroll;
+        return mTabBean.isAutoScroll;
     }
 
     @Override

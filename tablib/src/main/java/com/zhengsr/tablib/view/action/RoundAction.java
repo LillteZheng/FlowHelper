@@ -19,15 +19,15 @@ public class RoundAction extends BaseAction {
     private float mRound;
 
 
-
     @Override
-    public void setBean(TabBean bean) {
-        super.setBean(bean);
-
+    public void configAttrs(TabBean bean) {
+        super.configAttrs(bean);
         if (bean.tabRoundSize !=-1) {
             mRound = bean.tabRoundSize;
         }
     }
+
+
 
     @Override
     public void config(TabFlowLayout parentView) {

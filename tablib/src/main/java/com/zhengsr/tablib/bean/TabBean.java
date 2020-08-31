@@ -93,7 +93,7 @@ public class TabBean {
                 ", tabOrientation=" + tabOrientation +
                 ", actionOrientation=" + actionOrientation +
                 ", isAutoScroll=" + isAutoScroll +
+                ", visualCount=" + visualCount +
                 '}';
     }
-
 }
