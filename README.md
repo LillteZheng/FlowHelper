@@ -51,15 +51,24 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.23'
+implementation 'com.github.LillteZheng:FlowHelper:v1.24'
 ```
 
 **如果要支持 AndroidX ，如果你的工程已经有以下代码，直接关联即可:**
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.23'
+android.useAndroidX=true
+#自动支持 AndroidX 第三方库
+android.enableJetifier=true
 ```
 
+**后期计划**
+
+- 兼容kotlin、androidx和support
+- 添加 ViewPager2
+- 多行 Tab 的效果
+
+项目多，只能空闲时间改，看有没有时间了
 
 ## TabFlowLayout 效果图
 
