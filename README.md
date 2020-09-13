@@ -51,15 +51,13 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.24'
+implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.26
 ```
 
-**如果要支持 AndroidX ，如果你的工程已经有以下代码，直接关联即可:**
+**如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 
 ```
-android.useAndroidX=true
-#自动支持 AndroidX 第三方库
-android.enableJetifier=true
+implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.26
 ```
 
 **后期计划**
