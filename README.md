@@ -57,16 +57,9 @@ implementation 'com.github.LillteZheng:FlowHelper:v1.23'
 **如果要支持 AndroidX ，如果你的工程已经有以下代码，直接关联即可:**
 
 ```
-android.useAndroidX=true
-#自动支持 AndroidX 第三方库
-android.enableJetifier=true
+implementation 'com.github.LillteZheng:FlowHelper:v1.23'
 ```
 
-**后期计划(加入了新公司，只能空闲时间搞了)**
-
-- 兼容kotlin、androidx和support
-- 添加 ViewPager2
-- 多行 Tab 的效果
 
 ## TabFlowLayout 效果图
 

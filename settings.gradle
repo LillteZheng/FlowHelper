@@ -1,3 +1,4 @@
-include ':kotlinlib'
+include ':appx'
+include ':tablibx'
 include ':app', ':tablib'
 rootProject.name='TabHelper'

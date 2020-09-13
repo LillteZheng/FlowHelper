@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#506E7A"
+    android:orientation="vertical"
+    tools:context=".activity.LabelActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/signle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="单选"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <com.zhengsr.tablib.view.flow.LabelFlowLayout
+            android:id="@+id/singleflow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="更新数据" />
+
+        <TextView
+            android:id="@+id/search_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热搜词"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.zhengsr.tablib.view.flow.LabelFlowLayout
+            android:id="@+id/search_flow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+
+        <TextView
+            android:id="@+id/multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="多选"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.zhengsr.tablib.view.flow.LabelFlowLayout
+            android:id="@+id/multiflow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="支持长按"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <com.zhengsr.tablib.view.flow.LabelFlowLayout
+            android:id="@+id/longflow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            app:label_maxSelectCount="3" />
+    </LinearLayout>
+
+</ScrollView>
