@@ -60,14 +60,6 @@ implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.26
 implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.26
 ```
 
-**后期计划**
-
-- 兼容kotlin、androidx和support
-- 添加 ViewPager2
-- 多行 Tab 的效果
-
-项目多，只能空闲时间改，看有没有时间了
-
 ## TabFlowLayout 效果图
 
 <table  align="center">
