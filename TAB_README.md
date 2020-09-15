@@ -129,7 +129,11 @@ private void rectFlow(){
 
 }
 ```
-可以看到，只需要设置 adapter 就行了，需要注意的是你要传入子控件的 layout，这样方便你自定义你的布局，比如一个TextView 和一个红点点。具体细节，可以参看这个：
+可以看到，只需要设置 adapter 就行了，需要注意的是你要传入子控件的 layout，这样方便你自定义你的布局，比如一个TextView 和一个红点点。
+
+**如果需要数据更新，使用adapger.notifyDataChanged()即可**
+
+具体细节，可以参看这个：
 
 [实现一个可定制化的TabFlowLayout(三) -- 动态数据添加与常用接口封装](https://blog.csdn.net/u011418943/article/details/103817967)
 
