@@ -67,6 +67,8 @@ flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textv
 });
 ```
 
+**如果需要数据更新，使用adapger.notifyDataChanged()即可**
+
 ## 3.3.2 多选
 其实只需要配置 flowLayout.setMaxSelectCount(3); 就可以了，然后adapter 中重写：
 ```
