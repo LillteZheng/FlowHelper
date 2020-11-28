@@ -51,13 +51,13 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.26
+implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.27
 ```
 
 **如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 
 ```
-implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.26
+implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.27
 ```
 
 ## TabFlowLayout 效果图
@@ -135,6 +135,14 @@ implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.26
     <td><img src="https://github.com/LillteZheng/CusBottomHelper/raw/master/gif/cus_viewpager.gif" align="left" height="789" width="479" ></td>
   </tr>
 </table>
+
+
+
+## 版本信息：
+
+-  v1.27 : 修复 tab_color 不起作用的问题
+-  v1.26 : 增加 ViewPager2
+....
 
 
 ## 如果该项目对您有帮助，赞赏一下吧 ^_^
