@@ -540,6 +540,9 @@ public abstract class BaseAction implements ViewPager.OnPageChangeListener {
      */
     public void configAttrs(TabBean bean) {
         mTabBean = bean;
+        if (bean.tabColor != -2) {
+            mPaint.setColor(bean.tabColor);
+        }
     }
 
     /**

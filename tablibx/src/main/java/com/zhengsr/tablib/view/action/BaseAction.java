@@ -528,6 +528,9 @@ public abstract class BaseAction  extends BViewPager {
      */
     public void configAttrs(TabBean bean) {
         mTabBean = bean;
+        if (bean.tabColor != -2){
+            mPaint.setColor(bean.tabColor);
+        }
     }
 
     /**

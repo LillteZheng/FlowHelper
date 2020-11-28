@@ -28,7 +28,7 @@ public class LabelShowMoreActivity extends AppCompatActivity {
 
         //自定义属性
         LabelBean bean = new LabelBean();
-        bean.showLines = 3;
+        bean.showLines = 2;
         bean.showMoreLayoutId = R.layout.show_more;
         bean.showMoreColor = Color.WHITE;
         bean.handUpLayoutId = R.layout.handup;

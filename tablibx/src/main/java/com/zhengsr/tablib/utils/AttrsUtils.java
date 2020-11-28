@@ -23,7 +23,7 @@ public class AttrsUtils {
         TabBean bean = new TabBean();
 
         bean.tabType = ta.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
-        bean.tabColor = ta.getColor(R.styleable.TabFlowLayout_tab_color, Color.RED);
+        bean.tabColor = ta.getColor(R.styleable.TabFlowLayout_tab_color, -2);
         bean.tabWidth = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_width, -1);
         bean.tabHeight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_height, -1);
 
