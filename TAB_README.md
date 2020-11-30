@@ -37,16 +37,18 @@
 
 ## 三、使用
 主要是 TabFlowLayout 和 LabelFlowLayout 这两个控件
-### 3.1 TabFlowLayout
-首先是在 xml 中，填写 TabFlowLayout 控件，它支持横竖排列，默认横向，可以使用tab_orientation = "vertical" 更换成竖直排列，一个不带效果,支持横向的 TabFlowLayout 如下：
 
 **关于宽度，以下请须知：**
 
-- **设置了 tab_visual_count,宽度需要设置成**match_parent或者固定宽度**；其他则是根据子控件的大小去累加宽度，一般建议子控件为 wrap_content**
+- **如果是宽度均分，即设置了tab_visual_count,则TabFlowLayout设置为**match_parent或者固定宽度**；其他模式，则TabFlowLayout设置为wrap_content即可，这样就会根据子控件去累加**
 
-- **用到约束布局，或者 LinearLayout，当你是居中而没有向左对齐，当子控件过多，则代码会手动让它向左对齐，这样滚动和布局才会正常**
+- **如果用到约束布局，或者 LinearLayout，当你设置为居中而没有向左对齐，当子控件过多，为保证控件滚动，会自动让它向左对齐**
 
 - **如果需要 TabFlowlayout 和其他控件配合，写好约束关系就行了**
+
+### 3.1 TabFlowLayout
+首先是在 xml 中，填写 TabFlowLayout 控件，它支持横竖排列，默认横向，可以使用tab_orientation = "vertical" 更换成竖直排列，一个不带效果,支持横向的 TabFlowLayout 如下：
+
 
 **XML**
 ```
