@@ -140,7 +140,12 @@ LabelFlowLayout 还支持显示更多和收起的功能，如图：
 
 <img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label_showmore.gif" align="left" height="789" width="479">
 
+
+
+
+
 配置的 xml 如下：
+
 ```
     <com.zhengsr.tablib.view.flow.LabelFlowLayout
         android:id="@+id/labelflow"
