@@ -138,8 +138,9 @@ public void onReachMaxCount(List<Integer> ids, int count) {
 
 LabelFlowLayout 还支持显示更多和收起的功能，如图：
 
-<img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label_showmore.gif" align="left" height="789" width="479">
 
+
+  <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/label_showmore.gif" align="left" height="789" width="479"></a></td>
 
 
 
