@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.view.Gravity;
 
 import com.zhengsr.tablib.R;
 
@@ -125,13 +126,20 @@ public class TabColorTextView extends AppCompatTextView {
         canvas.clipRect(start,0,end,mHeight);
         String text = getText().toString();
 
-        //绘制颜色居中
-        float textWidth = mPaint.measureText(text);
-        float x = (mWidth - textWidth)/2;
+        int t = getPaddingTop();
+        int b = getPaddingBottom();
+        float x;
+        float ty;
         Paint.FontMetrics metrics = mPaint.getFontMetrics();
-        float dy = (metrics.descent+metrics.ascent)/2;
-        float ty = mHeight/2 - dy;
-
+        float dy = (metrics.descent + metrics.ascent) / 2;
+        float textWidth = mPaint.measureText(text);
+        x = (mWidth - textWidth) / 2;
+        //根据padding来
+        if (getGravity() == Gravity.CENTER_VERTICAL || getGravity() == Gravity.CENTER){
+            t = 0;
+            b = 0;
+        }
+        ty = (mHeight+ t - b )*1.0f / 2 - dy;
 
         canvas.drawText(text,x,ty,mPaint);
         canvas.restore();

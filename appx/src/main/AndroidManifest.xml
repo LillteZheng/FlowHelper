@@ -17,6 +17,7 @@
         <activity android:name=".activity.LabelActivity" />
         <activity android:name=".activity.TabNoViewPagerActivity" />
         <activity android:name=".activity.TabActivity" />
+        <activity android:name=".activity.CountActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

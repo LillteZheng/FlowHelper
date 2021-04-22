@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.zhengsr.tabhelper.activity.CountActivity;
 import com.zhengsr.tabhelper.activity.LabelActivity;
 import com.zhengsr.tabhelper.activity.LabelShowMoreActivity;
 import com.zhengsr.tabhelper.activity.NetTestActivity;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // startActivity(new Intent(this, LabelActivity.class));
+        startActivity(new Intent(this, CountActivity.class));
 
         ViewPager viewPager = findViewById(R.id.viewpager);
         mFragments.add(TestFragment.newInStance());
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void tablayout2(View view) {
         startActivity(new Intent(this, TabNoViewPagerActivity.class));
+    }
+    public void tab_count(View view) {
+        startActivity(new Intent(this, CountActivity.class));
     }
 
     public void labelflow(View view) {

@@ -25,6 +25,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="TabFlowLayout 宽度均分"
+        android:textAllCaps="false"
+        android:onClick="tab_count"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="TabFlowLayout 竖直效果"
         android:textAllCaps="false"
         android:onClick="tablayout4"/>

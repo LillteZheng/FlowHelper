@@ -192,6 +192,7 @@ public abstract class BaseAction  extends BViewPager {
          * 上次相差超过 1，则不执行这个指令，直接在点击的时候，就呈现改效果。
          */
         if (mParentView != null) {
+
             View curView = mParentView.getChildAt(position);
             float offset = curView.getMeasuredWidth() * positionOffset;
             int scrollX = (int) (curView.getLeft() + offset);
