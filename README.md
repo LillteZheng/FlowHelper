@@ -51,13 +51,13 @@ allprojects {
 ```
 
 ```
-implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.27
+implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.28
 ```
 
 **如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 
 ```
-implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.27
+implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.28
 ```
 
 ## TabFlowLayout 效果图
@@ -140,6 +140,7 @@ implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.27
 
 ## 版本信息：
 
+-  v1.28 : 1. 修复底部条跳动的问题；2. 修复TabColorText不能设置padding的问题
 -  v1.27 : 修复 tab_color 不起作用的问题
 -  v1.26 : 增加 ViewPager2
 ....

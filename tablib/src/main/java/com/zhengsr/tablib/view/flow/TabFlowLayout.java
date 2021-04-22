@@ -403,7 +403,14 @@ public class TabFlowLayout extends ScrollFlowLayout {
             @Override
             public void onClick(View v) {
                 isItemClick = true;
-                chooseItem(i, view);
+                if (mViewPager == null){
+                    chooseItem(i,view);
+                }else {
+                    if (mViewPager != null) {
+                        mViewPager.setCurrentItem(i);
+                    }
+
+                }
             }
         });
 

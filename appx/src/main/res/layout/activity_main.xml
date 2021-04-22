@@ -21,6 +21,12 @@
         android:text="TabFlowLayout 不结合viewpager"
         android:textAllCaps="false"
         android:onClick="tablayout2"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TabFlowLayout 均分效果"
+        android:textAllCaps="false"
+        android:onClick="tab_count"/>
 
     <Button
         android:layout_width="match_parent"

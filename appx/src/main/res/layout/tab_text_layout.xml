@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhengsr.tablib.view.TabColorTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    tools:text="测试"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="12dp"
+    app:colortext_default_color="@color/unselect"
+    android:gravity="center_horizontal"
+    app:colortext_change_color="@color/white"
+    >
+
+</com.zhengsr.tablib.view.TabColorTextView>

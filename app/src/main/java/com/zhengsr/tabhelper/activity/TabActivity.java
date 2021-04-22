@@ -66,7 +66,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
 
             }
         });
@@ -90,7 +90,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
 
             }
         });
@@ -110,7 +110,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
             }
         });
     }
@@ -129,7 +129,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
             }
         });
     }
@@ -162,7 +162,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
             }
         });
     }
@@ -180,7 +180,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
             }
         });
     }
@@ -201,7 +201,7 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+               
             }
         });
     }

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.zhengsr.tabhelper.activity.CountActivity;
 import com.zhengsr.tabhelper.activity.LabelActivity;
 import com.zhengsr.tabhelper.activity.LabelShowMoreActivity;
 import com.zhengsr.tabhelper.activity.NetTestActivity;
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void labelflowshomore(View view) {
         startActivity(new Intent(this, LabelShowMoreActivity.class));
+    }
+
+    public void tab_count(View view) {
+        startActivity(new Intent(this, CountActivity.class));
     }
 
     /**
