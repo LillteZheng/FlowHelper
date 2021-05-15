@@ -356,7 +356,7 @@ center居中，比如当前可视界面只显示3个：
 |---|---|---|
 |tab_type|rect,tri,round,color,res|tab的类型，目前支持矩形，三角形、圆角、颜色渐变、资源res|
 |tab_color|color|指示器的颜色，当类型为 rect、tri、roud是可以通过它定义|
-|tab_width|dimension|指示器的宽度，如果不写，则根据控件自身大小|
+|tab_width|dimension|指示器的宽度，默认根据控件自身大小，部分支持|
 |tab_height|dimension|指示器高度|
 |tab_item_res|reference|指示器的背景，比如shape，bitmap等，只对 res 起作用|
 |tab_round_size|dimension|圆角的大小，只对round起作用|
