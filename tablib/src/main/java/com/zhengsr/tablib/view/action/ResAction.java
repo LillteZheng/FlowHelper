@@ -52,6 +52,10 @@ public class ResAction extends BaseAction {
                 float b = child.getBottom() - mTabBean.tabMarginBottom;
                 mDrawable.setBounds(0, 0, width, height);
                 mDrawable.draw(canvas);
+                if (mTabBean.tabWidth != -1) {
+                    l += (child.getMeasuredWidth() - mTabBean.tabWidth) / 2 ;
+                    r = mTabBean.tabWidth + l;
+                }
                 mTabRect.set(l, t, r, b);
                 mSrcRect = new Rect(0, 0, width, height);
 

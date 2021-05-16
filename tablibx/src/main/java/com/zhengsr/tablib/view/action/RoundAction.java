@@ -1,6 +1,7 @@
 package com.zhengsr.tablib.view.action;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.bean.TabBean;
@@ -35,6 +36,10 @@ public class RoundAction extends BaseAction {
             float t = mTabBean.tabMarginTop + child.getTop();
             float r =  child.getRight() - mTabBean.tabMarginRight;
             float b =  child.getBottom() - mTabBean.tabMarginBottom;
+            if (mTabBean.tabWidth != -1) {
+                l += (child.getMeasuredWidth() - mTabBean.tabWidth) / 2 ;
+                r = mTabBean.tabWidth + l;
+            }
             mTabRect.set(l, t, r, b);
         }
         parentView.postInvalidate();

@@ -45,12 +45,12 @@ public class TabActivity extends AppCompatActivity {
         }
         mViewPager.setAdapter(new CusAdapter2(this));
         mViewPager.setOffscreenPageLimit(3);
-        rectFlow();
-        triFlow();
-        roundFlow();
+       // rectFlow();
+       // triFlow();
+       // roundFlow();
         resFlow();
-        colorFlow();
-        cusFlow();
+      //  colorFlow();
+      //  cusFlow();
 
 
     }
