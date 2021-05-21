@@ -3,6 +3,7 @@ package com.zhengsr.tabhelper.activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,13 +21,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TabNoViewPagerActivity extends AppCompatActivity {
-    private List<String> mTitle = Arrays.asList("Java","Android","Kotlin");
+    private static final String TAG = "TabNoViewPagerActivity";
+    private List<String> mTitle = new ArrayList<>();
     //Life is like an ocean. Only strong willed people can reach the other side
     private ArrayList<String> mTitle2 = new ArrayList<>(Arrays.asList("Life is like an ocean".split(" ")));
     private ArrayList<String> mTitle3 = new ArrayList<>(Arrays.asList("Life is like an ocean. Only strong willed people can reach the other side".split(" ")));
+    private TabApdater mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mTitle.add("Java");
+        mTitle.add("Android");
+        mTitle.add("Kotlin");
         setContentView(R.layout.activity_tab_no_view_pager);
         rectFlow();
         triFlow();
@@ -35,40 +42,51 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         cusFlow();
 
     }
+    boolean isDetele = false;
+    public void refresh(View view){
+        if (!isDetele){
+            mTitle.add("fsdf");
+            mTitle.set(0,"增加");
+        }else{
+            mTitle.set(0,"减少");
+            mTitle.remove(mTitle.size()-1);
+        }
+        isDetele = !isDetele;
+        mAdapter.notifyInsertOrRemoveChange();
+     
+    }
+
+
 
     private void rectFlow(){
         TabFlowLayout flowLayout = findViewById(R.id.rectflow);
-        flowLayout.setDefaultPosition(2);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-            @Override
-            public void onItemSelectState(View view, boolean isSelected) {
-                super.onItemSelectState(view, isSelected);
-                if (isSelected){
-                    setTextColor(view, R.id.item_text,Color.WHITE);
-                }else{
-                    setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
-                }
-            }
-
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data)
-                        .setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
-                if (position == 0){
-                    setVisible(view, R.id.item_msg,true);
-                }
-
-
-            }
-        });
+        mAdapter = new TabApdater(R.layout.item_msg,mTitle);
+        flowLayout.setAdapter(mAdapter);
 
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-        flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_test,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-            }
-        });
+
+        flowLayout2.setAdapter(new TestAdapter(R.layout.item_msg,mTitle));
+    }
+
+    class TestAdapter extends TabFlowAdapter<String>{
+
+        public TestAdapter(int layoutId, List<String> data) {
+            super(layoutId, data);
+        }
+
+        @Override
+        public void bindView(View view, String data, int position) {
+            setText(view, R.id.item_text,data);
+            Log.d(TAG, "zsr bindView: "+position+" "+data);
+        }
+
+        @Override
+        public void onItemClick(View view, String data, int position) {
+            super.onItemClick(view, data, position);
+            mTitle.set(position,"sdfsdf");
+            notifyDataChanged();
+
+        }
     }
 
     private void triFlow(){
@@ -188,6 +206,37 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         @Override
         public void draw(Canvas canvas) {
             canvas.drawCircle(mTabRect.left, mTabRect.top,mTabBean.tabWidth/2,mPaint);
+        }
+    }
+
+    class TabApdater extends TabFlowAdapter<String>{
+
+        public TabApdater(int layoutId, List<String> data) {
+            super(layoutId, data);
+        }
+
+        @Override
+        public void onItemSelectState(View view, boolean isSelected) {
+            super.onItemSelectState(view, isSelected);
+            if (isSelected){
+                setTextColor(view, R.id.item_text,Color.WHITE);
+            }else{
+                setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
+            }
+        }
+
+        @Override
+        public void bindView(View view, String data, int position) {
+            setText(view, R.id.item_text,data)
+                    .setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
+            if (position == 0){
+                setVisible(view, R.id.item_msg,true);
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, String data, int position) {
+            super.onItemClick(view, data, position);
         }
     }
 

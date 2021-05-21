@@ -1,5 +1,7 @@
 package com.zhengsr.tablib.view.action;
 
+import android.util.Log;
+
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -8,23 +10,28 @@ import androidx.viewpager2.widget.ViewPager2;
  * describe：
  */
 public class BViewPager {
-
+    private static final String TAG = "BViewPager";
     protected ViewPager2 mViewPager2;
     protected ViewPager mViewPager;
     private Pager2Listener mPager2Listener;
     public BViewPager setViewPager(ViewPager2 viewPager){
-        mViewPager2 = viewPager;
-        if (mPager2Listener != null) {
-            mViewPager2.unregisterOnPageChangeCallback(mPager2Listener);
+        if (viewPager != null) {
+            mViewPager2 = viewPager;
+            if (mPager2Listener != null) {
+                mViewPager2.unregisterOnPageChangeCallback(mPager2Listener);
+            }
+            mViewPager2.registerOnPageChangeCallback(mPager2Listener = new Pager2Listener());
         }
-        mViewPager2.registerOnPageChangeCallback(mPager2Listener = new Pager2Listener());
+
         return this;
     }
 
     public BViewPager setViewPager(ViewPager viewPager){
-        mViewPager = viewPager;
-        mViewPager.addOnPageChangeListener(null);
-        mViewPager.addOnPageChangeListener(new PagerListener());
+        if (viewPager != null) {
+            mViewPager = viewPager;
+            mViewPager.addOnPageChangeListener(null);
+            mViewPager.addOnPageChangeListener(new PagerListener());
+        }
         return this;
     }
 

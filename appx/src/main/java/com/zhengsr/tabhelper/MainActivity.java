@@ -28,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startActivity(new Intent(this, CountActivity.class));
-
         ViewPager viewPager = findViewById(R.id.viewpager);
         mFragments.add(TestFragment.newInStance());
         mFragments.add(TestFragment.newInStance());

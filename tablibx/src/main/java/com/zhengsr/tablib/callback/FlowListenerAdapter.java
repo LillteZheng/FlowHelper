@@ -10,6 +10,9 @@ public class FlowListenerAdapter  {
 
     }
 
+    public void notifyInsertOrRemoveChange(){
+
+    }
 
     public void resetAllTextColor(int viewId,int color) {
 

@@ -36,19 +36,8 @@
 
 
 ## 三、使用
-主要是 TabFlowLayout 和 LabelFlowLayout 这两个控件
-### 3.1 TabFlowLayout
-首先是在 xml 中，填写 TabFlowLayout 控件，它支持横竖排列，默认横向，可以使用tab_orientation = "vertical" 更换成竖直排列，一个不带效果,支持横向的 TabFlowLayout 如下：
 
-**关于宽度，以下请须知：**
-
-- **设置了 tab_visual_count,宽度需要设置成**match_parent或者固定宽度**；其他则是根据子控件的大小去累加宽度，一般建议子控件为 wrap_content**
-
-- **用到约束布局，或者 LinearLayout，当你是居中而没有向左对齐，当子控件过多，则代码会手动让它向左对齐，这样滚动和布局才会正常**
-
-- **如果需要 TabFlowlayout 和其他控件配合，写好约束关系就行了**
-
-**XML**
+**默认的XML**
 ```
 <com.zhengsr.tablib.view.flow.TabFlowLayout
     android:id="@+id/resflow"
@@ -81,10 +70,13 @@
 - tab_margin_b ：margin_bottom 的意思，相应的还有 l,t,r,b
 - tab_item_autoScale : 是否自动放大缩小效果，默认false
 - tab_scale_factor ：放大因子，这里放大1.2 倍，默认为 1
+- 可以使用tab_orientation : 默认为横向，可以选择竖向 vertical
 
-上面几个为基础属性，这里填写 tri 也可以同样设置。当 type 为  round 或者 res 时，width 和 height 则可以不填，因为要根据控件本身去适配大小。
+tab_type 可以填 tri ，rect，round 等类型
 
 其他说明，可以参看下面的自定义属性说明。
+
+
 
 **Java**
 
@@ -131,13 +123,13 @@ private void rectFlow(){
 ```
 可以看到，只需要设置 adapter 就行了，需要注意的是你要传入子控件的 layout，这样方便你自定义你的布局，比如一个TextView 和一个红点点。
 
-**如果需要数据更新，使用adapger.notifyDataChanged()即可**
+**如果需要数据更新，使用adapter.notifyDataChanged() 即可**
 
 具体细节，可以参看这个：
 
 [实现一个可定制化的TabFlowLayout(三) -- 动态数据添加与常用接口封装](https://blog.csdn.net/u011418943/article/details/103817967)
 
-如果你需要使用颜色渐变的效果，TextView 换成 TabColorTextView 就可以了，比如：
+如果你需要使用颜色渐变的效果，蒋xml 的TextView 换成 TabColorTextView 就可以了，比如：
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -189,7 +181,7 @@ private void rectFlow(){
 flowLayout.setViewPager(viewpager) .
 
 ```
-如果您想要配置默认位置，或者 TextView 的颜色变化，可以参考以下设置，支持链式调用 :
+如果您想要配置默认位置，或者 TextView 的颜色变化，则需要配置TabConfig :
 ```
   /**
    * @ setViewPager 设置 viewpager
@@ -198,11 +190,13 @@ flowLayout.setViewPager(viewpager) .
    * @ setSelectedColor //选中的颜色，如果为 TabColorTextView 不需要些这个
    * @ setUnSelectedColor //没有选中的颜色，如果为 TabColorTextView 不需要些这个
    */
- flowLayout.setViewPager(mViewPager)
-            .setTextId(R.id.item_text)  //必填，不然 Textview 没效果
-            .setSelectedColor(Color.WHITE) 
-            .setUnSelectedColor(getResources().getColor(R.color.unselect)) 
-            .setDefaultPosition(2); 
+   TabConfig config = new TabConfig.Builder()
+            .setViewpager(mViewPager)
+            .setTextId(R.id.item_text)
+            .setSelectedColor(Color.WHITE)
+            .setUnSelectColor(getResources().getColor(R.color.unselect))
+            .build();
+   flowLayout.setAdapter(config,adapter)
 ```
 
 **其中，如果TextView有颜色变化，setTextId()是必须要设置的!**
@@ -305,8 +299,8 @@ private void resFlow(){
 
 上面中，item_layout 的宽度都是通过测量自身的，如果想要均分宽度怎么做呢？
 
-可以设置 tab_visual_count ，宽度需要设置成**match_parent或者固定宽度**,如果是子控件是 textview，建议 gravity 设置成
-center居中，比如当前可视界面只显示3个：
+可以设置 tab_visual_count ，宽度需要设置成**match_parent或者固定宽度**,如果是子控件是 textview，建议 gravity 设置成center居中，比如当前可视界面只显示3个：
+
 <img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_visual_count.png" >
 
 

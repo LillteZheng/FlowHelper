@@ -24,7 +24,7 @@ class FlowLayout extends ViewGroup {
      * tabflowlayout
      */
     private int mTabOrientation;
-    protected int mVisualCount = -1;
+    protected int mVisibleCount = -1;
     /**
      * labelflowlayout
      */
@@ -62,8 +62,8 @@ class FlowLayout extends ViewGroup {
 
 
     }
-    public void setVisualCount(int visualCount){
-        mVisualCount = visualCount;
+    protected void setVisibleCount(int visualCount){
+        mVisibleCount = visualCount;
     }
 
     /**
@@ -175,8 +175,8 @@ class FlowLayout extends ViewGroup {
             MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
             //拿到 子控件宽高 + margin
             int cw;
-            if (mVisualCount != -1){
-                cw = widthPixels/mVisualCount;
+            if (mVisibleCount != -1){
+                cw = widthPixels/ mVisibleCount;
                 params.width = cw;
                 child.setLayoutParams(params);
                 width = widthPixels;

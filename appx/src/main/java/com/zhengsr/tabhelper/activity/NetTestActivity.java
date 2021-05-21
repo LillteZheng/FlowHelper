@@ -16,6 +16,7 @@ import com.zhengsr.tabhelper.bean.NaviChildrenBean;
 import com.zhengsr.tabhelper.bean.SystematicBean;
 import com.zhengsr.tabhelper.fragment.RecyclerFragment;
 import com.zhengsr.tabhelper.rx.HttpCreate;
+import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
@@ -46,11 +47,15 @@ public class NetTestActivity extends SupportActivity {
 
 
         final TabFlowAdapter adapter ;
-        flowLayout.setViewPager(mViewPager)
+
+        TabConfig config = new TabConfig.Builder()
+                .setViewPager(mViewPager)
                 .setTextId(R.id.item_text)
-                .setDefaultPosition(2)
-                .setVisualCount(4);
-        flowLayout.setAdapter(adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
+                .setDefaultPos(2)
+                .setVisibleCount(4)
+                .build();
+
+        flowLayout.setAdapter(config,adapter = new TabFlowAdapter<String>(R.layout.item_tab,titles) {
 
             @Override
             public void bindView(View view, String data, int position) {
@@ -82,7 +87,8 @@ public class NetTestActivity extends SupportActivity {
                         }
                         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments));
                         //刷新数据
-                        adapter.notifyDataChanged();
+                    //    adapter.notifyDataChanged();
+                        adapter.notifyInsertOrRemoveChange();
 
 
                     }

@@ -87,13 +87,21 @@ public abstract class BaseFlowAdapter<T> {
     }
 
     /**
-     * 通知数据改变
+     * 通知数据改变，全部刷新
      */
     public void notifyDataChanged() {
         if (mListener != null) {
             mListener.notifyDataChanged();
         }
     }
+
+    public void notifyInsertOrRemoveChange(){
+        if (mListener != null) {
+            mListener.notifyInsertOrRemoveChange();
+        }
+    }
+
+
 
 
     /**

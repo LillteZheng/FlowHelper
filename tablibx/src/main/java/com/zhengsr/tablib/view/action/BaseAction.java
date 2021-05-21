@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.TabColorTextView;
@@ -42,8 +44,8 @@ public abstract class BaseAction  extends BViewPager {
     protected float mOffset;
     protected Context mContext;
     private int mTextViewId = -1;
-    private int mUnSelectedColor = -1;
-    private int mSelectedColor = -1;
+    private int mUnSelectedColor = -2;
+    private int mSelectedColor = -2;
     protected int mCurrentIndex;
     private int mLastIndex;
     private boolean isColorText = false;
@@ -103,38 +105,27 @@ public abstract class BaseAction  extends BViewPager {
     }
 
 
-
-
-
     /**
-     * 设置textview 的id ，不然颜色不起作用
-     * @param textId
+     *
+     * @param config
      */
-    public  BaseAction setTextId(int textId){
-        mTextViewId = textId;
-        return this;
+    public void setTabConfig(TabConfig config){
+        if (config != null) {
+            mTextViewId = config.getTextId();
+            mSelectedColor = config.getSelectedColor();
+            mUnSelectedColor = config.getUnSelectColor();
+            if (config.getViewPager() != null) {
+                setViewPager(config.getViewPager());
+            }
+            if (config.getViewPager2() != null) {
+                setViewPager(config.getViewPager2());
+            }
+        }
     }
 
-    /**
-     * 设置选中颜色，在 TabTextColorView 不起作用
-     * @param selectedColor
-     */
-    public BaseAction setSelectedColor(int selectedColor) {
-        this.mSelectedColor = selectedColor;
-        return this;
-    }
-    /**
-     * 设置默认颜色，在 TabTextColorView 不起作用
-     * @param unSelectedColor
-     */
-    public BaseAction setUnSelectedColor(int unSelectedColor) {
-        this.mUnSelectedColor = unSelectedColor;
-        return this;
-    }
 
     /**
      * 点击事件
-     *
      * @param lastIndex
      * @param curIndex
      */
@@ -431,9 +422,13 @@ public abstract class BaseAction  extends BViewPager {
                     View view = mParentView.getChildAt(i);
                     TextView textView = view.findViewById(mTextViewId);
                     if (i == position) {
-                        textView.setTextColor(mSelectedColor);
+                        if (mSelectedColor != -2) {
+                            textView.setTextColor(mSelectedColor);
+                        }
                     } else {
-                        textView.setTextColor(mUnSelectedColor);
+                        if (mUnSelectedColor != -2) {
+                            textView.setTextColor(mUnSelectedColor);
+                        }
                     }
                 }
             }
@@ -569,4 +564,6 @@ public abstract class BaseAction  extends BViewPager {
     public  void setContext(Context context){
         mContext = context;
     }
+
+
 }

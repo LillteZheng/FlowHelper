@@ -24,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.AttrsUtils;
 import com.zhengsr.tablib.view.action.BaseAction;
@@ -34,9 +35,11 @@ import com.zhengsr.tablib.view.action.RoundAction;
 import com.zhengsr.tablib.view.action.TriAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 
+
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 实现数据封装与一些重绘工作
+ * 好想重构，好绝望，写的啥啊
  */
 public class TabFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "TabFlowLayout";
@@ -58,10 +61,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
      */
     private ViewPager mViewPager;
     private ViewPager2 mViewPager2;
-    private int mTextId = -1;
-    private int mSelectedColor = -1;
-    private int mUnSelectedColor = -1;
     private TabBean mTabBean;
+    private TabConfig mTabConfig;
 
     public TabFlowLayout(Context context) {
         this(context, null);
@@ -77,7 +78,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         TypedArray ta  = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
         mTabBean = AttrsUtils.getTabBean(ta);
         mScroller = new Scroller(getContext());
-        setVisualCount(mTabBean.visualCount);
+        setVisibleCount(mTabBean.visualCount);
         setTabOrientation(mTabBean.tabOrientation);
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
@@ -188,17 +189,18 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     /**
      * 添加adapter，
-     *
      * @param adapter
      */
     public void setAdapter(TabFlowAdapter adapter) {
+        setAdapter(null,adapter);
+    }
+
+    public void setAdapter(TabConfig tabConfig,TabFlowAdapter adapter) {
+        setTabConfig(tabConfig);
         mAdapter = adapter;
         mAdapter.setListener(new FlowListener());
-
         //实现数据更新
         notifyChanged();
-
-
     }
 
     /**
@@ -218,9 +220,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
             if (mViewPager2 != null && mAction.getViewPager2() == null) {
                 mAction.setViewPager(mViewPager2);
             }
-            mAction.setTextId(mTextId)
-                    .setSelectedColor(mSelectedColor)
-                    .setUnSelectedColor(mUnSelectedColor);
+            mAction.setTabConfig(mTabConfig);
+
         }
     }
 
@@ -232,7 +233,40 @@ public class TabFlowLayout extends ScrollFlowLayout {
         @Override
         public void notifyDataChanged() {
             super.notifyDataChanged();
+            TabFlowAdapter adapter = mAdapter;
+            int childCount = getChildCount();
+            if (childCount != adapter.getDatas().size()){
+                throw new RuntimeException("you need use notifyInsertOrRemoveChange() ");
+            }
+            for (int i = 0; i < childCount; i++) {
+                View view = getChildAt(i);
+                adapter.bindView(view,adapter.getDatas().get(i),i);
+
+            }
+        }
+
+        @Override
+        public void notifyInsertOrRemoveChange() {
+            super.notifyInsertOrRemoveChange();
+            //todo 后续重构后再修复
+            /*if (mViewPager != null || mViewPager2 != null){
+                throw new RuntimeException("notifyInsertOrRemoveChange not support this method when Viewpager is not empty");
+            }*/
+            if (mVisibleCount != -1 && getChildCount() > 0){
+                throw new RuntimeException("notifyInsertOrRemoveChange not support when visibleCount is not -1");
+            }
             notifyChanged();
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mCurrentIndex > getChildCount()-1){
+                        mCurrentIndex --;
+                    }
+                    mAction.chooseIndex(mLastIndex, mCurrentIndex);
+                    mLastIndex = mCurrentIndex;
+                    postInvalidate();
+                }
+            },100);
         }
 
         @Override
@@ -250,82 +284,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
 
     }
 
-    /**
-     * 设置默认位置
-     *
-     * @param position
-     */
-    public TabFlowLayout setDefaultPosition(int position) {
-        mCurrentIndex = position;
-        return this;
-    }
-
-    /**
-     * 设置 viewpager
-     *
-     * @param viewPager
-     * @return
-     */
-    public TabFlowLayout setViewPager(ViewPager viewPager) {
-        if (viewPager == null) {
-            return this;
-        }
-        mViewPager = viewPager;
-        if (mAction != null) {
-            mAction.setViewPager(viewPager);
-        }
-        return this;
-    }
-
-    public TabFlowLayout setViewPager(ViewPager2 viewpager2){
-        mViewPager2 = viewpager2;
-        if (mAction != null){
-            mAction.setViewPager(viewpager2);
-        }
-        return this;
-    }
-
-    /**
-     * 设置 textId，不然颜色选择不起作用
-     *
-     * @param textId
-     * @return
-     */
-    public TabFlowLayout setTextId(int textId) {
-        mTextId = textId;
-        if (mAction != null) {
-            mAction.setTextId(textId);
-        }
-        return this;
-    }
-
-    /**
-     * 设置选中颜色，在 TabTextColorView 不起作用
-     *
-     * @param selectedColor
-     */
-    public TabFlowLayout setSelectedColor(int selectedColor) {
-        mSelectedColor = selectedColor;
-        if (mAction != null) {
-            mAction.setSelectedColor(selectedColor);
-        }
-        return this;
-    }
-
-    /**
-     * 设置默认颜色，在 TabTextColorView 不起作用
-     *
-     * @param unSelectedColor
-     */
-    public TabFlowLayout setUnSelectedColor(int unSelectedColor) {
-        mUnSelectedColor = unSelectedColor;
-        if (mAction != null) {
-            mAction.setUnSelectedColor(unSelectedColor);
-        }
-        return this;
-    }
-
-
 
 
     /**
@@ -341,9 +299,8 @@ public class TabFlowLayout extends ScrollFlowLayout {
             configClick(view, i);
             addView(view);
         }
-
         //如果此时 width 为 0，则是加载完布局，但是数据还没有导入，则需要重新适配一下；
-        if (mWidth == 0 && getWidth() == 0 || mVisualCount > 0) {
+        if (mWidth == 0 && getWidth() == 0 || mVisibleCount > 0) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -402,6 +359,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     if (mViewPager2 != null) {
                         mViewPager2.setCurrentItem(i);
                     }
+                    if (mAdapter != null) {
+                        mAdapter.onItemClick(view, mAdapter.getDatas().get(i),i);
+                    }
                 }
             }
         });
@@ -432,9 +392,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
         if (mAction != null) {
             mAction.onItemClick(mLastIndex, position);
         }
-        if (mAdapter != null) {
-            mAdapter.onItemClick(view, mAdapter.getDatas().get(position), position);
-        }
         /**
          * 如果没有 viewpager，则需要使用 scroller 平滑过渡
          */
@@ -443,6 +400,9 @@ public class TabFlowLayout extends ScrollFlowLayout {
             invalidate();
         }
 
+        if (mAdapter != null) {
+            mAdapter.onItemClick(view, mAdapter.getDatas().get(position), position);
+        }
     }
 
     /**
@@ -619,9 +579,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                 if (mViewPager2 != null && mAction.getViewPager2() == null) {
                     mAction.setViewPager(mViewPager2);
                 }
-                mAction.setTextId(mTextId)
-                        .setSelectedColor(mSelectedColor)
-                        .setUnSelectedColor(mUnSelectedColor);
+                mAction.setTabConfig(mTabConfig);
             }
         }
 
@@ -629,7 +587,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
         setTabOrientation(bean.tabOrientation);
 
         if (bean.visualCount != -1) {
-            setVisualCount(bean.visualCount);
+            setVisibleCount(bean.visualCount);
         }
         return this;
     }
@@ -681,4 +639,71 @@ public class TabFlowLayout extends ScrollFlowLayout {
     public boolean isLabelFlow() {
         return false;
     }
+
+    /**
+     * 设置默认位置
+     * 请使用{@link #setTabConfig(TabConfig)}
+     */
+    public TabFlowLayout setDefaultPosition(int position) {
+        mCurrentIndex = position;
+        return this;
+    }
+
+    public void setTabConfig(TabConfig config){
+        if (config != null) {
+            mTabConfig = config;
+            if (config.getViewPager() != null) {
+                mViewPager = config.getViewPager();
+            }
+            if (config.getViewPager2() != null) {
+                mViewPager2 = config.getViewPager2();
+            }
+            if (config.getDefaultPos() != 0) {
+                mCurrentIndex = config.getDefaultPos();
+            }
+            if (config.getVisibleCount() != -1) {
+                setVisibleCount(config.getVisibleCount());
+            }
+            Log.d(TAG, "setTabConfig() called with: config = [" + config.toString() + "]");
+        }else{
+            mTabConfig = new TabConfig.Builder()
+                    .setViewPager(mViewPager)
+                    .setViewpager(mViewPager2)
+                    .setDefaultPos(mCurrentIndex)
+                    .build();
+
+        }
+        if (mAction != null) {
+            mAction.setTabConfig(mTabConfig);
+        }
+
+
+    }
+
+    /**
+     * 设置viewpager，如果有多个配置，请使用{@link #setTabConfig(TabConfig)}
+     */
+    public TabFlowLayout setViewPager(ViewPager viewPager) {
+        if (viewPager == null) {
+            return this;
+        }
+        mViewPager = viewPager;
+        if (mAction != null) {
+            mAction.setViewPager(viewPager);
+        }
+        return this;
+    }
+
+
+    /**
+     * 设置viewpager，如果有多个配置，请使用{@link #setTabConfig(TabConfig)}
+     */
+    public TabFlowLayout setViewPager(ViewPager2 viewpager2){
+        mViewPager2 = viewpager2;
+        if (mAction != null){
+            mAction.setViewPager(viewpager2);
+        }
+        return this;
+    }
+
 }

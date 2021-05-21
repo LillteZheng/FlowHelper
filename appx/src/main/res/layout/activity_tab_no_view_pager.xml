@@ -9,6 +9,13 @@
     android:background="#506E7A"
     tools:context=".activity.TabNoViewPagerActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="刷新"
+        android:onClick="refresh"
+        />
+
     <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/rectflow"
         android:layout_width="wrap_content"

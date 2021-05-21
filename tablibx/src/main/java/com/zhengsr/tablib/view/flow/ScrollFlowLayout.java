@@ -97,8 +97,8 @@ class ScrollFlowLayout extends FlowLayout {
             //TabFlowLayout 横向布局
             if (!isVertical()) {
                 //如果是固定宽度
-                if (mVisualCount != -1){
-                    if (getChildCount() > mVisualCount){
+                if (mVisibleCount != -1){
+                    if (getChildCount() > mVisibleCount){
                         isCanMove = true;
                     }else{
                         isCanMove = false;
