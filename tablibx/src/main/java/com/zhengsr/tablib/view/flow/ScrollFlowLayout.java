@@ -105,7 +105,6 @@ public class ScrollFlowLayout extends FlowLayout {
                         isCanMove = false;
                     }
                     mWidth = mViewWidth;
-                    Log.d(TAG, "zsr onLayout: "+mViewWidth);
                 }else {
                     //说明控件没有满屏或者固定宽度
                     if (mViewWidth < mScreenWidth) {

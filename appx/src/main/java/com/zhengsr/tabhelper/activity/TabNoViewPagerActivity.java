@@ -60,28 +60,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
             }
         });
 
-        TabFlowLayout2 flowLayout2 = findViewById(R.id.rect2);
-        flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle3) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
-            }
 
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                Log.d(TAG, "zsr onItemClick: "+isDetele);
-                if (!isDetele){
-                    mTitle.add("fsdf");
-                    mTitle.set(0,"增加");
-                }else{
-                    mTitle.set(0,"减少");
-                    mTitle.remove(mTitle.size()-1);
-                }
-                isDetele = !isDetele;
-                notifyDataChanged();
-            }
-        });
 
         /*rectFlow();
         triFlow();

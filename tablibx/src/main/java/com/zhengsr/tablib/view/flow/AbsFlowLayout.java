@@ -39,10 +39,7 @@ import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
  */
 public abstract class AbsFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "AttrFlowLayout";
-    /**
-     * 滚动
-     */
-    protected Scroller mScroller;
+
 
     /**
      * attrs
@@ -73,14 +70,12 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
         setTabOrientation(mTabBean.tabOrientation);
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        mScroller = new Scroller(getContext());
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 reAdjustLayoutParams();
                 onViewVisible();
-                Log.d(TAG, "zsr onGlobalLayout: "+getChildAt(0).getRight());
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -152,15 +147,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
         if (mAction != null) {
             mAction.draw(canvas);
         }
-        Paint paint =  new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.YELLOW);
-        paint.setStrokeWidth(10);
-        View v1 = getChildAt(0);
-        canvas.drawRect(new RectF(v1.getLeft(),v1.getTop(),v1.getRight(),v1.getBottom()),paint);
-        paint.setColor(Color.BLUE);
-        View v2 = getChildAt(1);
-        canvas.drawRect(new RectF(v2.getLeft(),v2.getTop(),v2.getRight(),v2.getBottom()),paint);
         super.dispatchDraw(canvas);
     }
 
@@ -218,7 +204,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
             //一开始没有数据，直接刷新即可
             int childCount = getChildCount();
             int dataSize = adapter.getDatas().size();
-            Log.d(TAG, "notifyDataChanged() called: " + childCount + " " + dataSize);
             if (childCount != 0 && childCount == dataSize) {
                 //数据变化
                 for (int i = 0; i < childCount; i++) {
@@ -226,7 +211,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
                     adapter.bindView(view, adapter.getDatas().get(i), i);
                 }
             } else {
-                //数据增加或减少了
                 notifyChanged(mAdapter);
             }
         }
@@ -267,12 +251,5 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
 
     protected void onItemClick(View view, int position) {
     }
-
-    ;
-
-    protected void should() {
-    }
-
-    ;
 
 }

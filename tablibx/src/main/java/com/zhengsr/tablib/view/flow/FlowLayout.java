@@ -198,15 +198,14 @@ class FlowLayout extends ViewGroup {
         } else {
             height = height + getPaddingTop() + getPaddingBottom();
         }
-        if (MeasureSpec.EXACTLY == widthMode) {
-            width = widthSize;
-        } else {
-            if (mVisibleCount == -1) {
+        if (mVisibleCount == -1) {
+            if (MeasureSpec.EXACTLY == widthMode) {
+                width = widthSize;
+            } else {
                 width += getPaddingLeft() + getPaddingRight();
             }
         }
         mViewWidth = width;
-        Log.d(TAG, "zsr measureTabHorizontal: " + mViewWidth);
         setMeasuredDimension(width, height);
     }
 

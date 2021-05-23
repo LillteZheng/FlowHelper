@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.Scroller;
 
 import androidx.annotation.Nullable;
 
@@ -15,28 +16,32 @@ import com.zhengsr.tablib.view.flow.AbsFlowLayout;
  */
 public class TabFlowLayout2 extends AbsFlowLayout {
     private static final String TAG = "TabFlowLayout2";
+    /**
+     * 滚动
+     */
+    private Scroller mScroller;
     private boolean isFirst = true;
     protected int mLastScrollPos = 0;
     protected int mLastIndex = 0;
     protected int mCurrentIndex = 0;
 
     public TabFlowLayout2(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public TabFlowLayout2(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public TabFlowLayout2(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mScroller = new Scroller(getContext());
+
     }
 
 
-
     @Override
-    public void onViewVisible() {
-        Log.d(TAG, "zsr onViewVisible: "+getViewWidth());
+    protected void onViewVisible() {
         /**
          *  当横竖屏,或者异常重启之后，需要重新对位置，选中 index 等恢复到原来的状态
          */
@@ -57,6 +62,7 @@ public class TabFlowLayout2 extends AbsFlowLayout {
 
     /**
      * 更新滚动
+     *
      * @param view
      */
     private void updateScroll(View view, boolean smoothScroll) {
@@ -176,8 +182,24 @@ public class TabFlowLayout2 extends AbsFlowLayout {
     @Override
     protected void onItemClick(View view, int position) {
         super.onItemClick(view, position);
-        chooseItem(position,view);
+        chooseItem(position, view);
     }
+
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        int childCount = getChildCount();
+        //让tab标签回到最后一个
+        if (childCount > 0 && (childCount - 1) < mCurrentIndex) {
+            int tem = mCurrentIndex;
+            mCurrentIndex = childCount - 1;
+            mAction.chooseIndex(tem, mCurrentIndex);
+            postInvalidate();
+        }
+    }
+
+
     /**
      * 选中某个tab
      *
