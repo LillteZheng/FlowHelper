@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public class TestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.test_fragment,container,false);
-        TabFlowLayout tabFlowLayout = view.findViewById(R.id.tabflow);
+        TabFlowLayoutremove tabFlowLayout = view.findViewById(R.id.tabflow);
         tabFlowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {

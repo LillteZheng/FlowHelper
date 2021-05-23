@@ -8,13 +8,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
@@ -23,7 +21,7 @@ import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -33,7 +31,7 @@ public abstract class BaseAction  extends BViewPager {
     private static final String TAG = "BaseAction";
     public Paint mPaint;
     public RectF mTabRect;
-    protected TabFlowLayout mParentView;
+    protected AbsFlowLayout mParentView;
 
     /**
      * logic
@@ -64,7 +62,7 @@ public abstract class BaseAction  extends BViewPager {
      * 配置数据
      * @param parentView
      */
-    public void config(TabFlowLayout parentView) {
+    public void config(AbsFlowLayout parentView) {
         mParentView = parentView;
         if (parentView.getChildCount() > 0 && mTabBean!= null) {
             mContext = mParentView.getContext();

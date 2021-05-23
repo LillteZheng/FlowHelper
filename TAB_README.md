@@ -39,7 +39,7 @@
 
 **默认的XML**
 ```
-<com.zhengsr.tablib.view.flow.TabFlowLayout
+<com.zhengsr.tablib.view.flow.TabFlowLayoutremove
     android:id="@+id/resflow"
     android:layout_width="wrap_content"
     android:layout_marginTop="5dp"
@@ -48,7 +48,7 @@
 ```
 比如要加矩形，三角形，可以使用 app:tab_type 这个属性，比如一个矩形：
 ```
-<com.zhengsr.tablib.view.flow.TabFlowLayout
+<com.zhengsr.tablib.view.flow.TabFlowLayoutremove
     android:id="@+id/rectflow"
     android:layout_width="wrap_content"
     android:layout_marginTop="5dp"
@@ -317,7 +317,7 @@ private void resFlow(){
 
 前面说到，只需要把 tab_orientation 设置成  vertical 即可，相应的 当 type 为 rect 或者 tri 时，还可以通过 tab_tab_action_orientaion 选择 left 还是right 的效果：
 ```
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/tabflow"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

@@ -16,7 +16,49 @@
         android:onClick="refresh"
         />
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.tab.TabFlowLayout2
+        android:id="@+id/new_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round_ff"
+        android:layout_marginTop="10dp"
+        app:tab_type="rect"
+        app:tab_color="@color/colorPrimary"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        app:tab_height="3dp"
+        app:tab_width = "30dp"
+        app:tab_margin_b="1dp"
+        app:tab_item_autoScale="true"
+        app:tab_scale_factor="1.2"
+        app:tab_visual_count="2"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+
+    <com.zhengsr.tablib.view.flow.tab.TabFlowLayout2
+        android:id="@+id/rect2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round_ff"
+        android:layout_marginTop="10dp"
+        app:tab_type="rect"
+        app:tab_color="@color/colorPrimary"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        app:tab_height="3dp"
+        app:tab_width = "30dp"
+        app:tab_margin_b="1dp"
+        app:tab_item_autoScale="true"
+        app:tab_scale_factor="1.2"
+        />
+<!--
+
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/rectflow"
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round_ff"
@@ -34,7 +76,7 @@
         app:tab_scale_factor="1.2"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/rectflow2"
         android:layout_width="wrap_content"
         android:background="@color/black_ff_bg"
@@ -51,7 +93,7 @@
         app:tab_visual_count="3"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/triflow"
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round"
@@ -67,7 +109,7 @@
         android:paddingBottom="2dp"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/roundflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -78,7 +120,7 @@
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/resflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -101,7 +143,7 @@
 
 
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/cusflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -117,6 +159,7 @@
         app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
 
+-->
 
 
 </LinearLayout>

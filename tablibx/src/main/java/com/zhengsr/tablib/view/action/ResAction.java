@@ -5,10 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.AbsFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -31,7 +33,7 @@ public class ResAction extends BaseAction {
 
 
     @Override
-    public void config(TabFlowLayout parentView) {
+    public void config(AbsFlowLayout parentView) {
         super.config(parentView);
         if (mRes != -1) {
             mDrawable = mContext.getResources().getDrawable(mRes);

@@ -2,6 +2,7 @@ package com.zhengsr.tablib.view.flow;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -16,7 +17,7 @@ import androidx.annotation.Nullable;
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 滚动类，用来移动
  */
-class ScrollFlowLayout extends FlowLayout {
+public class ScrollFlowLayout extends FlowLayout {
     private static final String TAG = "ScrollFlowLayout";
     private int mTouchSlop;
     private float mLastPos;
@@ -104,6 +105,7 @@ class ScrollFlowLayout extends FlowLayout {
                         isCanMove = false;
                     }
                     mWidth = mViewWidth;
+                    Log.d(TAG, "zsr onLayout: "+mViewWidth);
                 }else {
                     //说明控件没有满屏或者固定宽度
                     if (mViewWidth < mScreenWidth) {

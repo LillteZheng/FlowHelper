@@ -39,9 +39,10 @@ import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 实现数据封装与一些重绘工作
- * 好想重构，好绝望，写的啥啊
+ * 好想重构，
  */
-public class TabFlowLayout extends ScrollFlowLayout {
+@Deprecated
+public class TabFlowLayoutremove extends ScrollFlowLayout {
     private static final String TAG = "TabFlowLayout";
     private TabFlowAdapter mAdapter;
     private BaseAction mAction;
@@ -64,24 +65,24 @@ public class TabFlowLayout extends ScrollFlowLayout {
     private TabBean mTabBean;
     private TabConfig mTabConfig;
 
-    public TabFlowLayout(Context context) {
+    public TabFlowLayoutremove(Context context) {
         this(context, null);
     }
 
-    public TabFlowLayout(Context context, @Nullable AttributeSet attrs) {
+    public TabFlowLayoutremove(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TabFlowLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public TabFlowLayoutremove(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setClickable(true);
-        TypedArray ta  = context.obtainStyledAttributes(attrs, R.styleable.TabFlowLayout);
+        TypedArray ta  = context.obtainStyledAttributes(attrs, R.styleable.AbsFlowLayout);
         mTabBean = AttrsUtils.getTabBean(ta);
-        mScroller = new Scroller(getContext());
         setVisibleCount(mTabBean.visualCount);
         setTabOrientation(mTabBean.tabOrientation);
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
+        mScroller = new Scroller(getContext());
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -97,7 +98,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     if (mAction == null) {
                         return;
                     }
-                    mAction.config(TabFlowLayout.this);
+                 //   mAction.config(TabFlowLayoutremove.this);
 
 
                     mAction.chooseIndex(mLastIndex, mCurrentIndex);
@@ -212,7 +213,6 @@ public class TabFlowLayout extends ScrollFlowLayout {
         mAction = action;
         mAction.configAttrs(mTabBean);
 
-
         if (mAction != null) {
             if (mViewPager != null && mAction.getViewPager() == null) {
                 mAction.setViewPager(mViewPager);
@@ -307,7 +307,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
                     if (getChildCount() > 0) {
                         reAdjustLayoutParams();
                         if (mAction != null) {
-                            mAction.config(TabFlowLayout.this);
+                          //  mAction.config(TabFlowLayoutremove.this);
                             if (mViewPager != null) {
                                 mViewPager.setCurrentItem(mCurrentIndex, false);
                             }
@@ -561,7 +561,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
      * 自定义属性的配置,设置该属性会覆盖xml的属性
      */
 
-    public TabFlowLayout setTabBean(TabBean bean) {
+    public TabFlowLayoutremove setTabBean(TabBean bean) {
         if (bean == null) {
             return this;
         }
@@ -644,7 +644,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
      * 设置默认位置
      * 请使用{@link #setTabConfig(TabConfig)}
      */
-    public TabFlowLayout setDefaultPosition(int position) {
+    public TabFlowLayoutremove setDefaultPosition(int position) {
         mCurrentIndex = position;
         return this;
     }
@@ -683,7 +683,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     /**
      * 设置viewpager，如果有多个配置，请使用{@link #setTabConfig(TabConfig)}
      */
-    public TabFlowLayout setViewPager(ViewPager viewPager) {
+    public TabFlowLayoutremove setViewPager(ViewPager viewPager) {
         if (viewPager == null) {
             return this;
         }
@@ -698,7 +698,7 @@ public class TabFlowLayout extends ScrollFlowLayout {
     /**
      * 设置viewpager，如果有多个配置，请使用{@link #setTabConfig(TabConfig)}
      */
-    public TabFlowLayout setViewPager(ViewPager2 viewpager2){
+    public TabFlowLayoutremove setViewPager(ViewPager2 viewpager2){
         mViewPager2 = viewpager2;
         if (mAction != null){
             mAction.setViewPager(viewpager2);

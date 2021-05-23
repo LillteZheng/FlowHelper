@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="TabFlowLayout">
+    <declare-styleable name="AbsFlowLayout">
         <attr name="tab_type">
             <enum name="rect" value="0"/>
             <enum name="tri" value="1"/>
@@ -8,15 +8,14 @@
             <enum name="color" value="3"/>
             <enum name="res" value="4"/>
         </attr>
+        <attr name="tab_round_size" format="dimension"/>
         <attr name="tab_color" format="color|reference"/>
         <attr name="tab_width" format="dimension"/>
         <attr name="tab_height" format="dimension"/>
-        <attr name="tab_round_size" format="dimension"/>
         <attr name="tab_margin_l" format="dimension"/>
         <attr name="tab_margin_t" format="dimension"/>
         <attr name="tab_margin_r" format="dimension"/>
         <attr name="tab_margin_b" format="dimension"/>
-        <attr name="tab_click_animTime" format="integer"/>
         <attr name="tab_item_res" format="reference"/>
         <attr name="tab_item_autoScale" format="boolean"/>
         <attr name="tab_scale_factor" format="float"/>
@@ -29,7 +28,13 @@
             <enum name="left" value="1"/>
             <enum name="right" value="2"/>
         </attr>
+
+        <attr name="tab_click_animTime" format="integer"/>
         <attr name="tab_isAutoScroll" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="TabIconFlowLayout">
+        <attr name="tab_selected" format="reference"/>
     </declare-styleable>
 
 

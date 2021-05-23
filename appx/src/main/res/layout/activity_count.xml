@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/rectflow"
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"

@@ -163,7 +163,7 @@ implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.29
 
 [鸿洋的 flowLayout](https://github.com/hongyangAndroid/FlowLayout)
 
-[Flyco 大佬的TabLayout](https://github.com/H07000223/FlycoTabLayout)
+[Flyco的 TabLayout](https://github.com/H07000223/FlycoTabLayout)
 
 
 

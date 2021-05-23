@@ -9,7 +9,7 @@
     tools:context=".activity.NetTestActivity">
 
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayout
+    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
         android:id="@+id/tabflow"
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"

@@ -23,7 +23,7 @@ import com.zhengsr.tabhelper.utils.RxUtils;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.LabelFlowLayout;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +34,7 @@ import io.reactivex.observers.ResourceObserver;
 public class VerticalTabActivity extends AppCompatActivity {
     private static final String TAG = "VerticalTabActivity";
     private List<String> mTitle = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed people can reach the other side i am shao rui zheng xiao yuan".split(" ")));
-    private TabFlowLayout mTabFlowLayout;
+    private TabFlowLayoutremove mTabFlowLayout;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private int mCurPosition;
