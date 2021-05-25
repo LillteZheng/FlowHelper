@@ -8,6 +8,7 @@
     android:background="#506E7A"
     tools:context=".activity.TabActivity">
 
+ 
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,9 +18,9 @@
         android:textSize="12sp"
         android:text="使用矩形 RECT，规定了大小，自动缩放"
         />
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/rectflow"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
         app:tab_type="rect"
         app:tab_color="@color/colorPrimary"
@@ -29,7 +30,6 @@
         android:background="@color/black_ff_bg"
         app:tab_scale_factor="1.2"
         app:tab_item_autoScale="true"
-        app:tab_visual_count="4"
         android:layout_marginStart="20dp"
         android:layout_height="wrap_content"/>
     <TextView
@@ -40,7 +40,7 @@
         android:textSize="12sp"
         android:text="使用矩形 RECT，不限制大小"
         />
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/rectflow2"
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
@@ -59,7 +59,7 @@
         android:text="使用三角形 tri"
         />
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/triflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
@@ -79,7 +79,7 @@
         android:text="使用圆角矩形 round"
         />
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/roundflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
@@ -102,7 +102,7 @@
         android:textSize="12sp"
         android:text="资源res，可以是shape，bitmap，这里使用TabBean动态配置"
         />
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/resflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
@@ -118,7 +118,7 @@
         android:text="颜色渐变 color，可以和上面的属性结合"
         />
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/colorflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
@@ -138,7 +138,7 @@
         android:text="用户自定义tab，继承BaseAction，写个小圆点"
         />
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabVpFlowLayout
         android:id="@+id/cusflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
@@ -149,9 +149,6 @@
         app:tab_width="5dp"
         app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
-
-
-
 
 
     <androidx.viewpager2.widget.ViewPager2

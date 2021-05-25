@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -52,6 +53,10 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
     protected BaseAction mAction;
     private TabConfig mTabConfig;
     private TabFlowAdapter mAdapter;
+    protected Scroller mScroller;
+    protected int mLastScrollPos = 0;
+    protected int mLastIndex = 0;
+    protected int mCurrentIndex = 0;
 
     public AbsFlowLayout(Context context) {
         this(context, null);
@@ -71,14 +76,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
 
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                reAdjustLayoutParams();
-                onViewVisible();
-                getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
     }
 
     /**
@@ -162,7 +159,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
     public void setAdapter(TabConfig tabConfig, TabFlowAdapter adapter) {
         mAdapter = adapter;
         setTabConfig(tabConfig);
-        // mAdapter = adapter;
         adapter.setListener(new FlowListener());
         //实现数据更新
         notifyChanged(adapter);
@@ -193,13 +189,112 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
             });
             addView(view);
         }
+        //如果是一开始没有数据
+        if (getChildCount() > 0) {
+            getChildAt(0).post(new Runnable() {
+                @Override
+                public void run() {
+                    reAdjustLayoutParams();
+                    if (mAction != null) {
+                        mAction.config(AbsFlowLayout.this);
+                        onViewVisible();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 更新滚动
+     *
+     * @param view
+     */
+    protected void updateScroll(View view, boolean smoothScroll) {
+        if (isCanMove() && view != null) {
+            //超过中间了，让父控件也跟着移动
+            int scrollPos;
+            if (isVertical()) {
+                scrollPos = view.getTop();
+            } else {
+                scrollPos = view.getLeft();
+            }
+            int offset;
+            if (scrollPos != mLastScrollPos) {
+                if (isVertical()) {
+                    if (scrollPos > mHeight / 2) {
+                        scrollPos -= mHeight / 2;
+                        //下边界
+                        if (scrollPos < mBottomRound - mHeight) {
+                            offset = scrollPos - mLastScrollPos;
+                            if (smoothScroll) {
+                                mScroller.startScroll(0, getScrollY(), 0, offset);
+                            } else {
+                                scrollTo(0, offset);
+                            }
+                            mLastScrollPos = scrollPos;
+                        } else {
+                            offset = mBottomRound - mHeight - getScrollY();
+                            if (getScrollY() >= mBottomRound - mHeight) {
+                                offset = 0;
+                            }
+                            if (smoothScroll) {
+                                mScroller.startScroll(0, getScrollY(), 0, offset);
+                            } else {
+                                scrollTo(0, mBottomRound - mHeight);
+                            }
+                            mLastScrollPos = mBottomRound - mHeight - offset;
+                        }
+                    } else {
+                        offset = -scrollPos;
+                        if (smoothScroll) {
+                            mScroller.startScroll(0, getScrollY(), 0, offset);
+                        } else {
+                            scrollTo(0, 0);
+                        }
+                        mLastScrollPos = 0;
+                    }
+                } else {
+                    if (scrollPos > mWidth / 2) {
+                        scrollPos -= mWidth / 2;
+                        //有边界提醒
+                        if (scrollPos < mRightBound - mWidth) {
+                            offset = scrollPos - mLastScrollPos;
+                            if (smoothScroll) {
+                                mScroller.startScroll(getScrollX(), 0, offset, 0);
+                            } else {
+                                scrollTo(offset, 0);
+                            }
+                            mLastScrollPos = scrollPos;
+                        } else {
+                            offset = mRightBound - mWidth - getScrollX();
+                            if (getScrollX() >= mRightBound - mWidth) {
+                                offset = 0;
+                            }
+                            if (smoothScroll) {
+                                mScroller.startScroll(getScrollX(), 0, offset, 0);
+                            } else {
+                                scrollTo(mRightBound - mWidth, 0);
+                            }
+                            mLastScrollPos = mRightBound - mWidth - offset;
+                        }
+                    } else {
+                        offset = -scrollPos;
+                        if (smoothScroll) {
+                            mScroller.startScroll(getScrollX(), 0, offset, 0);
+                        } else {
+                            scrollTo(0, 0);
+                        }
+                        mLastScrollPos = 0;
+                    }
+                }
+            }
+        }
     }
 
 
     class FlowListener extends FlowListenerAdapter {
         @Override
         public void notifyDataChanged() {
-            super.notifyDataChanged();
             final TabFlowAdapter adapter = mAdapter;
             //一开始没有数据，直接刷新即可
             int childCount = getChildCount();
@@ -212,6 +307,16 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
                 }
             } else {
                 notifyChanged(mAdapter);
+            }
+        }
+
+        @Override
+        public void resetAllStatus() {
+            int childCount = getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View view = getChildAt(i);
+                view.setSelected(false);
+                mAdapter.onItemSelectState(view, false);
             }
         }
     }
@@ -229,6 +334,48 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
         if (mAction != null) {
             mAction.setTabConfig(mTabConfig);
         }
+    }
+    /**
+     * 自定义的action
+     *
+     * @param action
+     */
+    public void setCusAction(BaseAction action) {
+        mAction = action;
+        mAction.configAttrs(mTabBean);
+
+        if (mAction != null) {
+            mAction.setTabConfig(mTabConfig);
+
+        }
+    }
+    /**
+     * 自定义属性的配置,设置该属性会覆盖xml的属性
+     */
+
+    public AbsFlowLayout setTabBean(TabBean bean) {
+        if (bean == null) {
+            return this;
+        }
+        mTabBean = AttrsUtils.diffTabBean(mTabBean,bean);
+        if (bean.tabType != -1) {
+            chooseTabTpye(bean.tabType);
+        }
+
+        if (mAction != null) {
+            if (mTabBean != null) {
+                mAction.configAttrs(mTabBean);
+                mAction.setTabConfig(mTabConfig);
+            }
+        }
+
+
+        setTabOrientation(bean.tabOrientation);
+
+        if (bean.visualCount != -1) {
+            setVisibleCount(bean.visualCount);
+        }
+        return this;
     }
 
     public TabFlowAdapter getAdapter() {

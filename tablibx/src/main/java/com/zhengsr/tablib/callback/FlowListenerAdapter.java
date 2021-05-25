@@ -4,21 +4,13 @@ package com.zhengsr.tablib.callback;
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
  */
-public class FlowListenerAdapter  {
+public abstract class FlowListenerAdapter  {
 
-    public void notifyDataChanged() {
+    public abstract void notifyDataChanged();
 
-    }
+    public void resetAllTextColor(int viewId,int color) { }
 
-    public void notifyInsertOrRemoveChange(){
-
-    }
-
-    public void resetAllTextColor(int viewId,int color) {
-
-    }
-
-    public void resetAllStatus(){}
+    public abstract void resetAllStatus();
 
 
 }

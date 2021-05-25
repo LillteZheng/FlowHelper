@@ -16,7 +16,7 @@
         android:onClick="refresh"
         />
 
-    <com.zhengsr.tablib.view.flow.tab.TabFlowLayout2
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/new_test"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -36,10 +36,7 @@
         app:tab_visual_count="2"
         />
 
-
-<!--
-
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/rectflow"
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round_ff"
@@ -57,7 +54,7 @@
         app:tab_scale_factor="1.2"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/rectflow2"
         android:layout_width="wrap_content"
         android:background="@color/black_ff_bg"
@@ -71,10 +68,9 @@
         android:paddingRight="5dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        app:tab_visual_count="3"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/triflow"
         android:layout_width="wrap_content"
         android:background="@drawable/shape_round"
@@ -90,7 +86,7 @@
         android:paddingBottom="2dp"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/roundflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -101,7 +97,7 @@
         app:tab_click_animTime="250"
         android:layout_height="wrap_content"/>
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/resflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -124,7 +120,7 @@
 
 
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout2
         android:id="@+id/cusflow"
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -140,7 +136,7 @@
         app:tab_margin_b="2dp"
         android:layout_height="wrap_content"/>
 
--->
+
 
 
 </LinearLayout>

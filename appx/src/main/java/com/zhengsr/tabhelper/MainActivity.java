@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
        // mFragments.add(TestFragment.newInStance());
       //  mFragments.add(TestFragment.newInStance());
       //  viewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
-        startActivity(new Intent(this,TabNoViewPagerActivity.class));
 
     }
 

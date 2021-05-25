@@ -8,6 +8,8 @@ import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.flow.AbsFlowLayout;
 import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
 
+import java.util.Map;
+
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
@@ -99,7 +101,8 @@ public class TriAction extends BaseAction {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawPath(mPath, mPaint);
-      //  canvas.drawRect(mTabRect,mPaint);
+        if (mPath != null) {
+            canvas.drawPath(mPath, mPaint);
+        }
     }
 }

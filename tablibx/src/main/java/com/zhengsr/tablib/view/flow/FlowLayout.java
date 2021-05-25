@@ -162,10 +162,11 @@ class FlowLayout extends ViewGroup {
         int widthPixels = getResources().getDisplayMetrics().widthPixels;
         if (MeasureSpec.EXACTLY == widthMode) {
             widthPixels = widthSize;
-        }
-        if (mVisibleCount != -1) {
-            MarginLayoutParams parentParams = (MarginLayoutParams) getLayoutParams();
-            widthPixels -= (getPaddingStart() + getPaddingEnd() +parentParams.leftMargin+parentParams.rightMargin);
+        }else {
+            if (mVisibleCount != -1) {
+                MarginLayoutParams parentParams = (MarginLayoutParams) getLayoutParams();
+                widthPixels -= (getPaddingStart() + getPaddingEnd() + parentParams.leftMargin + parentParams.rightMargin);
+            }
         }
 
         for (int i = 0; i < childCount; i++) {
