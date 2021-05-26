@@ -44,7 +44,6 @@ public class AttrsUtils {
         bean.isAutoScroll = ta.getBoolean(R.styleable.AbsFlowLayout_tab_isAutoScroll, true);
         bean.visualCount = ta.getInteger(R.styleable.AbsFlowLayout_tab_visual_count, -1);
 
-        ta.recycle();
         return bean;
     }
 

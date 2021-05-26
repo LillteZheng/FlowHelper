@@ -36,8 +36,6 @@ import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
  */
 public class AbsFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "AttrFlowLayout";
-
-
     /**
      * attrs
      */
@@ -68,12 +66,11 @@ public class AbsFlowLayout extends ScrollFlowLayout {
         mScroller = new Scroller(getContext());
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.AbsFlowLayout);
         mTabBean = AttrsUtils.getTabBean(ta);
+        ta.recycle();
         setVisibleCount(mTabBean.visualCount);
         setTabOrientation(mTabBean.tabOrientation);
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        //已经在AttrsUtils.getTabBean(ta) 中回收，不要重复调用
-       // ta.recycle();
 
     }
 
