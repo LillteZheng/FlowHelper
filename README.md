@@ -53,7 +53,7 @@ allprojects {
 
 **如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 ```
-implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.291
+implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.30
 ```
 **support可以关联以下连接，请尽快切到androidx，support包不再维护**
 ```
@@ -96,7 +96,7 @@ implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.29
 - **竖直效果，需要设置 tab_orientation = vertical**
 - **宽度均分**
 
-[TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README3.0.md)
+[TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README3_0.md)
 
 ## LabelFlowLayout 效果图
 
