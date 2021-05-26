@@ -5,12 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.flow.AbsFlowLayout;
-import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8

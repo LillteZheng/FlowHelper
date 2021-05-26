@@ -18,6 +18,7 @@ import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.LabelBean;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
+import com.zhengsr.tablib.view.flow.base.ScrollFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;

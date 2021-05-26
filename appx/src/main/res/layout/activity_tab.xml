@@ -8,7 +8,6 @@
     android:background="#506E7A"
     tools:context=".activity.TabActivity">
 
- 
 
     <TextView
         android:layout_width="wrap_content"

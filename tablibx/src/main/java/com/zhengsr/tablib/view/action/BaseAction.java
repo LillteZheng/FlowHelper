@@ -22,13 +22,13 @@ import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.AbsFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 绘制基类
  */
-public abstract class BaseAction  extends BViewPager {
+public abstract class BaseAction extends BViewPager {
     private static final String TAG = "BaseAction";
     public Paint mPaint;
     public RectF mTabRect;
@@ -71,10 +71,12 @@ public abstract class BaseAction  extends BViewPager {
             int childCount = mParentView.getChildCount();
             if (childCount > 0) {
                 View child = mParentView.getChildAt(childCount - 1);
+                //拿到有边界
                 mRightBound = child.getRight() + mParentView.getPaddingRight();
             }
 
             View child = mParentView.getChildAt(0);
+            //初始化第一个view的效果
             if (child != null) {
                 if (isVertical()){
                     mOffset = mTabBean.tabHeight * 1.0f / child.getMeasuredHeight();
@@ -135,7 +137,7 @@ public abstract class BaseAction  extends BViewPager {
         isTabClick = true;
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
-        if (mViewPager == null) {
+        if (!isViewPager()) {
             autoScaleView();
             doAnim(lastIndex, curIndex,mTabBean.tabClickAnimTime);
         } else {
@@ -327,7 +329,6 @@ public abstract class BaseAction  extends BViewPager {
 
         if (mAnimator != null) {
             mAnimator.cancel();
-            mAnimator.end();
             mAnimator = null;
         }
         if (mParentView != null) {
@@ -361,7 +362,6 @@ public abstract class BaseAction  extends BViewPager {
                 }
 
 
-
                 mAnimator = ObjectAnimator.ofObject(new TabTypeEvaluator(), lastValue, curValue);
                 mAnimator.setDuration(animTime);
                 mAnimator.setInterpolator(new LinearInterpolator());
@@ -377,7 +377,6 @@ public abstract class BaseAction  extends BViewPager {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        Log.d(TAG, "zsr onAnimationEnd: ");
                         if (mParentView != null && mViewPager == null) {
                             TabFlowAdapter adapter = mParentView.getAdapter();
                             if (adapter != null) {
@@ -547,8 +546,13 @@ public abstract class BaseAction  extends BViewPager {
     }
 
 
-
-
+    /**
+     * 是否是Viewpager
+     * @return
+     */
+    private boolean isViewPager(){
+        return mViewPager != null || mViewPager2 != null;
+    }
     /**
      * tab 的方向
      * @return

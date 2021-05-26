@@ -6,7 +6,7 @@
     android:orientation="vertical"
     >
 
-    <com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+    <com.zhengsr.tablib.view.flow.TabFlowLayout
         android:id="@+id/tabflow"
         android:layout_width="match_parent"
         app:tab_color="@color/colorAccent"

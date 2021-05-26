@@ -5,10 +5,7 @@ import android.graphics.Path;
 import android.view.View;
 
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.flow.AbsFlowLayout;
-import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
-
-import java.util.Map;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8

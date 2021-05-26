@@ -13,13 +13,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.view.action.BaseAction;
-import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by zhengshaorui 2021/5/23 06:51
  * describe：不处理ViewPager的情况
  */
 public class TabVpFlowLayout extends AbsFlowLayout {
+    private static final String TAG = TabVpFlowLayout.class.getSimpleName();
     private ViewPager mViewPager;
     private ViewPager2 mViewPager2;
 
@@ -106,14 +107,14 @@ public class TabVpFlowLayout extends AbsFlowLayout {
     @Override
     protected void onItemClick(View view, int position) {
         super.onItemClick(view, position);
+        mLastIndex = mCurrentIndex;
+        mCurrentIndex = position;
         if (mViewPager != null) {
             mViewPager.setCurrentItem(position,true);
         }
         if (mViewPager2 != null) {
             mViewPager2.setCurrentItem(position,true);
         }
-        mLastIndex = mCurrentIndex;
-        mCurrentIndex = position;
     }
 
     /**

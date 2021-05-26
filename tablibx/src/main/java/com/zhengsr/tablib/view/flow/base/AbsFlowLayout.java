@@ -1,21 +1,16 @@
-package com.zhengsr.tablib.view.flow;
+package com.zhengsr.tablib.view.flow.base;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,6 +19,7 @@ import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabConfig;
+import com.zhengsr.tablib.callback.FlowListener;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.AttrsUtils;
 import com.zhengsr.tablib.view.action.BaseAction;
@@ -38,7 +34,7 @@ import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
  * @author by zhengshaorui 2021/5/23 06:40
  * describe：用来获取通用的自定义属性，和一些常用的配置
  */
-public abstract class AbsFlowLayout extends ScrollFlowLayout {
+public class AbsFlowLayout extends ScrollFlowLayout {
     private static final String TAG = "AttrFlowLayout";
 
 
@@ -69,12 +65,15 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
     public AbsFlowLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setClickable(true);
+        mScroller = new Scroller(getContext());
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.AbsFlowLayout);
         mTabBean = AttrsUtils.getTabBean(ta);
         setVisibleCount(mTabBean.visualCount);
         setTabOrientation(mTabBean.tabOrientation);
         chooseTabTpye(mTabBean.tabType);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
+        //已经在AttrsUtils.getTabBean(ta) 中回收，不要重复调用
+       // ta.recycle();
 
     }
 
@@ -105,7 +104,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
 
     /**
      * 选中不同的 action
-     *
      * @param tabStyle
      */
     private void chooseTabTpye(int tabStyle) {
@@ -149,7 +147,7 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
 
     /**
      * 添加adapter，
-     *
+     *  如果有其他配置项，可以使用 {@link #setAdapter(TabConfig, TabFlowAdapter)}
      * @param adapter
      */
     public void setAdapter(TabFlowAdapter adapter) {
@@ -164,6 +162,9 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
         notifyChanged(adapter);
     }
 
+    /**
+     * 更新数据
+     */
     private void notifyChanged(final TabFlowAdapter adapter) {
         if (adapter == null) {
             return;
@@ -206,8 +207,6 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
 
     /**
      * 更新滚动
-     *
-     * @param view
      */
     protected void updateScroll(View view, boolean smoothScroll) {
         if (isCanMove() && view != null) {
@@ -322,6 +321,10 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
     }
 
 
+    /**
+     * 设置配置项
+     * @param config
+     */
     public void setTabConfig(TabConfig config) {
         mTabConfig = config;
         if (config != null) {
@@ -383,7 +386,7 @@ public abstract class AbsFlowLayout extends ScrollFlowLayout {
     }
 
     @Override
-    public boolean isLabelFlow() {
+    protected boolean isLabelFlow() {
         return false;
     }
 

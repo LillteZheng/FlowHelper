@@ -14,7 +14,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.fragment.CusFragment;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 
 import java.util.ArrayList;

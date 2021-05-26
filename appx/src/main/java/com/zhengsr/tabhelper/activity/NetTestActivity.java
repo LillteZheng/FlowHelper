@@ -18,7 +18,6 @@ import com.zhengsr.tabhelper.fragment.RecyclerFragment;
 import com.zhengsr.tabhelper.rx.HttpCreate;
 import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayoutremove;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 
 import java.util.ArrayList;

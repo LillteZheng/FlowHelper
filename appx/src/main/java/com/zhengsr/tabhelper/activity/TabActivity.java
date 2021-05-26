@@ -22,9 +22,9 @@ import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.AbsFlowLayout;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;

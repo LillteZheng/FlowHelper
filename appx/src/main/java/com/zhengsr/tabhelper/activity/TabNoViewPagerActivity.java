@@ -14,9 +14,8 @@ import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.AbsFlowLayout;
-import com.zhengsr.tablib.view.flow.TabFlowLayout2;
-import com.zhengsr.tablib.view.flow.TabFlowLayout2;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +36,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         mTitle.add("Android");
         // mTitle.add("Kotlin");
         setContentView(R.layout.activity_tab_no_view_pager);
-        TabFlowLayout2 flowLayout = findViewById(R.id.new_test);
+        TabFlowLayout flowLayout = findViewById(R.id.new_test);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -74,16 +73,16 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
             mTitle.remove(mTitle.size() - 1);
         }
         isDetele = !isDetele;
-        mAdapter.notifyInsertOrRemoveChange();
+        mAdapter.notifyDataChanged();
 
     }
 
     private void rectFlow() {
-        TabFlowLayout2 flowLayout = findViewById(R.id.rectflow);
+        TabFlowLayout flowLayout = findViewById(R.id.rectflow);
         mAdapter = new TabApdater(R.layout.item_msg, mTitle);
         flowLayout.setAdapter(mAdapter);
 
-        TabFlowLayout2 flowLayout2 = findViewById(R.id.rectflow2);
+        TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
 
         flowLayout2.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle3) {
             @Override
@@ -95,7 +94,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
 
     private void triFlow() {
-        TabFlowLayout2 flowLayout = findViewById(R.id.triflow);
+        TabFlowLayout flowLayout = findViewById(R.id.triflow);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle2) {
             /**
              * 绑定数据，可以使用 setText(..) 等快捷方式，也可以视同 view.findViewById()
@@ -129,7 +128,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
     }
 
     private void roundFlow() {
-        TabFlowLayout2 flowLayout = findViewById(R.id.roundflow);
+        TabFlowLayout flowLayout = findViewById(R.id.roundflow);
         TabBean bean = new TabBean();
         bean.tabType = FlowConstants.ROUND;
         bean.tabColor = Color.parseColor("#b01a1a1a");
@@ -150,7 +149,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
     }
 
     private void resFlow() {
-        TabFlowLayout2 flowLayout = findViewById(R.id.resflow);
+        TabFlowLayout flowLayout = findViewById(R.id.resflow);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle3) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -162,7 +161,7 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
 
 
     private void cusFlow() {
-        TabFlowLayout2 flowLayout = findViewById(R.id.cusflow);
+        TabFlowLayout flowLayout = findViewById(R.id.cusflow);
         flowLayout.setCusAction(new CircleAction());
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle2) {
             @Override

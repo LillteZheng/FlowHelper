@@ -25,7 +25,7 @@ import com.zhengsr.tabhelper.utils.RxUtils;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.LabelFlowLayout;
-import com.zhengsr.tablib.view.flow.TabFlowLayout2;
+import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import io.reactivex.observers.ResourceObserver;
 
 public class VerticalTabActivity extends AppCompatActivity {
     private static final String TAG = "VerticalTabActivity";
-    private TabFlowLayout2 mTabFlowLayout;
+    private TabFlowLayout mTabFlowLayout;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private int mCurPosition;
@@ -145,16 +145,15 @@ public class VerticalTabActivity extends AppCompatActivity {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE){
 
                     int firstPosition = mManager.findFirstVisibleItemPosition();
-                    mTabFlowLayout.chooseItem(firstPosition);
-                    /*if (!mTabFlowLayout.isItemClick()) {
-                        mTabFlowLayout.setItemClickByOutSet(firstPosition);
-                        mTabFlowLayout.setItemClickStatus(true);
+                    if (!mTabFlowLayout.isItemClick()) {
+                        mTabFlowLayout.setItemClickByOutside(firstPosition);
+                        mTabFlowLayout.setItemClick(true);
                     }else{
-                        *//**
+                        /**
                          * 如果上次为点击事件，则先还原，下次滑动时，监听即可
-                         *//*
-                        mTabFlowLayout.setItemClickStatus(false);
-                    }*/
+                         */
+                        mTabFlowLayout.setItemClick(false);
+                    }
 
                 }
             }

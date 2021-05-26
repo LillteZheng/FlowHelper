@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view.flow;
+package com.zhengsr.tablib.view.flow.base;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -87,7 +87,7 @@ class FlowLayout extends ViewGroup {
         mTabOrientation = orientation;
     }
 
-    public boolean isLabelFlow() {
+    protected boolean isLabelFlow() {
         return true;
     }
 
