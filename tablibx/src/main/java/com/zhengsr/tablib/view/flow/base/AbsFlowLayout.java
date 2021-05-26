@@ -400,6 +400,9 @@ public class AbsFlowLayout extends ScrollFlowLayout {
     }
 
     protected void onItemClick(View view, int position) {
+        if (mAdapter != null) {
+            mAdapter.onItemClick(view, mAdapter.getDatas().get(position), position);
+        }
     }
 
 }

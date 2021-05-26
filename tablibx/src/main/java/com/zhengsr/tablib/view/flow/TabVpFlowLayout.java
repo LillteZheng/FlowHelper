@@ -115,6 +115,7 @@ public class TabVpFlowLayout extends AbsFlowLayout {
         if (mViewPager2 != null) {
             mViewPager2.setCurrentItem(position,true);
         }
+
     }
 
     /**

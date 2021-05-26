@@ -510,6 +510,7 @@ public abstract class BaseAction extends BViewPager {
     }
 
 
+
     /**
      * item 偏移的变化率
      *

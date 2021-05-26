@@ -127,7 +127,6 @@ public class TabFlowLayout extends AbsFlowLayout {
     private void chooseItem(int position, View view) {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
-        Log.d(TAG, "zsr chooseItem: "+mCurrentIndex+" "+mLastIndex);
         if (mAction != null) {
             mAction.onItemClick(mLastIndex, position);
         }
