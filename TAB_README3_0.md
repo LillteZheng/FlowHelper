@@ -1,6 +1,27 @@
 ## TabFlowLayout 效果图
 
+<table  align="center">
+ <tr>
+    <th>没有结合ViewPager</th>
+    <th>结合ViewPager</th>
+  </tr>
+   <tr>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_click.gif" align="left"height="789" width="479"></a></td>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_viewpager.gif" align="left" height="789" width="479" ></a></td>
+  </tr>
 
+</table>
+
+
+<table  align="center">
+ <tr>
+    <th>竖直效果</th>
+  </tr>
+   <tr>
+    <td><a href="url"><img src="https://github.com/LillteZheng/FlowHelper/raw/master/gif/tab_vertical.gif" align="left"height="789" width="479"></a></td>
+  </tr>
+
+</table>
 
 [3.0之前的TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README.md)
 
