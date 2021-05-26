@@ -190,13 +190,11 @@ flowLayout.setViewPager(viewpager) .
    * @ setSelectedColor //选中的颜色，如果为 TabColorTextView 不需要些这个
    * @ setUnSelectedColor //没有选中的颜色，如果为 TabColorTextView 不需要些这个
    */
-   TabConfig config = new TabConfig.Builder()
-            .setViewpager(mViewPager)
-            .setTextId(R.id.item_text)
-            .setSelectedColor(Color.WHITE)
-            .setUnSelectColor(getResources().getColor(R.color.unselect))
-            .build();
-   flowLayout.setAdapter(config,adapter)
+ flowLayout.setViewPager(mViewPager)
+            .setTextId(R.id.item_text)  //必填，不然 Textview 没效果
+            .setSelectedColor(Color.WHITE) 
+            .setUnSelectedColor(getResources().getColor(R.color.unselect)) 
+            .setDefaultPosition(2); 
 ```
 
 **其中，如果TextView有颜色变化，setTextId()是必须要设置的!**
