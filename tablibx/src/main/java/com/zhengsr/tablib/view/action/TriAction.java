@@ -5,7 +5,7 @@ import android.graphics.Path;
 import android.view.View;
 
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -16,7 +16,7 @@ public class TriAction extends BaseAction {
     private Path mPath;
 
     @Override
-    public void config(TabFlowLayout parentView) {
+    public void config(AbsFlowLayout parentView) {
         super.config(parentView);
         mPath = new Path();
         View child = parentView.getChildAt(0);
@@ -98,7 +98,8 @@ public class TriAction extends BaseAction {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawPath(mPath, mPaint);
-      //  canvas.drawRect(mTabRect,mPaint);
+        if (mPath != null) {
+            canvas.drawPath(mPath, mPaint);
+        }
     }
 }

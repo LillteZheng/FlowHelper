@@ -1,6 +1,5 @@
 package com.zhengsr.tabhelper.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tabhelper.fragment.CusFragment;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class CountActivity extends AppCompatActivity {
     }
 
     private void rectFlow(){
-        final TabFlowLayout flowLayout = findViewById(R.id.rectflow);
+        final TabVpFlowLayout flowLayout = findViewById(R.id.rectflow);
         // flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
         flowLayout.setViewPager(mViewPager);
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.tab_text_layout,mTitle) {

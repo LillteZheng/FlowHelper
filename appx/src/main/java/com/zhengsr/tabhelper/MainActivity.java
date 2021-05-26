@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ViewPager viewPager = findViewById(R.id.viewpager);
-        mFragments.add(TestFragment.newInStance());
-        mFragments.add(TestFragment.newInStance());
-        viewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
+       // mFragments.add(TestFragment.newInStance());
+      //  mFragments.add(TestFragment.newInStance());
+      //  viewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
 
     }
 

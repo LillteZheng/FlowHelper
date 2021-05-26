@@ -18,7 +18,7 @@ import com.zhengsr.tabhelper.fragment.RecyclerFragment;
 import com.zhengsr.tabhelper.rx.HttpCreate;
 import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class NetTestActivity extends SupportActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_test);
 
-        final TabFlowLayout flowLayout = findViewById(R.id.tabflow);
+        final TabVpFlowLayout flowLayout = findViewById(R.id.tabflow);
         mViewPager = findViewById(R.id.viewpager);
 
         mViewPager.setOffscreenPageLimit(3);
@@ -88,9 +88,7 @@ public class NetTestActivity extends SupportActivity {
                         mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(),fragments));
                         //刷新数据
                     //    adapter.notifyDataChanged();
-                        adapter.notifyInsertOrRemoveChange();
-
-
+                        adapter.notifyDataChanged();
                     }
 
                     @Override

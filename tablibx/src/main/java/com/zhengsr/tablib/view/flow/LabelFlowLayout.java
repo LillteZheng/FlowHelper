@@ -18,7 +18,7 @@ import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.LabelBean;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
-import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
+import com.zhengsr.tablib.view.flow.base.ScrollFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,19 +120,11 @@ public class LabelFlowLayout extends ScrollFlowLayout {
     class LabelListener extends FlowListenerAdapter {
         @Override
         public void notifyDataChanged() {
-            super.notifyDataChanged();
-            LabelFlowAdapter adapter = mAdapter;
-            int childCount = getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View view = getChildAt(i);
-                adapter.bindView(view,adapter.getDatas().get(i),i);
-
-            }
+            notifyData();
         }
 
         @Override
         public void resetAllStatus() {
-            super.resetAllStatus();
             int childCount = getChildCount();
             for (int i = 0; i < childCount; i++) {
                 View view = getChildAt(i);

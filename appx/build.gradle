@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "com.zhengsr.tabhelper"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -42,6 +41,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.alibaba:fastjson:1.1.71.android'
     implementation 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
-
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 }

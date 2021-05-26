@@ -1,7 +1,9 @@
-package com.zhengsr.tablib.view.flow;
+package com.zhengsr.tablib.view.flow.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -62,15 +64,17 @@ class FlowLayout extends ViewGroup {
 
 
     }
-    protected void setVisibleCount(int visualCount){
+
+    protected void setVisibleCount(int visualCount) {
         mVisibleCount = visualCount;
     }
 
     /**
      * 设置行数
+     *
      * @param lines
      */
-    protected void setLabelLines(int lines){
+    protected void setLabelLines(int lines) {
         mLabelLines = lines;
     }
 
@@ -83,13 +87,14 @@ class FlowLayout extends ViewGroup {
         mTabOrientation = orientation;
     }
 
-    public boolean isLabelFlow() {
+    protected boolean isLabelFlow() {
         return true;
     }
 
 
     /**
      * 测试tabflowlayout竖直状态
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -119,7 +124,7 @@ class FlowLayout extends ViewGroup {
             width = Math.max(width, cw);
         }
 
-        if (MeasureSpec.EXACTLY == widthMode ) {
+        if (MeasureSpec.EXACTLY == widthMode) {
             width = widthSize;
         } else {
             width += getPaddingLeft() + getPaddingRight();
@@ -154,18 +159,17 @@ class FlowLayout extends ViewGroup {
         /**
          * 计算宽高
          */
-
-
         int widthPixels = getResources().getDisplayMetrics().widthPixels;
         if (MeasureSpec.EXACTLY == widthMode) {
             widthPixels = widthSize;
+        }else {
+            if (mVisibleCount != -1) {
+                MarginLayoutParams parentParams = (MarginLayoutParams) getLayoutParams();
+                widthPixels -= (getPaddingStart() + getPaddingEnd() + parentParams.leftMargin + parentParams.rightMargin);
+            }
         }
 
-
         for (int i = 0; i < childCount; i++) {
-
-
-
             View child = getChildAt(i);
             if (child.getVisibility() == View.GONE) {
                 continue;
@@ -175,12 +179,12 @@ class FlowLayout extends ViewGroup {
             MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
             //拿到 子控件宽高 + margin
             int cw;
-            if (mVisibleCount != -1){
-                cw = widthPixels/ mVisibleCount;
+            if (mVisibleCount != -1) {
+                cw = (int) (widthPixels * 1.0f / mVisibleCount);
                 params.width = cw;
                 child.setLayoutParams(params);
                 width = widthPixels;
-            }else{
+            } else {
                 cw = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
                 width += cw;
             }
@@ -189,22 +193,20 @@ class FlowLayout extends ViewGroup {
             height = Math.max(height, ch);
 
         }
-
-
         //具体大小，padding不受影响
         if (MeasureSpec.EXACTLY == heightMode) {
             height = heightSize;
         } else {
             height = height + getPaddingTop() + getPaddingBottom();
         }
-
-        if (MeasureSpec.EXACTLY == widthMode) {
-            width = widthSize;
-        } else {
-            width += getPaddingLeft() + getPaddingRight();
+        if (mVisibleCount == -1) {
+            if (MeasureSpec.EXACTLY == widthMode) {
+                width = widthSize;
+            } else {
+                width += getPaddingLeft() + getPaddingRight();
+            }
         }
         mViewWidth = width;
-
         setMeasuredDimension(width, height);
     }
 
@@ -266,7 +268,6 @@ class FlowLayout extends ViewGroup {
             int cHeight = child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
 
 
-
             /**
              * 确定是否换行
              */
@@ -287,10 +288,10 @@ class FlowLayout extends ViewGroup {
                 /**
                  * 是否设置了显示行数
                  */
-                if (mLabelLines != -1 && mLineHeights.size() >= mLabelLines){
+                if (mLabelLines != -1 && mLineHeights.size() >= mLabelLines) {
                     isLabelMoreLine = true;
                     break;
-                }else{
+                } else {
                     isLabelMoreLine = false;
                 }
 
@@ -298,7 +299,7 @@ class FlowLayout extends ViewGroup {
                 //未换行
                 lineWidth += cWidth;
                 lineHeight = Math.max(lineHeight, cHeight);
-                mLineWidth = Math.max(mLineWidth,lineWidth);
+                mLineWidth = Math.max(mLineWidth, lineWidth);
                 lineViews.add(child);
             }
 
@@ -309,8 +310,6 @@ class FlowLayout extends ViewGroup {
                 mAllViews.add(lineViews);
             }
         }
-
-
 
 
         if (heightMode == MeasureSpec.EXACTLY) {
@@ -324,7 +323,7 @@ class FlowLayout extends ViewGroup {
         mViewHeight = height;
         //把测量完成的高，重设置给父控件
 
-        setMeasuredDimension( widthSize, height);
+        setMeasuredDimension(widthSize, height);
     }
 
 
@@ -339,7 +338,7 @@ class FlowLayout extends ViewGroup {
             int size = mAllViews.size();
             int left = getPaddingLeft();
             int top = getPaddingTop();
-            for (int i = 0; i < size ; i++) {
+            for (int i = 0; i < size; i++) {
                 List<View> lineViews = mAllViews.get(i);
                 int count = lineViews.size();
                 for (int j = 0; j < count; j++) {
@@ -364,24 +363,34 @@ class FlowLayout extends ViewGroup {
 
         } else {
             int count = getChildCount();
-            int left = getPaddingLeft();
+            //父空间的padding
+            int left = getPaddingStart();
             int top = getPaddingTop();
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
                 MarginLayoutParams params = (MarginLayoutParams) child.getLayoutParams();
                 int cl;
-                if (isVertical()){
-                    cl = (getWidth() - child.getMeasuredWidth())/2;
-                 }else {
+                if (isVertical()) {
+                    cl = (getWidth() - child.getMeasuredWidth()) / 2;
+                } else {
                     cl = left + params.leftMargin;
                 }
+                int cr;
+                if (mVisibleCount != -1) {
+                    cr = cl + params.width - getPaddingStart() - params.leftMargin - params.rightMargin;
+                } else {
+                    cr = cl + child.getMeasuredWidth();
+                }
                 int ct = top + params.topMargin;
-                int cr = cl + child.getMeasuredWidth();
                 int cb = ct + child.getMeasuredHeight();
                 child.layout(cl, ct, cr, cb);
                 //下个控件的起始位置
                 if (mTabOrientation == FlowConstants.HORIZONTATAL) {
-                    left += child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
+                    if (mVisibleCount != -1) {
+                        left += params.width;
+                    } else {
+                        left += child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
+                    }
                 } else {
                     top += child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
 
@@ -391,11 +400,11 @@ class FlowLayout extends ViewGroup {
 
     }
 
-    public boolean isVertical(){
-       return mTabOrientation == FlowConstants.VERTICAL;
+    public boolean isVertical() {
+        return mTabOrientation == FlowConstants.VERTICAL;
     }
 
-    public boolean isVerticalMove(){
+    public boolean isVerticalMove() {
         return isVertical() || isLabelFlow();
     }
 

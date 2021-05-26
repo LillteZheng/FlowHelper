@@ -11,14 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.LabelShowMoreActivity"></activity>
-        <activity android:name=".activity.VerticalTabActivity" />
-        <activity android:name=".activity.NetTestActivity" />
-        <activity android:name=".activity.LabelActivity" />
-        <activity android:name=".activity.TabNoViewPagerActivity" />
-        <activity android:name=".activity.TabActivity" />
-        <activity android:name=".activity.CountActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.LabelShowMoreActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".activity.VerticalTabActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".activity.NetTestActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".activity.LabelActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".activity.TabNoViewPagerActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".activity.TabActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".activity.CountActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

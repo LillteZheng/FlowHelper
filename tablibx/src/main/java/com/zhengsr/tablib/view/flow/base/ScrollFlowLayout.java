@@ -1,4 +1,4 @@
-package com.zhengsr.tablib.view.flow;
+package com.zhengsr.tablib.view.flow.base;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 滚动类，用来移动
  */
-class ScrollFlowLayout extends FlowLayout {
+public class ScrollFlowLayout extends FlowLayout {
     private static final String TAG = "ScrollFlowLayout";
     private int mTouchSlop;
     private float mLastPos;
@@ -71,40 +71,40 @@ class ScrollFlowLayout extends FlowLayout {
          * TabFlowLayout 或者 LabelFlowLayout 的竖向滚动
          */
         //todo 这是什么魔性 if else 找机会改一下
-        if (isVerticalMove()){
-            if (mViewHeight < mScreenHeight){
-                if (mBottomRound > mViewHeight){
+        if (isVerticalMove()) {
+            if (mViewHeight < mScreenHeight) {
+                if (mBottomRound > mViewHeight) {
                     isCanMove = true;
-                }else{
+                } else {
                     isCanMove = false;
                 }
                 mHeight = mViewHeight;
 
-            }else{
+            } else {
                 //再确认一遍
-                if (mBottomRound > mScreenHeight){
+                if (mBottomRound > mScreenHeight) {
                     isCanMove = true;
                 }
                 mHeight = mScreenHeight;
                 //需要减去actionbar 和 状态栏的高度
                 mHeight = mHeight - getActionBarHeight(getContext()) - getStatusBarHeight();
             }
-            if (!isLabelAutoScroll() || !isTabAutoScroll()){
+            if (!isLabelAutoScroll() || !isTabAutoScroll()) {
                 isCanMove = false;
             }
 
-        }else{
+        } else {
             //TabFlowLayout 横向布局
             if (!isVertical()) {
                 //如果是固定宽度
-                if (mVisibleCount != -1){
-                    if (getChildCount() > mVisibleCount){
+                if (mVisibleCount != -1) {
+                    if (getChildCount() > mVisibleCount) {
                         isCanMove = true;
-                    }else{
+                    } else {
                         isCanMove = false;
                     }
                     mWidth = mViewWidth;
-                }else {
+                } else {
                     //说明控件没有满屏或者固定宽度
                     if (mViewWidth < mScreenWidth) {
                         if (mRightBound > mViewWidth) {
@@ -128,29 +128,26 @@ class ScrollFlowLayout extends FlowLayout {
         }
 
 
-
-
     }
-
 
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!isCanMove){
+        if (!isCanMove) {
             return super.onInterceptTouchEvent(ev);
         }
         final ViewParent parent = getParent();
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (isVertical()){
+                if (isVertical()) {
                     mLastPos = ev.getY();
-                }else {
+                } else {
                     mLastPos = ev.getX();
                 }
                 //拿到上次的down坐标
-                if (isVertical()){
+                if (isVertical()) {
                     mMovePos = ev.getY();
-                }else {
+                } else {
                     mMovePos = ev.getX();
                 }
 
@@ -175,9 +172,9 @@ class ScrollFlowLayout extends FlowLayout {
 
             case MotionEvent.ACTION_MOVE:
                 float offset;
-                if (isVerticalMove()){
+                if (isVerticalMove()) {
                     offset = ev.getY() - mLastPos;
-                }else{
+                } else {
                     offset = ev.getX() - mLastPos;
                 }
                 if (Math.abs(offset) >= mTouchSlop) {
@@ -185,16 +182,16 @@ class ScrollFlowLayout extends FlowLayout {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
 
-                    if (mVelocityTracker == null){
+                    if (mVelocityTracker == null) {
                         mVelocityTracker = VelocityTracker.obtain();
                     }
                     mVelocityTracker.addMovement(ev);
                     //由父控件接管触摸事件
                     return true;
                 }
-                if (isVerticalMove()){
+                if (isVerticalMove()) {
                     mLastPos = ev.getY();
-                }else {
+                } else {
                     mLastPos = ev.getX();
                 }
                 break;
@@ -212,29 +209,28 @@ class ScrollFlowLayout extends FlowLayout {
         }
         mVelocityTracker.addMovement(event);
         final ViewParent parent = getParent();
-        
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                
+
                 break;
             case MotionEvent.ACTION_MOVE:
                 //scroller 向右为负，向左为正
                 int offset;
-                if (isVerticalMove()){
+                if (isVerticalMove()) {
                     offset = (int) (mMovePos - event.getY());
-                }else {
+                } else {
                     offset = (int) (mMovePos - event.getX());
                 }
-                if (Math.abs(offset) > mTouchSlop){
-                  
+                if (Math.abs(offset) > mTouchSlop) {
                     if (parent != null) {
                         parent.requestDisallowInterceptTouchEvent(true);
                     }
                 }
-                int scrollPos ;
-                if (isVerticalMove()){
+                int scrollPos;
+                if (isVerticalMove()) {
                     scrollPos = getScrollY();
-                }else{
+                } else {
                     scrollPos = getScrollX();
                 }
                 /**
@@ -244,14 +240,14 @@ class ScrollFlowLayout extends FlowLayout {
                     scrollTo(0, 0);
                     return true;
                 }
-                if (isVerticalMove()){
-                    if (scrollPos +offset >= mBottomRound - mHeight){
-                        scrollTo(0,mBottomRound - mHeight);
+                if (isVerticalMove()) {
+                    if (scrollPos + offset >= mBottomRound - mHeight) {
+                        scrollTo(0, mBottomRound - mHeight);
                         return true;
                     }
                     scrollBy(0, offset);
-                }else{
-                    if (scrollPos +offset >= mRightBound - mWidth) {
+                } else {
+                    if (scrollPos + offset >= mRightBound - mWidth) {
                         scrollTo(mRightBound - mWidth, 0);
                         return true;
                     }
@@ -259,29 +255,28 @@ class ScrollFlowLayout extends FlowLayout {
                 }
 
 
-
                 isMove = true;
-                if (isVerticalMove()){
+                if (isVerticalMove()) {
                     mMovePos = event.getY();
-                }else {
+                } else {
                     mMovePos = event.getX();
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mVelocityTracker.computeCurrentVelocity(1000,mMaximumVelocity);
-                int velocityPos ;
-                if (isVerticalMove()){
+                mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                int velocityPos;
+                if (isVerticalMove()) {
                     velocityPos = (int) mVelocityTracker.getYVelocity();
-                }else{
+                } else {
                     velocityPos = (int) mVelocityTracker.getXVelocity();
                 }
                 if (Math.abs(velocityPos) >= mMinimumVelocity) {
-                    if (isVerticalMove()){
+                    if (isVerticalMove()) {
                         mCurScrollPos = getScrollY();
-                        mScroller.fling(0,mCurScrollPos,0,velocityPos,
-                                0,0,0,getHeight());
-                    }else {
+                        mScroller.fling(0, mCurScrollPos, 0, velocityPos,
+                                0, 0, 0, getHeight());
+                    } else {
                         mCurScrollPos = getScrollX();
                         mScroller.fling(mCurScrollPos, 0, velocityPos,
                                 0, 0, getWidth(), 0, 0);
@@ -304,56 +299,46 @@ class ScrollFlowLayout extends FlowLayout {
     @Override
     public void computeScroll() {
         super.computeScroll();
-        if (mScroller.computeScrollOffset()){
+        if (mScroller.computeScrollOffset()) {
             int offset;
-            if (isVerticalMove()){
+            if (isVerticalMove()) {
                 offset = mCurScrollPos - mScroller.getCurrY();
-            }else {
+            } else {
                 offset = mCurScrollPos - mScroller.getCurrX();
             }
             // 超出边界，进行修正
             int scrollPos;
-            if (isVerticalMove()){
+            if (isVerticalMove()) {
                 if (getScrollY() + offset >= mBottomRound - mHeight) {
-                    offset =  mBottomRound - mHeight - getScrollY();
+                    offset = mBottomRound - mHeight - getScrollY();
                 }
 
                 // 超出边界，进行修正
                 if (getScrollY() + offset <= 0) {
                     offset = -getScrollY();
                 }
-                scrollBy(0,offset);
-            }else{
+                scrollBy(0, offset);
+            } else {
                 if (getScrollX() + offset >= mRightBound - mWidth) {
                     offset = mRightBound - mWidth - getScrollX();
                 }
-
                 // 超出边界，进行修正
                 if (getScrollX() + offset <= 0) {
                     offset = -getScrollX();
                 }
-                scrollBy(offset,0);
-
+                scrollBy(offset, 0);
             }
-
-
-
-
-
-
-
             postInvalidate();
         }
     }
 
-    public int getViewWidth(){
+    public int getViewWidth() {
         return mWidth;
     }
 
     public boolean isCanMove() {
         return isCanMove;
     }
-
 
 
     public boolean isMove() {
@@ -366,9 +351,10 @@ class ScrollFlowLayout extends FlowLayout {
 
     /**
      * 获取状态栏的高度
+     *
      * @return
      */
-    private int getStatusBarHeight(){
+    private int getStatusBarHeight() {
         int result = 0;
         int resourceId = this.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -379,23 +365,24 @@ class ScrollFlowLayout extends FlowLayout {
 
     /**
      * 拿到 actionbar 的高度
+     *
      * @param context
      * @return
      */
-    private int getActionBarHeight(Context context){
+    private int getActionBarHeight(Context context) {
         TypedValue tv = new TypedValue();
-        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize,tv,true)){
-            return  TypedValue.complexToDimensionPixelSize(tv.data,
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            return TypedValue.complexToDimensionPixelSize(tv.data,
                     context.getResources().getDisplayMetrics());
         }
         return 0;
     }
 
-    public boolean isLabelAutoScroll(){
+    public boolean isLabelAutoScroll() {
         return true;
     }
 
-    public boolean isTabAutoScroll(){
+    public boolean isTabAutoScroll() {
         return true;
     }
 }

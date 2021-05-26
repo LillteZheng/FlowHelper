@@ -7,6 +7,7 @@
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
     android:textColor="@color/white"
+    android:background="#30ff0000"
     android:layout_height="match_parent">
 
 </TextView>

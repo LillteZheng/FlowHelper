@@ -95,15 +95,6 @@ public abstract class BaseFlowAdapter<T> {
         }
     }
 
-    public void notifyInsertOrRemoveChange(){
-        if (mListener != null) {
-            mListener.notifyInsertOrRemoveChange();
-        }
-    }
-
-
-
-
     /**
      * view 是否选中状态
      * @param view
@@ -117,7 +108,6 @@ public abstract class BaseFlowAdapter<T> {
     public void setListener(FlowListenerAdapter listener) {
         mListener = listener;
     }
-
 
 
 

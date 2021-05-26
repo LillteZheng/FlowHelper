@@ -23,6 +23,8 @@
 
 </table>
 
+[3.0之前的TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README.md)
+
 **目前TabFlowLayout 支持以下效果:**
 - **矩形**
 - **三角形**
@@ -34,12 +36,17 @@
 - **竖直效果，需要设置 tab_orientation = vertical**
 - **宽度均分**
 
-
-## 三、使用
+## 一、使用
 
 **默认的XML**
+有两个类可以选择：
+- TabFlowLayout : 不支持 ViewPager
+- TabVpFlowLayout : 支持 ViewPager 和 ViewPager2
+
+比如 TabFlowLayout 的使用： (如果带ViewPager的，换成 TabVpFlowLayout 即可)
+
 ```
-<com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+<com.zhengsr.tablib.view.flow.TabFlowLayout
     android:id="@+id/resflow"
     android:layout_width="wrap_content"
     android:layout_marginTop="5dp"
@@ -48,7 +55,7 @@
 ```
 比如要加矩形，三角形，可以使用 app:tab_type 这个属性，比如一个矩形：
 ```
-<com.zhengsr.tablib.view.flow.TabFlowLayoutremove
+<com.zhengsr.tablib.view.flow.TabFlowLayout
     android:id="@+id/rectflow"
     android:layout_width="wrap_content"
     android:layout_marginTop="5dp"
@@ -75,8 +82,6 @@
 tab_type 可以填 tri ，rect，round 等类型
 
 其他说明，可以参看下面的自定义属性说明。
-
-
 
 **Java**
 
@@ -123,7 +128,7 @@ private void rectFlow(){
 ```
 可以看到，只需要设置 adapter 就行了，需要注意的是你要传入子控件的 layout，这样方便你自定义你的布局，比如一个TextView 和一个红点点。
 
-**如果需要数据更新，使用adapter.notifyDataChanged() 即可**
+**如果需要数据更新，使用 adapter.notifyDataChanged() 即可**
 
 具体细节，可以参看这个：
 
@@ -173,10 +178,9 @@ private void rectFlow(){
 
 </android.support.constraint.ConstraintLayout>
 ```
+## 二、结合Viewpager 以及一些常用配置
+结合 ViewPager 非常简单，首先使用 TabVpFlowLayout 这个类来布局，然后把ViewPager设置给 flowLayout
 
-
-### 3.1.1、结合Viewpager 以及一些常用配置
-结合 ViewPager 非常简单，如下：
 ```
 flowLayout.setViewPager(viewpager) .
 
@@ -204,7 +208,7 @@ flowLayout.setViewPager(viewpager) .
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**
 - fragment 布局复杂或者网络加载数据时，建议在懒加载中去初始化或者加载数据
 - viewpager 增加缓存，setOffscreenPageLimit(3)。
-- setCurrentItem(position,false),滚动设置为false，然后用 flowLayout 实现item的动画，flowLayout.setItemAnim(position)
+
 
 **如果您觉得viewpager切换太快，可以使用 ViewPagerHelperUtils.initSwitchTime(getContext(), viewPager, 600) 改变滚动速度**
 

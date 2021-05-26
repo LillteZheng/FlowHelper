@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.view.View;
 
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -15,7 +15,7 @@ public class RectAction extends BaseAction {
     private static final String TAG = "RectAction";
 
     @Override
-    public void config(TabFlowLayout parentView) {
+    public void config(AbsFlowLayout parentView) {
         super.config(parentView);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         View child = parentView.getChildAt(mCurrentIndex);

@@ -14,7 +14,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
@@ -23,17 +22,17 @@ import com.zhengsr.tablib.bean.TabTypeEvaluator;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 绘制基类
  */
-public abstract class BaseAction  extends BViewPager {
+public abstract class BaseAction extends BViewPager {
     private static final String TAG = "BaseAction";
     public Paint mPaint;
     public RectF mTabRect;
-    protected TabFlowLayout mParentView;
+    protected AbsFlowLayout mParentView;
 
     /**
      * logic
@@ -64,7 +63,7 @@ public abstract class BaseAction  extends BViewPager {
      * 配置数据
      * @param parentView
      */
-    public void config(TabFlowLayout parentView) {
+    public void config(AbsFlowLayout parentView) {
         mParentView = parentView;
         if (parentView.getChildCount() > 0 && mTabBean!= null) {
             mContext = mParentView.getContext();
@@ -72,10 +71,12 @@ public abstract class BaseAction  extends BViewPager {
             int childCount = mParentView.getChildCount();
             if (childCount > 0) {
                 View child = mParentView.getChildAt(childCount - 1);
+                //拿到有边界
                 mRightBound = child.getRight() + mParentView.getPaddingRight();
             }
 
             View child = mParentView.getChildAt(0);
+            //初始化第一个view的效果
             if (child != null) {
                 if (isVertical()){
                     mOffset = mTabBean.tabHeight * 1.0f / child.getMeasuredHeight();
@@ -136,7 +137,7 @@ public abstract class BaseAction  extends BViewPager {
         isTabClick = true;
         mCurrentIndex = curIndex;
         mLastIndex = lastIndex;
-        if (mViewPager == null) {
+        if (!isViewPager()) {
             autoScaleView();
             doAnim(lastIndex, curIndex,mTabBean.tabClickAnimTime);
         } else {
@@ -185,6 +186,9 @@ public abstract class BaseAction  extends BViewPager {
         if (mParentView != null) {
 
             View curView = mParentView.getChildAt(position);
+            if (curView == null) {
+                return;
+            }
             float offset = curView.getMeasuredWidth() * positionOffset;
             int scrollX = (int) (curView.getLeft() + offset);
             if (offset > 0 && positionOffset > 0) {
@@ -193,7 +197,6 @@ public abstract class BaseAction  extends BViewPager {
                         //要偏移的view
                         final View transView = mParentView.getChildAt(position + 1);
                         //大小渐变效果
-
                         if (mTabBean.autoScale && mTabBean.scaleFactor > 0) {
                             float factor = mTabBean.scaleFactor % 1;
                             float transScale = 1 + factor * positionOffset;
@@ -236,8 +239,8 @@ public abstract class BaseAction  extends BViewPager {
                 }
                 //超过中间了，让父控件也跟着移动
                 if (mParentView.isCanMove()) {
-                    if (scrollX > mViewWidth / 2 - mParentView.getPaddingLeft()) {
-                        scrollX -= mViewWidth / 2 - mParentView.getPaddingLeft();
+                    if (scrollX > (mViewWidth / 2 - mParentView.getPaddingLeft())) {
+                        scrollX -= (mViewWidth / 2 - mParentView.getPaddingLeft());
                         //有边界提醒
                         if (scrollX <= mRightBound - mViewWidth) {
                             mParentView.scrollTo(scrollX, 0);
@@ -248,8 +251,6 @@ public abstract class BaseAction  extends BViewPager {
                     } else {
                         mParentView.scrollTo(0, 0);
                     }
-
-
                 }
 
             }
@@ -325,9 +326,7 @@ public abstract class BaseAction  extends BViewPager {
      * @param curIndex
      */
     public void doAnim(int lastIndex, final int curIndex,int animTime) {
-        if (mCurrentIndex == mLastIndex){
-            return;
-        }
+
         if (mAnimator != null) {
             mAnimator.cancel();
             mAnimator = null;
@@ -363,7 +362,6 @@ public abstract class BaseAction  extends BViewPager {
                 }
 
 
-
                 mAnimator = ObjectAnimator.ofObject(new TabTypeEvaluator(), lastValue, curValue);
                 mAnimator.setDuration(animTime);
                 mAnimator.setInterpolator(new LinearInterpolator());
@@ -385,6 +383,9 @@ public abstract class BaseAction  extends BViewPager {
                                 int count = adapter.getItemCount();
                                 for (int i = 0; i < count; i++) {
                                     View child = mParentView.getChildAt(i);
+                                    if (child == null) {
+                                        return;
+                                    }
                                     if (i == mCurrentIndex){
                                         adapter.onItemSelectState(child, true);
                                     }else{
@@ -472,6 +473,7 @@ public abstract class BaseAction  extends BViewPager {
                     child.setScaleY(mTabBean.scaleFactor);
                 }
             }
+            mParentView.postInvalidate();
         }
 
     }
@@ -506,6 +508,7 @@ public abstract class BaseAction  extends BViewPager {
         value.bottom = view.getBottom() - mTabBean.tabMarginBottom;
         return value;
     }
+
 
 
     /**
@@ -544,8 +547,13 @@ public abstract class BaseAction  extends BViewPager {
     }
 
 
-
-
+    /**
+     * 是否是Viewpager
+     * @return
+     */
+    private boolean isViewPager(){
+        return mViewPager != null || mViewPager2 != null;
+    }
     /**
      * tab 的方向
      * @return

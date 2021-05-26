@@ -22,29 +22,28 @@ public class AttrsUtils {
     public static TabBean getTabBean(TypedArray ta){
         TabBean bean = new TabBean();
 
-        bean.tabType = ta.getInteger(R.styleable.TabFlowLayout_tab_type, -1);
-        bean.tabColor = ta.getColor(R.styleable.TabFlowLayout_tab_color, -2);
-        bean.tabWidth = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_width, -1);
-        bean.tabHeight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_height, -1);
+        bean.tabType = ta.getInteger(R.styleable.AbsFlowLayout_tab_type, -1);
+        bean.tabColor = ta.getColor(R.styleable.AbsFlowLayout_tab_color, -2);
+        bean.tabWidth = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_width, -1);
+        bean.tabHeight = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_height, -1);
 
-        bean.tabRoundSize = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_round_size,10);
+        bean.tabRoundSize = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_round_size,10);
 
-        bean.tabMarginLeft = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_l, 0);
-        bean.tabMarginTop = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_t, 0);
-        bean.tabMarginRight = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_r, 0);
-        bean.tabMarginBottom = ta.getDimensionPixelSize(R.styleable.TabFlowLayout_tab_margin_b, 0);
+        bean.tabMarginLeft = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_margin_l, 0);
+        bean.tabMarginTop = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_margin_t, 0);
+        bean.tabMarginRight = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_margin_r, 0);
+        bean.tabMarginBottom = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_margin_b, 0);
 
-        bean.tabItemRes = ta.getResourceId(R.styleable.TabFlowLayout_tab_item_res,-1);
-        bean.tabClickAnimTime = ta.getInt(R.styleable.TabFlowLayout_tab_click_animTime, 300);
-        bean.autoScale = ta.getBoolean(R.styleable.TabFlowLayout_tab_item_autoScale, false);
-        bean.scaleFactor = ta.getFloat(R.styleable.TabFlowLayout_tab_scale_factor, 1);
+        bean.tabItemRes = ta.getResourceId(R.styleable.AbsFlowLayout_tab_item_res,-1);
+        bean.tabClickAnimTime = ta.getInt(R.styleable.AbsFlowLayout_tab_click_animTime, 300);
+        bean.autoScale = ta.getBoolean(R.styleable.AbsFlowLayout_tab_item_autoScale, false);
+        bean.scaleFactor = ta.getFloat(R.styleable.AbsFlowLayout_tab_scale_factor, 1);
 
-        bean.tabOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_orientation, FlowConstants.HORIZONTATAL);
-        bean.actionOrientation = ta.getInteger(R.styleable.TabFlowLayout_tab_action_orientaion,-1);
-        bean.isAutoScroll = ta.getBoolean(R.styleable.TabFlowLayout_tab_isAutoScroll, true);
-        bean.visualCount = ta.getInteger(R.styleable.TabFlowLayout_tab_visual_count, -1);
+        bean.tabOrientation = ta.getInteger(R.styleable.AbsFlowLayout_tab_orientation, FlowConstants.HORIZONTATAL);
+        bean.actionOrientation = ta.getInteger(R.styleable.AbsFlowLayout_tab_action_orientaion,-1);
+        bean.isAutoScroll = ta.getBoolean(R.styleable.AbsFlowLayout_tab_isAutoScroll, true);
+        bean.visualCount = ta.getInteger(R.styleable.AbsFlowLayout_tab_visual_count, -1);
 
-        ta.recycle();
         return bean;
     }
 

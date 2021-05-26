@@ -3,7 +3,9 @@ package com.zhengsr.tabhelper.activity;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,19 +28,20 @@ import com.zhengsr.tablib.view.flow.LabelFlowLayout;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.observers.ResourceObserver;
 
 public class VerticalTabActivity extends AppCompatActivity {
     private static final String TAG = "VerticalTabActivity";
-    private List<String> mTitle = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed people can reach the other side i am shao rui zheng xiao yuan".split(" ")));
     private TabFlowLayout mTabFlowLayout;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mManager;
     private int mCurPosition;
     private boolean isNeedScroll;
+    private List<NaviBean> mDatas = new ArrayList<>();
+    private NaviAdapter mNaviAdapter;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,14 @@ public class VerticalTabActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recyclerview);
         mManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mManager);
+        mNaviAdapter = new NaviAdapter(R.layout.item_navi_detail, mDatas);
+        TextView textView = new TextView(this);
+        textView.setTextSize(30);
+        textView.setTextColor(Color.BLACK);
+        textView.setText("正在加载，请稍等....");
+        textView.setGravity(Gravity.CENTER);
+        mNaviAdapter.setEmptyView(textView);
+        mRecyclerView.setAdapter(mNaviAdapter);
 
         HttpCreate.getServer().getNaviData()
                 .compose(RxUtils.<BaseResponse<List<NaviBean>>>rxScheduers())
@@ -135,13 +146,13 @@ public class VerticalTabActivity extends AppCompatActivity {
 
                     int firstPosition = mManager.findFirstVisibleItemPosition();
                     if (!mTabFlowLayout.isItemClick()) {
-                        mTabFlowLayout.setItemClickByOutSet(firstPosition);
-                        mTabFlowLayout.setItemClickStatus(true);
+                        mTabFlowLayout.setItemClickByOutside(firstPosition);
+                        mTabFlowLayout.setItemClick(true);
                     }else{
                         /**
                          * 如果上次为点击事件，则先还原，下次滑动时，监听即可
                          */
-                        mTabFlowLayout.setItemClickStatus(false);
+                        mTabFlowLayout.setItemClick(false);
                     }
 
                 }
@@ -160,8 +171,9 @@ public class VerticalTabActivity extends AppCompatActivity {
                 }
             }
         });
-
-        mRecyclerView.setAdapter(new NaviAdapter(R.layout.item_navi_detail,listBaseResponse.getData()));
+        mDatas.clear();
+        mDatas.addAll(listBaseResponse.getData());
+        mNaviAdapter.notifyDataSetChanged();
     }
 
 

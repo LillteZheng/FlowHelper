@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabValue;
-import com.zhengsr.tablib.view.flow.TabFlowLayout;
+import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
 /**
  * @author by  zhengshaorui on 2019/10/8
@@ -27,7 +27,7 @@ public class RoundAction extends BaseAction {
 
 
     @Override
-    public void config(TabFlowLayout parentView) {
+    public void config(AbsFlowLayout parentView) {
         super.config(parentView);
         View child = parentView.getChildAt(0);
         if (child != null) {

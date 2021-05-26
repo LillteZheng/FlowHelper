@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 public class TabConfig {
     private int textId = -2;
     private int unSelectColor = -2;
-    private int defaultPos;
+    private int defaultPos = 0;
     private int selectedColor = -2;
     private ViewPager viewPager;
     private  ViewPager2 viewpager2;
