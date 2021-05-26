@@ -96,7 +96,7 @@ implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.29
 - **竖直效果，需要设置 tab_orientation = vertical**
 - **宽度均分**
 
-[TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/master/TAB_README3_0.md)
+[TabFlowLayout 使用说明](https://github.com/LillteZheng/FlowHelper/blob/feature_3.0/TAB_README3_0.md)
 
 ## LabelFlowLayout 效果图
 
