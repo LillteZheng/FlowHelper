@@ -212,6 +212,12 @@ flowLayout.setViewPager(viewpager) .
 
 **如果您觉得viewpager切换太快，可以使用 ViewPagerHelperUtils.initSwitchTime(getContext(), viewPager, 600) 改变滚动速度**
 
+**比较卡顿怎么办？**
+
+- 去掉 viewpager.setCurrentItem(position)，内部已经实现
+- Fragment 懒加载，一些UI比较耗时的，放懒加载中使用
+- ViewPager 缓存设置为3
+
 
 
 ### 3.1.2、自定义属性动态配置
@@ -243,12 +249,6 @@ private void resFlow(){
         @Override
         public void bindView(View view, String data, int position) {
             setText(view,R.id.item_text,data);
-        }
-
-        @Override
-        public void onItemClick(View view, String data, int position) {
-            super.onItemClick(view, data, position);
-            mViewPager.setCurrentItem(position);
         }
     });
 }
