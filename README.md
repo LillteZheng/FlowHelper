@@ -57,7 +57,7 @@ implementation 'com.github.LillteZheng.FlowHelper:tablibx:v1.30
 ```
 **support可以关联以下连接，请尽快切到androidx，support包不再维护**
 ```
-implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.29
+implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.291
 ```
 
 
