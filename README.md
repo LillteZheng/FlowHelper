@@ -164,6 +164,10 @@ implementation 'com.github.LillteZheng.FlowHelper:tablib:v1.291
     <th>方式</th>
   </tr>
    <tr>
+    <td> *头</td>
+    <td>微信</td>
+  </tr>
+     <tr>
     <td> *变</td>
     <td>微信</td>
   </tr>
