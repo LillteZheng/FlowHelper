@@ -41,7 +41,7 @@
 **默认的XML**
 有两个类可以选择：
 - TabFlowLayout : 不支持 ViewPager
-- TabVpFlowLayout : 支持 ViewPager 和 ViewPager2
+- TabVpFlowLayout : 支持 ViewPager 和 ViewPager2 (ViewPager2只有横向有效果，目前没有时间弄，你也可以提mr)
 
 比如 TabFlowLayout 的使用： (如果带ViewPager的，换成 TabVpFlowLayout 即可)
 
