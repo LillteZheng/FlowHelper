@@ -40,6 +40,7 @@ FlowHelper 可以帮助您迅速构建Tab，比如热搜、搜索记录、与Vie
 [![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E9%83%91%E5%B0%91%E9%94%90-green.svg)](https://blog.csdn.net/u011418943)
 
 ## 使用
+在buid.gradle （新版as在setting.gradle）
 ```
 allprojects {
     repositories {
