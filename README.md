@@ -54,7 +54,7 @@ allprojects {
 
 **如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.30'
+implementation 'com.github.LillteZheng:FlowHelper:v1.31'
 ```
 **support可以关联以下连接，请尽快切到androidx，support包不再维护**
 ```
@@ -144,6 +144,7 @@ implementation 'com.github.LillteZheng:FlowHelper:v1.30'
 
 
 ## 版本信息：
+-  v1.31 : 修复res和round，tab_margin_x 不起作用的问题
 -  v1.30 : 重构分离了ViewPager和非ViewPager的情况，并处理数据增加减少时，notifyDataChange()导致布局混乱的问题
 -  v1.291: 修复notifyDataChange部分场景不起作用的问题，小重构了参数配置
 -  v1.29 : 修复添加了tabWidth，round和res第一次不起作用的问题

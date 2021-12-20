@@ -352,10 +352,10 @@ private void resFlow(){
 |tab_height|dimension|指示器高度|
 |tab_item_res|reference|指示器的背景，比如shape，bitmap等，只对 res 起作用|
 |tab_round_size|dimension|圆角的大小，只对round起作用|
-|tab_margin_l|dimension|左偏移|
-|tab_margin_t|dimension|上偏移|
-|tab_margin_r|dimension|右偏移|
-|tab_margin_b|dimension|下偏移|
+|tab_margin_l|dimension|左偏移,只支持type 为 res 或 round|
+|tab_margin_t|dimension|上偏移,只支持type 为 res 或 round|
+|tab_margin_r|dimension|右偏移,只支持type 为 res 或 round|
+|tab_margin_b|dimension|下偏移,只支持type 为 res 或 round|
 |tab_click_animTime|integer|点击动画的时间，默认300ms|
 |tab_item_autoScale|boolean|开启放大缩小的效果|
 |tab_scale_factor|float|放大倍数|

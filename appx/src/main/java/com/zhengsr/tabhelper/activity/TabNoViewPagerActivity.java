@@ -78,9 +78,9 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
     }
 
     private void rectFlow() {
-        TabFlowLayout flowLayout = findViewById(R.id.rectflow);
+       /* TabFlowLayout flowLayout = findViewById(R.id.rectflow);
         mAdapter = new TabApdater(R.layout.item_msg, mTitle);
-        flowLayout.setAdapter(mAdapter);
+        flowLayout.setAdapter(mAdapter);*/
 
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
 

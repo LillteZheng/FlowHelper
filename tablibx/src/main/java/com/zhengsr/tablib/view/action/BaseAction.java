@@ -220,8 +220,13 @@ public abstract class BaseAction extends BViewPager {
                             left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
                             right = left + mTabBean.tabWidth;
                         }
-                        mTabRect.left = left;
-                        mTabRect.right = right;
+                        if (isSupportMargin()) {
+                            mTabRect.left = left + mTabBean.tabMarginLeft;
+                            mTabRect.right = right - mTabBean.tabMarginRight;
+                        }else{
+                            mTabRect.left = left ;
+                            mTabRect.right = right;
+                        }
                         valueChange(new TabValue(mTabRect.left, mTabRect.right));
 
                         mParentView.postInvalidate();
@@ -573,5 +578,13 @@ public abstract class BaseAction extends BViewPager {
         mContext = context;
     }
 
+    private boolean isSupportMargin(){
+        if (FlowConstants.RES == mTabBean.tabType||
+            FlowConstants.ROUND == mTabBean.tabType
+        ){
+            return true;
+        }
+        return false;
+    }
 
 }

@@ -18,6 +18,8 @@
         app:tab_orientation="vertical"
         app:tab_width="2dp"
         app:tab_height="20dp"
+        app:tab_margin_t="20dp"
+        app:tab_margin_b="5dp"
         app:tab_action_orientaion="left"
         android:background="@color/page_gray_cccc"
         />

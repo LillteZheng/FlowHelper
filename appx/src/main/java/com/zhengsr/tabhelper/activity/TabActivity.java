@@ -139,7 +139,7 @@ public class TabActivity extends AppCompatActivity {
         bean.tabType = FlowConstants.RES;
         bean.tabItemRes = R.drawable.shape_round;
         bean.tabClickAnimTime = 300;
-        bean.tabMarginLeft = 5;
+        bean.tabMarginLeft = 30;
         bean.tabMarginTop = 12;
         bean.tabMarginRight = 5;
         bean.tabMarginBottom = 10;
