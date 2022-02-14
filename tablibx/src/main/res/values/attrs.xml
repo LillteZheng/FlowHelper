@@ -20,6 +20,7 @@
         <attr name="tab_item_autoScale" format="boolean"/>
         <attr name="tab_scale_factor" format="float"/>
         <attr name="tab_visual_count" format="integer"/>
+        <attr name="tab_width_equals_text" format="boolean"/>
         <attr name="tab_orientation">
             <enum name="vertical" value="1"/>
             <enum name="horizontal" value="2"/>

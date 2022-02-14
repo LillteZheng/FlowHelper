@@ -43,6 +43,7 @@ public class AttrsUtils {
         bean.actionOrientation = ta.getInteger(R.styleable.AbsFlowLayout_tab_action_orientaion,-1);
         bean.isAutoScroll = ta.getBoolean(R.styleable.AbsFlowLayout_tab_isAutoScroll, true);
         bean.visualCount = ta.getInteger(R.styleable.AbsFlowLayout_tab_visual_count, -1);
+        bean.tabWidthEqualsText = ta.getBoolean(R.styleable.AbsFlowLayout_tab_width_equals_text,true);
 
         return bean;
     }

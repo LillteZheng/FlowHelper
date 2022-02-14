@@ -74,6 +74,11 @@ public class TabBean {
     public int visualCount = -1;
 
 
+    /**
+     * tab 的宽度是否跟随text的宽度大小,只对 rect 有用
+     */
+    public boolean tabWidthEqualsText = true;
+
     @Override
     public String toString() {
         return "TabBean{" +

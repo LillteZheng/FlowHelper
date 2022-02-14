@@ -128,7 +128,7 @@
         app:tab_type="rect"
         app:tab_height="2dp"
         app:tab_color="@color/colorAccent"
-        app:tab_margin_b="3dp"
+        app:tab_width_equals_text="true"
         android:layout_height="wrap_content"/>
 
     <TextView

@@ -33,6 +33,7 @@
         app:tab_item_autoScale="true"
         app:tab_scale_factor="1.2"
         app:tab_visual_count="2"
+        app:tab_width_equals_text="true"
         />
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout

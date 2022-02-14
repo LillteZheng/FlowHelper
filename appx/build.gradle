@@ -29,8 +29,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //implementation project(path: ':tablibx')
-    implementation 'com.github.LillteZheng:FlowHelper:v1.33'
+    implementation project(path: ':tablibx')
+    //implementation 'com.github.LillteZheng:FlowHelper:v1.34'
     implementation 'me.yokeyword:fragmentationx:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'

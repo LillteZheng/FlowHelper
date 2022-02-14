@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.zhengsr.tabhelper.R;
 import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
+import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
@@ -37,6 +38,8 @@ public class TabNoViewPagerActivity extends AppCompatActivity {
         // mTitle.add("Kotlin");
         setContentView(R.layout.activity_tab_no_view_pager);
         TabFlowLayout flowLayout = findViewById(R.id.new_test);
+        TabConfig config = new TabConfig.Builder()
+                .setTextId(R.id.item_text).build();
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle) {
             @Override
             public void bindView(View view, String data, int position) {

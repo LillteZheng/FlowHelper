@@ -361,6 +361,7 @@ private void resFlow(){
 |tab_action_orientaion|integer|left坐标，right右边，只支持 tri、rect 两种效果|
 |tab_isAutoScroll|boolean|是否支持自动滚动,默认为true|
 |tab_visual_count|integer|可视化个数，比如有一排，我们就只要显示4个，此时宽度均分|
+|tab_width_equals_text|boolean|rect 是否根据text的大小来，目前只支持rect和带viewpager的情况|
 
 
 **TabColorTextView**
