@@ -27,7 +27,7 @@ public class AttrsUtils {
         bean.tabWidth = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_width, -1);
         bean.tabHeight = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_height, -1);
 
-        bean.tabRoundSize = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_round_size,10);
+        bean.tabRoundSize = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_round_size,-1);
 
         bean.tabMarginLeft = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_margin_l, 0);
         bean.tabMarginTop = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_margin_t, 0);
