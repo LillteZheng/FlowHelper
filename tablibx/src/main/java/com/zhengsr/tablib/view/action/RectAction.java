@@ -81,6 +81,11 @@ public class RectAction extends BaseAction {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawRect(mTabRect, mPaint);
+        if (mTabBean.tabRoundSize != -1) {
+            canvas.drawRoundRect(mTabRect, mTabBean.tabRoundSize, mTabBean.tabRoundSize, mPaint);
+        } else {
+            canvas.drawRect(mTabRect, mPaint);
+        }
     }
 
 }

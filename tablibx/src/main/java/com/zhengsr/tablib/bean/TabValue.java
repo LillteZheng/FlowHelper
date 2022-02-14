@@ -15,6 +15,9 @@ public class TabValue {
 
     public TabValue() {
     }
+    public float width(){
+        return right - left;
+    }
 
     @Override
     public String toString() {

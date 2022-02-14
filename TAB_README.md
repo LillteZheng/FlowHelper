@@ -349,7 +349,7 @@ private void resFlow(){
 |tab_width|dimension|指示器的宽度，如果不写，则根据控件自身大小|
 |tab_height|dimension|指示器高度|
 |tab_item_res|reference|指示器的背景，比如shape，bitmap等，只对 res 起作用|
-|tab_round_size|dimension|圆角的大小，只对round起作用|
+|tab_round_size|dimension|圆角的大小，只对round,rect起作用|
 |tab_margin_l|dimension|左偏移|
 |tab_margin_t|dimension|上偏移|
 |tab_margin_r|dimension|右偏移|

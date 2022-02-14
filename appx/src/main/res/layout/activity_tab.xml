@@ -27,6 +27,7 @@
         app:tab_width="20dp"
         app:tab_margin_b="3dp"
         app:tab_margin_l="10dp"
+        app:tab_round_size="3dp"
         android:background="@color/black_ff_bg"
         app:tab_scale_factor="1.2"
         app:tab_item_autoScale="true"
