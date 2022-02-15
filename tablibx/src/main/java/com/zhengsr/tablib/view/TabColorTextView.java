@@ -61,8 +61,7 @@ public class TabColorTextView extends AppCompatTextView {
         mPaint.setDither(true);
         mPaint.setTextSize(getTextSize());*/
         mPaint = getPaint();
-        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        Log.d(TAG, "zsr TabColorTextView: "+mPaint.getTypeface().isBold());
+       // mPaint.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
     @Override
