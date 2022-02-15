@@ -17,7 +17,7 @@
         android:paddingBottom="6dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:gravity="center"
         android:textColor="@color/unselect"
         android:layout_height="wrap_content"/>

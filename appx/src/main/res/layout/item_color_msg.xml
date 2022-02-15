@@ -17,10 +17,11 @@
         android:paddingBottom="6dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:colortext_default_color="@color/unselect"
         app:colortext_change_color="@color/colorAccent"
         android:gravity="center"
+        android:textStyle="bold"
         android:layout_height="wrap_content"/>
 
     <TextView

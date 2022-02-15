@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,10 +56,13 @@ public class TabColorTextView extends AppCompatTextView {
         mDefaultColor = ta.getColor(R.styleable.TabColorTextView_colortext_default_color, Color.GRAY);
         mChangeColor = ta.getColor(R.styleable.TabColorTextView_colortext_change_color,Color.WHITE);
         ta.recycle();
-        mPaint = new Paint();
+        /*Paint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
-        mPaint.setTextSize(getTextSize());
+        mPaint.setTextSize(getTextSize());*/
+        mPaint = getPaint();
+        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        Log.d(TAG, "zsr TabColorTextView: "+mPaint.getTypeface().isBold());
     }
 
     @Override
