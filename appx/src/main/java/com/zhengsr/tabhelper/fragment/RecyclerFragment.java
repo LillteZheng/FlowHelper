@@ -32,21 +32,10 @@ import me.yokeyword.fragmentation.SupportFragment;
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
  */
-public class RecyclerFragment extends SupportFragment {
+public class RecyclerFragment extends BaseFragment {
     private static final String TAG = "RecyclerFragment";
     private NaviChildrenBean mBean;
     private ArticleAdapter mAdapter;
-
-
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler_layout,container,false);
-        initView(view);
-        return view;
-    }
-
     private List<ArticleData> mArticleBeans = new ArrayList<>();
     public static RecyclerFragment newInstance(NaviChildrenBean bean) {
 
@@ -58,8 +47,28 @@ public class RecyclerFragment extends SupportFragment {
     }
 
     @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
+    public int getLayoutId() {
+        return R.layout.recycler_layout;
+    }
+    @Override
+    public void initView(View view) {
+        Bundle arguments = getArguments();
+        mBean = (NaviChildrenBean) arguments.getSerializable("bean");
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler);
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(manager);
+        mAdapter = new ArticleAdapter(R.layout.item_article_recy_layout, mArticleBeans);
+        recyclerView.setAdapter(mAdapter);
+
+
+
+
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
         HttpCreate.getServer().getSystematicDetail(0,mBean.getId())
                 .compose(RxUtils.<BaseResponse<PageDataInfo<List<ArticleData>>>>rxScheduers())
                 .subscribe(new Observer<BaseResponse<PageDataInfo<List<ArticleData>>>>() {
@@ -87,20 +96,9 @@ public class RecyclerFragment extends SupportFragment {
                 });
     }
 
-    private void initView(View view) {
-        Bundle arguments = getArguments();
-        mBean = (NaviChildrenBean) arguments.getSerializable("bean");
-
-        RecyclerView recyclerView = view.findViewById(R.id.recycler);
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(manager);
-        mAdapter = new ArticleAdapter(R.layout.item_article_recy_layout, mArticleBeans);
-        recyclerView.setAdapter(mAdapter);
 
 
 
-
-    }
 
     public class ArticleAdapter extends BaseQuickAdapter<ArticleData, BaseViewHolder> {
 

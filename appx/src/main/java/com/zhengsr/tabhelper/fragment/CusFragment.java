@@ -15,16 +15,13 @@ import androidx.fragment.app.Fragment;
  * Created by Administrator on 2017/11/10.
  */
 
-public class CusFragment extends Fragment {
+public class CusFragment extends BaseFragment {
 
     public static final String ARGUMENT = "argument";
     private String mTitle;
 
-
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View getContentView() {
         Bundle bundle = getArguments();
 
         TextView textView = new TextView(getActivity());
@@ -38,6 +35,8 @@ public class CusFragment extends Fragment {
         textView.setTextColor(Color.WHITE);
         return textView;
     }
+
+
 
     /**
      * 弄一个静态工厂的方法调用 用于传参

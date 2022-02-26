@@ -20,17 +20,20 @@ import java.util.List;
  * Created by Administrator on 2017/11/10.
  */
 
-public class TestFragment extends Fragment {
+public class TestFragment extends BaseFragment {
 
     public static final String ARGUMENT = "argument";
     private List<String> mTitle = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed people can reach the other side".split(" ")));
 
 
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.test_fragment,container,false);
+    public int getLayoutId() {
+        return R.layout.test_fragment;
+    }
+
+    @Override
+    protected void initView(View view) {
+        super.initView(view);
         TabFlowLayout tabFlowLayout = view.findViewById(R.id.tabflow);
         tabFlowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
@@ -40,7 +43,6 @@ public class TestFragment extends Fragment {
 
 
         });
-        return view;
     }
 
     /**

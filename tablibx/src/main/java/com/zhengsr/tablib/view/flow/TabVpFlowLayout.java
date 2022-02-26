@@ -109,6 +109,7 @@ public class TabVpFlowLayout extends AbsFlowLayout {
         super.onItemClick(view, position);
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
+        mAction.updatePos(mLastIndex,mCurrentIndex);
         if (mViewPager != null) {
             mViewPager.setCurrentItem(position,true);
         }

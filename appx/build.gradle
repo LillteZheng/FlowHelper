@@ -44,5 +44,5 @@ dependencies {
     implementation 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-
+    implementation 'com.github.weikaiyun.SFragmentation:fragmentation:1.8.4'
 }

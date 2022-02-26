@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.zhengsr.tabhelper.activity.BaseActivity;
 import com.zhengsr.tabhelper.activity.CountActivity;
 import com.zhengsr.tabhelper.activity.LabelActivity;
 import com.zhengsr.tabhelper.activity.LabelShowMoreActivity;
@@ -22,16 +23,12 @@ import com.zhengsr.tabhelper.fragment.TestFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private List<Fragment> mFragments = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewPager viewPager = findViewById(R.id.viewpager);
-       // mFragments.add(TestFragment.newInStance());
-      //  mFragments.add(TestFragment.newInStance());
-      //  viewPager.setAdapter(new CusAdapter(getSupportFragmentManager()));
 
     }
 

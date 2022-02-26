@@ -254,12 +254,14 @@ public abstract class BaseAction extends BViewPager {
 
                         //处理颜色渐变
                         if (mTextViewId != -1 && isColorText) {
-                            View leftView = curView.findViewById(mTextViewId);
-                            View rightView = transView.findViewById(mTextViewId);
-                            TabColorTextView colorLeft = (TabColorTextView) leftView;
-                            TabColorTextView colorRight = (TabColorTextView) rightView;
-                            colorLeft.setprogress(1 - positionOffset, TabColorTextView.DEC_RIGHT);
-                            colorRight.setprogress(positionOffset, TabColorTextView.DEC_LEFT);
+                            if (Math.abs(mCurrentIndex - mLastIndex) <= 2){
+                                View leftView = curView.findViewById(mTextViewId);
+                                View rightView = transView.findViewById(mTextViewId);
+                                TabColorTextView colorLeft = (TabColorTextView) leftView;
+                                TabColorTextView colorRight = (TabColorTextView) rightView;
+                                colorLeft.setprogress(1 - positionOffset, TabColorTextView.DEC_RIGHT);
+                                colorRight.setprogress(positionOffset, TabColorTextView.DEC_LEFT);
+                            }
                         }
                     }
                 }
@@ -288,6 +290,9 @@ public abstract class BaseAction extends BViewPager {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         chooseSelectedPosition(position);
+        if (Math.abs(mCurrentIndex - mLastIndex) > 2){
+            chooseIndex(mLastIndex,mCurrentIndex);
+        }
     }
 
 
@@ -629,6 +634,11 @@ public abstract class BaseAction extends BViewPager {
             return true;
         }
         return false;
+    }
+
+    public void updatePos(int lastIndex,int curIndex){
+        mLastIndex = lastIndex;
+        mCurrentIndex = curIndex;
     }
 
 }
