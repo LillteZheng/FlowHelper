@@ -23,6 +23,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         app:layout_constraintEnd_toEndOf="parent"
         />
 

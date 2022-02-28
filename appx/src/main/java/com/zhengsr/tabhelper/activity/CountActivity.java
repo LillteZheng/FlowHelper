@@ -44,19 +44,7 @@ public class CountActivity extends BaseActivity {
         final TabVpFlowLayout flowLayout = findViewById(R.id.rectflow);
         // flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
         flowLayout.setViewPager(mViewPager);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.tab_text_layout,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-            }
-
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                //mViewPager.setCurrentItem(position);
-
-            }
-        });
+        flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle));
 
 
 

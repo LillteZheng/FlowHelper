@@ -1,6 +1,7 @@
 package com.zhengsr.tablib.view.adapter;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 
@@ -38,6 +39,7 @@ public abstract class BaseFlowAdapter<T> {
         return mLayoutId;
     }
 
+
     /**
      * 获取数据
      *
@@ -54,7 +56,13 @@ public abstract class BaseFlowAdapter<T> {
      * @param data
      * @param position
      */
-    public abstract void bindView(View view, T data, int position);
+    public void bindView(View view, T data, int position){
+        //todo
+        T t = mDatas.get(position);
+        if (t instanceof String){
+
+        }
+    }
 
 
     /**

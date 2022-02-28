@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.LabelBean;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
@@ -450,7 +451,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
             mMoreView = LayoutInflater.from(getContext()).inflate(mShowMoreLayoutId, this, false);
             isHasMoreView = true;
         }
-        if (bean.showMoreColor != -2) {
+        if (bean.showMoreColor != FlowConstants.COLOR_ILLEGAL) {
             mShowMoreColor = bean.showMoreColor;
         }
 

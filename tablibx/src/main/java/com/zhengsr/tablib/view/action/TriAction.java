@@ -2,6 +2,7 @@ package com.zhengsr.tablib.view.action;
 
 import android.graphics.Canvas;
 import android.graphics.Path;
+import android.util.Log;
 import android.view.View;
 
 import com.zhengsr.tablib.bean.TabValue;

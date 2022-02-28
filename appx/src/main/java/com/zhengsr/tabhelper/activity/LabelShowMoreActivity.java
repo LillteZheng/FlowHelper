@@ -38,16 +38,16 @@ public class LabelShowMoreActivity extends BaseActivity {
         flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data)
-                        .setTextColor(view, R.id.item_text, Color.BLACK);
+                setDefaultText(view,data)
+                        .setDefaultTextColor(view, Color.BLACK);
             }
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);
                 if (isSelected){
-                    setTextColor(view, R.id.item_text,getResources().getColor(R.color.colorPrimary));
+                    setDefaultTextColor(view, getResources().getColor(R.color.colorPrimary));
                 }else{
-                    setTextColor(view, R.id.item_text,Color.BLACK);
+                    setDefaultTextColor(view,Color.BLACK);
                 }
             }
 

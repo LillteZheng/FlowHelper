@@ -23,7 +23,7 @@ public class AttrsUtils {
         TabBean bean = new TabBean();
 
         bean.tabType = ta.getInteger(R.styleable.AbsFlowLayout_tab_type, -1);
-        bean.tabColor = ta.getColor(R.styleable.AbsFlowLayout_tab_color, -2);
+        bean.tabColor = ta.getColor(R.styleable.AbsFlowLayout_tab_color, FlowConstants.COLOR_ILLEGAL);
         bean.tabWidth = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_width, -1);
         bean.tabHeight = ta.getDimensionPixelSize(R.styleable.AbsFlowLayout_tab_height, -1);
 
@@ -44,7 +44,9 @@ public class AttrsUtils {
         bean.isAutoScroll = ta.getBoolean(R.styleable.AbsFlowLayout_tab_isAutoScroll, true);
         bean.visualCount = ta.getInteger(R.styleable.AbsFlowLayout_tab_visual_count, -1);
         bean.tabWidthEqualsText = ta.getBoolean(R.styleable.AbsFlowLayout_tab_width_equals_text,true);
-
+        bean.textType = ta.getInteger(R.styleable.AbsFlowLayout_tab_default_textType,1);
+        bean.selectedColor = ta.getInteger(R.styleable.AbsFlowLayout_tab_text_select_color,FlowConstants.COLOR_ILLEGAL);
+        bean.unSelectedColor = ta.getInteger(R.styleable.AbsFlowLayout_tab_text_unselect_color,FlowConstants.COLOR_ILLEGAL);
         return bean;
     }
 
@@ -60,7 +62,7 @@ public class AttrsUtils {
         if (userBean.tabType != -1){
             xmlBean.tabType = userBean.tabType;
         }
-        if (userBean.tabColor != -2){
+        if (userBean.tabColor != FlowConstants.COLOR_ILLEGAL){
             xmlBean.tabColor = userBean.tabColor;
         }
         if (userBean.tabWidth != -1){
@@ -116,6 +118,17 @@ public class AttrsUtils {
             xmlBean.visualCount = userBean.visualCount;
         }
 
+        if (userBean.unSelectedColor != FlowConstants.COLOR_ILLEGAL) {
+            xmlBean.unSelectedColor = userBean.unSelectedColor;
+        }
+
+        if (userBean.selectedColor != FlowConstants.COLOR_ILLEGAL) {
+            xmlBean.selectedColor = userBean.selectedColor;
+        }
+
+        if (userBean.textType != FlowConstants.NORMALTEXT) {
+            xmlBean.textType = userBean.textType;
+        }
         return xmlBean;
     }
 

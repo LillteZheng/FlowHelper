@@ -22,6 +22,7 @@ import com.zhengsr.tabhelper.bean.BaseResponse;
 import com.zhengsr.tabhelper.bean.NaviBean;
 import com.zhengsr.tabhelper.rx.HttpCreate;
 import com.zhengsr.tabhelper.utils.RxUtils;
+import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.LabelFlowLayout;
@@ -84,20 +85,23 @@ public class VerticalTabActivity extends BaseActivity {
     }
 
     private void handleData(final BaseResponse<List<NaviBean>> listBaseResponse) {
-        mTabFlowLayout.setAdapter(new TabFlowAdapter<NaviBean>(R.layout.item_textview_navi,listBaseResponse.getData()) {
+        TabConfig config = new TabConfig.Builder()
+                .setTextId(R.id.item_text)
+                .build();
+        mTabFlowLayout.setAdapter(config,new TabFlowAdapter<NaviBean>(R.layout.item_textview_navi,listBaseResponse.getData()) {
             @Override
             public void bindView(View view, NaviBean data, int position) {
-                setText(view, R.id.item_text,data.getName());
-                setTextColor(view, R.id.item_text, getResources().getColor(R.color.wechat));
+                setDefaultText(view ,data.getName());
+                setDefaultTextColor(view,getResources().getColor(R.color.wechat));
             }
 
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);
                 if (isSelected){
-                    setTextColor(view, R.id.item_text,getResources().getColor(R.color.colorPrimary));
+                    setDefaultTextColor(view, getResources().getColor(R.color.colorPrimary));
                 }else{
-                    setTextColor(view, R.id.item_text,getResources().getColor(R.color.wechat));
+                    setDefaultTextColor(view,getResources().getColor(R.color.wechat));
                 }
             }
 
@@ -199,8 +203,8 @@ public class VerticalTabActivity extends BaseActivity {
 
         @Override
         public void bindView(View view, ArticleData data, int position) {
-            setText(view, R.id.item_text,data.getTitle())
-                    .setTextColor(view, R.id.item_text, Color.WHITE);
+            setDefaultText(view, data.getTitle())
+                    .setDefaultTextColor(view, Color.WHITE);
             view.setBackground(CommonUtils.getColorDrawable(10));
         }
 

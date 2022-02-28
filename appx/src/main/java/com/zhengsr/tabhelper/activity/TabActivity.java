@@ -5,13 +5,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -23,7 +20,6 @@ import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
-import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
 
@@ -51,11 +47,9 @@ public class TabActivity extends BaseActivity {
         rectFlow();
         triFlow();
         roundFlow();
-        resFlow();
-        colorFlow();
+         resFlow();
+         colorFlow();
         cusFlow();
-
-
     }
 
     boolean isDetele = false;
@@ -64,51 +58,28 @@ public class TabActivity extends BaseActivity {
        // flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
         TabConfig config = new TabConfig.Builder()
                 .setViewpager(mViewPager)
-                .setTextId(R.id.item_text)
                 .setSelectedColor(Color.WHITE)
                 .setUnSelectColor(getResources().getColor(R.color.unselect))
                 .build();
-        flowLayout.setAdapter(config,new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-            }
 
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                mTitle.set(position,data+position);
-            }
-        });
+
+
+        flowLayout.setAdapter(config,new TabFlowAdapter<>(mTitle));
 
 
         TabVpFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-        flowLayout2.setAdapter(config,new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-                if (position == 0){
-                    setVisible(view, R.id.item_msg,true);
-                }
-            }
-
-        });
+        flowLayout2.setAdapter(config,new TabFlowAdapter<>(mTitle));
 
     }
 
     private void triFlow(){
         TabVpFlowLayout flowLayout = findViewById(R.id.triflow);
         flowLayout.setViewPager(mViewPager);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-            }
-
-        });
+        flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle));
     }
     private void roundFlow(){
         TabVpFlowLayout flowLayout = findViewById(R.id.roundflow);
+
         TabConfig config = new TabConfig.Builder()
                 .setViewpager(mViewPager)
                 .setTextId(R.id.item_text)
@@ -119,13 +90,7 @@ public class TabActivity extends BaseActivity {
         flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-            }
-
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
+                setText(view,R.id.item_text,data);
             }
         });
     }
@@ -146,34 +111,29 @@ public class TabActivity extends BaseActivity {
         bean.tabMarginBottom = 10;
         bean.autoScale = true;
         bean.scaleFactor = 1.2f;
+        bean.selectedColor = Color.WHITE;
+        bean.unSelectedColor = getResources().getColor(R.color.unselect);
         flowLayout.setTabBean(bean);
 
         flowLayout.setViewPager(mViewPager);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
-            }
-
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
-            }
-        });
+        flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle) );
     }
 
     private void colorFlow(){
         TabVpFlowLayout flowLayout = findViewById(R.id.colorflow);
         TabConfig config = new TabConfig.Builder()
                 .setViewpager(mViewPager)
-                .setTextId(R.id.item_text)
+                .setDefaultTextType(FlowConstants.COLORTEXT)
+                .setSelectedColor(getResources().getColor(R.color.colorAccent))
+                .setUnSelectColor(getResources().getColor(R.color.unselect))
+                .setDefaultTextSize(16)
                 .build();
 
-        flowLayout.setAdapter(config,new TabFlowAdapter<String>(R.layout.item_color_msg,mTitle) {
+        flowLayout.setAdapter(config,new TabFlowAdapter<>(mTitle));
+        /*flowLayout.setAdapter(config,new TabFlowAdapter<String>(R.layout.item_color_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
+                setText(view,R.id.item_text,data);
             }
 
             @Override
@@ -181,28 +141,14 @@ public class TabActivity extends BaseActivity {
                 super.onItemClick(view, data, position);
                 mViewPager.setCurrentItem(position);
             }
-        });
+        });*/
     }
 
     private void cusFlow(){
         TabVpFlowLayout flowLayout = findViewById(R.id.cusflow);
         flowLayout.setCusAction(new CircleAction());
         flowLayout.setViewPager(mViewPager);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data)
-                        .setTextColor(view, R.id.item_text, Color.WHITE);
-                if (position == 2){
-                    setVisible(view, R.id.item_msg,true);
-                }
-            }
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
-            }
-        });
+        flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle));
     }
 
     /**

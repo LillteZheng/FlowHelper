@@ -34,6 +34,8 @@
         app:tab_scale_factor="1.2"
         app:tab_visual_count="2"
         app:tab_width_equals_text="true"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         />
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -52,6 +54,8 @@
         app:tab_margin_b="3dp"
         app:tab_item_autoScale="true"
         app:tab_scale_factor="1.2"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -70,6 +74,8 @@
         app:tab_margin_l="10dp"
         app:tab_margin_r="20dp"
         android:paddingBottom="2dp"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -87,6 +93,8 @@
         android:paddingRight="5dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -98,6 +106,8 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         app:tab_click_animTime="250"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:layout_height="wrap_content"/>
 
     <com.zhengsr.tablib.view.flow.TabFlowLayout
@@ -119,6 +129,8 @@
         app:tab_click_animTime="250"
         app:tab_item_autoScale="true"
         app:tab_scale_factor="1.2"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:layout_height="wrap_content"/>
 
 
@@ -137,6 +149,8 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         app:tab_margin_b="2dp"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:layout_height="wrap_content"/>
 
 

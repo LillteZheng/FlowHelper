@@ -32,7 +32,8 @@
         app:tab_scale_factor="1.2"
         app:tab_item_autoScale="true"
         android:layout_marginStart="20dp"
-        android:layout_height="40dp"/>
+        app:tab_default_textType="normal"
+        android:layout_height="wrap_content"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,11 +66,11 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="5dp"
         app:tab_type="tri"
-        app:tab_color="@color/colorPrimary"
-        app:tab_height="3dp"
-        app:tab_width="10dp"
-        app:tab_margin_b="3dp"
-        app:tab_margin_t="10dp"
+        app:tab_color="#506E7A"
+        app:tab_height="5dp"
+        app:tab_width="15dp"
+        app:tab_text_select_color="@color/white"
+        app:tab_text_unselect_color="@color/unselect"
         android:background="@color/black_ff_bg"
         android:layout_height="wrap_content"/>
     <TextView
@@ -150,6 +151,8 @@
         app:tab_height="5dp"
         app:tab_width="5dp"
         app:tab_margin_b="2dp"
+        app:tab_text_unselect_color="@color/unselect"
+        app:tab_text_select_color="@color/white"
         android:layout_height="wrap_content"/>
 
 

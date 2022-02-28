@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+
 import java.util.List;
 
 /**
@@ -72,10 +75,35 @@ public abstract class TemplateAdapter<T> extends BaseFlowAdapter<T> {
         return this;
     }
 
+    /**
+     * 常用模板
+     */
+    public TemplateAdapter setDefaultText(View view,  int resId) {
+        if (view instanceof TextView) {
+            ((TextView) view).setText(resId);
+        }
+        return this;
+    }
+
+
+    public TemplateAdapter setDefaultText(View view, String msg) {
+        if (view instanceof TextView) {
+            ((TextView) view).setText(msg);
+        }
+        return this;
+    }
+
     public TemplateAdapter setTextColor(View view, int viewId, int textColor) {
         TextView textView = view.findViewById(viewId);
         if (textView != null) {
             textView.setTextColor(textColor);
+        }
+        return this;
+    }
+
+    public TemplateAdapter setDefaultTextColor(View view,@ColorInt int textColor) {
+        if (view instanceof TextView){
+            ((TextView) view).setTextColor(textColor);
         }
         return this;
     }

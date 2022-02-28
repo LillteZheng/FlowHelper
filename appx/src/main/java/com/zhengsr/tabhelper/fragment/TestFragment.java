@@ -38,7 +38,7 @@ public class TestFragment extends BaseFragment {
         tabFlowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
+                setDefaultText(view,data);
             }
 
 

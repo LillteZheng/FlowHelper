@@ -43,4 +43,14 @@ public class FlowConstants {
      * 右边
      */
     public static final int RIGHT = 2;
+    /**
+     * 普通类型的 textview
+     */
+    public static final int NORMALTEXT = 1;
+    /**
+     * {@link com.zhengsr.tablib.view.TabColorTextView}
+     */
+    public static final int COLORTEXT = 2;
+
+    public static final int COLOR_ILLEGAL = -2;
 }

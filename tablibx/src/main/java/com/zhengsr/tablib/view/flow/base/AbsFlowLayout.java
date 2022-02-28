@@ -3,14 +3,18 @@ package com.zhengsr.tablib.view.flow.base;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -22,6 +26,8 @@ import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.callback.FlowListener;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.AttrsUtils;
+import com.zhengsr.tablib.utils.DisplayUtil;
+import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.action.ColorAction;
 import com.zhengsr.tablib.view.action.RectAction;
@@ -35,7 +41,7 @@ import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
  * describe：用来获取通用的自定义属性，和一些常用的配置
  */
 public class AbsFlowLayout extends ScrollFlowLayout {
-    private static final String TAG = "AttrFlowLayout";
+    private static final String TAG = AbsFlowLayout.class.getSimpleName();
     /**
      * attrs
      */
@@ -153,11 +159,14 @@ public class AbsFlowLayout extends ScrollFlowLayout {
 
     public void setAdapter(TabConfig tabConfig, TabFlowAdapter adapter) {
         mAdapter = adapter;
-        setTabConfig(tabConfig);
+        if (tabConfig != null) {
+            setTabConfig(tabConfig);
+        }
         adapter.setListener(new FlowListener());
         //实现数据更新
         notifyChanged(adapter);
     }
+
 
     /**
      * 更新数据
@@ -169,23 +178,46 @@ public class AbsFlowLayout extends ScrollFlowLayout {
         removeAllViews();
         int itemCount = adapter.getItemCount();
         for (int i = 0; i < itemCount; i++) {
-            View view = LayoutInflater.from(getContext()).inflate(adapter.getLayoutId(), this, false);
+            View view ;
+            if (adapter.getLayoutId() != -1) {
+                view = LayoutInflater.from(getContext()).inflate(adapter.getLayoutId(), this, false);
+                if (mTabConfig != null) {
+                    if (mTabConfig.getTextId() == -1) {
+                        throw new RuntimeException("you need to use TabConfig setTextId() to config TextView");
+                    }
+                }else{
+                    throw new RuntimeException("you need to use TabConfig setTextId() to config TextView");
+                }
+            }else{
+                if (mTabConfig != null) {
+                    if (mTabConfig.getTextId() != -1) {
+                        throw new RuntimeException("you need to use setAdapter(layoutId,*) to set layoutId ");
+                    }
+                }
+                view = getTextview(i,mTabBean.textType);;
+            }
+            addView(view);
             if (mVisibleCount != -1) {
                 MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
-                params.width = (int) (mViewWidth * 1.0f / mVisibleCount);
-                view.setLayoutParams(params);
+                if (mViewWidth != 0) {
+                    params.width = (int) (mViewWidth * 1.0f / mVisibleCount);
+                    view.setLayoutParams(params);
+                }
             }
-
-            adapter.bindView(view, adapter.getDatas().get(i), i);
+            Object data = adapter.getDatas().get(i);
+            if (view instanceof TextView && data instanceof String){
+                ((TextView) view).setText((String) data);
+            }
+            adapter.bindView(view, data, i);
             final int finalI = i;
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onItemClick(view, finalI);
-                    adapter.onItemClick(view, adapter.getDatas().get(finalI), finalI);
+                   // adapter.onItemClick(view, adapter.getDatas().get(finalI), finalI);
                 }
             });
-            addView(view);
+
         }
         //如果是一开始没有数据
         if (getChildCount() > 0) {
@@ -323,12 +355,20 @@ public class AbsFlowLayout extends ScrollFlowLayout {
      * @param config
      */
     public void setTabConfig(TabConfig config) {
-        mTabConfig = config;
-        if (config != null) {
-            if (config.getVisibleCount() != -1) {
-                setVisibleCount(config.getVisibleCount());
+        if (mTabConfig == null) {
+            mTabConfig = config;
+        }
+        if (mTabConfig != null) {
+            if (mTabConfig.getVisibleCount() != -1) {
+                setVisibleCount(mTabConfig.getVisibleCount());
             }
-            Log.d(TAG, "setTabConfig() called with: config = [" + config.toString() + "]");
+            Log.d(TAG, "setTabConfig() called with: config = [" + mTabConfig.toString() + "]");
+            if (mTabConfig.getSelectedColor() != FlowConstants.COLOR_ILLEGAL) {
+                mTabBean.selectedColor = mTabConfig.getSelectedColor();
+            }
+            if (mTabConfig.getUnSelectColor() != FlowConstants.COLOR_ILLEGAL) {
+                mTabBean.unSelectedColor = mTabConfig.getUnSelectColor();
+            }
         }
         onTabConfig(mTabConfig);
         if (mAction != null) {
@@ -399,6 +439,79 @@ public class AbsFlowLayout extends ScrollFlowLayout {
     protected void onItemClick(View view, int position) {
         if (mAdapter != null) {
             mAdapter.onItemClick(view, mAdapter.getDatas().get(position), position);
+        }
+    }
+
+
+
+    public TextView getTextView(int pos){
+        if (mTabConfig != null) {
+            if (mTabConfig.getTextId() != -1) {
+                return getChildAt(pos).findViewById(mTabConfig.getTextId());
+            }
+        }
+        return (TextView) getChildAt(pos);
+    }
+
+
+    private TextView getTextview(int pos,int textType){
+        boolean useColorText = false;
+        if (mTabConfig != null) {
+            useColorText = mTabConfig.isUseColorText();
+        }
+        if (textType == FlowConstants.COLORTEXT || useColorText) {
+            TabColorTextView textView = new TabColorTextView(getContext());
+            int l = DisplayUtil.dip2px(getContext(), 10);
+            int t = DisplayUtil.dip2px(getContext(), 6);
+            textView.setPadding(l, t, l, t);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            if (mTabConfig != null) {
+                if (mTabConfig.getTextPaddingRect() != null) {
+                    Rect rect = mTabConfig.getTextPaddingRect();
+                    textView.setPadding(rect.left,rect.top,rect.right,rect.bottom);
+                }
+                if (mTabConfig.getTextSize() != 0) {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,mTabConfig.getTextSize());
+                }
+            }
+            textView.setCusTextColor(Color.GRAY,Color.RED);
+            if (mTabBean != null) {
+                if (mTabBean.selectedColor != FlowConstants.COLOR_ILLEGAL
+                        && mTabBean.unSelectedColor != FlowConstants.COLOR_ILLEGAL) {
+                    textView.setCusTextColor(mTabBean.unSelectedColor,mTabBean.selectedColor);
+                }
+            }
+            textView.setGravity(Gravity.CENTER);
+            return textView;
+            
+        }else {
+            TextView textView = new TextView(getContext());
+            int l = DisplayUtil.dip2px(getContext(), 10);
+            int t = DisplayUtil.dip2px(getContext(), 6);
+            textView.setPadding(l, t, l, t);
+            if (mTabConfig != null) {
+                if (mTabConfig.getTextPaddingRect() != null) {
+                    Rect rect = mTabConfig.getTextPaddingRect();
+                    textView.setPadding(rect.left,rect.top,rect.right,rect.bottom);
+                }
+                if (mTabConfig.getTextSize() != 0) {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,mTabConfig.getTextSize());
+                }
+            }
+
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(Color.BLACK);
+            if (mTabBean != null) {
+                if (mTabBean.selectedColor != FlowConstants.COLOR_ILLEGAL) {
+                    if (pos == 0) {
+                        textView.setTextColor(mTabBean.selectedColor);
+                    }else{
+                        textView.setTextColor(mTabBean.unSelectedColor);
+                    }
+                }
+            }
+            return textView;
         }
     }
 

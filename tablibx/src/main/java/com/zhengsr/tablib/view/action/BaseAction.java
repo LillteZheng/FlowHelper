@@ -42,9 +42,9 @@ public abstract class BaseAction extends BViewPager {
     private ValueAnimator mAnimator;
     protected float mOffset;
     protected Context mContext;
-    private int mTextViewId = -1;
-    private int mUnSelectedColor = -2;
-    private int mSelectedColor = -2;
+    private int mUnSelectedColor = FlowConstants.COLOR_ILLEGAL;
+    private int mSelectedColor = FlowConstants.COLOR_ILLEGAL;
+    private TextView mTextView;
     protected int mCurrentIndex;
     private int mLastIndex;
     private boolean isColorText = false;
@@ -52,6 +52,7 @@ public abstract class BaseAction extends BViewPager {
     private boolean isTabClick = false;
 
     protected TabBean mTabBean;
+    private static final int SMOOTH_Threshold = 2;
 
     public BaseAction() {
         mPaint = new Paint();
@@ -84,14 +85,13 @@ public abstract class BaseAction extends BViewPager {
                 } else {
                     mOffset = mTabBean.tabWidth * 1.0f / child.getMeasuredWidth();
                 }
-                if (mTextViewId != -1) {
-                    View textView = child.findViewById(mTextViewId);
+                View textView = parentView.getTextView(0);
+                if (textView != null) {
                     if (textView instanceof TabColorTextView) {
                         isColorText = true;
                         TabColorTextView colorTextView = (TabColorTextView) textView;
                         colorTextView.setTextColor(colorTextView.getChangeColor());
-                    }
-                    if (textView instanceof TextView) {
+                    } else {
                         isTextView = true;
                     }
 
@@ -112,7 +112,6 @@ public abstract class BaseAction extends BViewPager {
      */
     public void setTabConfig(TabConfig config) {
         if (config != null) {
-            mTextViewId = config.getTextId();
             mSelectedColor = config.getSelectedColor();
             mUnSelectedColor = config.getUnSelectColor();
             if (config.getViewPager() != null) {
@@ -160,16 +159,15 @@ public abstract class BaseAction extends BViewPager {
             if (mParentView != null && Math.abs(mCurrentIndex - mLastIndex) > 0) {
                 int childCount = mParentView.getChildCount();
                 for (int i = 0; i < childCount; i++) {
-                    View view = mParentView.getChildAt(i);
-                    TabColorTextView textview = view.findViewById(mTextViewId);
-                    if (textview != null) {
-                        textview.setTextColor(textview.getDefaultColor());
+                    TextView view = mParentView.getTextView(i);
+                    if (view instanceof TabColorTextView) {
+                        view.setTextColor(((TabColorTextView) view).getDefaultColor());
                     }
+
                 }
-                View view = mParentView.getChildAt(mCurrentIndex);
-                TabColorTextView colorTextView = view.findViewById(mTextViewId);
-                if (colorTextView != null) {
-                    colorTextView.setTextColor(colorTextView.getChangeColor());
+                TextView view = mParentView.getTextView(mCurrentIndex);
+                if (view instanceof TabColorTextView) {
+                    view.setTextColor(((TabColorTextView) view).getChangeColor());
                 }
             }
         }
@@ -197,32 +195,23 @@ public abstract class BaseAction extends BViewPager {
                     if (position < mParentView.getChildCount() - 1) {
                         //要偏移的view
                         final View transView = mParentView.getChildAt(position + 1);
-                        //大小渐变效果
-                        if (mTabBean.autoScale && mTabBean.scaleFactor > 0) {
-                            float factor = mTabBean.scaleFactor % 1;
-                            float transScale = 1 + factor * positionOffset;
-                            float curScale = 1 + factor * (1 - positionOffset);
-                            transView.setScaleX(transScale);
-                            transView.setScaleY(transScale);
-                            curView.setScaleX(curScale);
-                            curView.setScaleY(curScale);
-                        }
+
                         //左边偏移量
-                        float left ;
+                        float left;
                         //右边表示宽度变化
-                        float right ;
+                        float right;
 
                         int width = curView.getMeasuredWidth();
                         int textWidth = 0;
-                        if (mTabBean.tabWidth != -1){
+                        if (mTabBean.tabWidth != -1) {
                             textWidth = mTabBean.tabWidth;
                             left = curView.getLeft() + (width - textWidth) * 1.0f / 2;
                             //再拿到偏移坐标
                             left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
                             right = left + textWidth;
                         } else if (mTabBean.tabWidthEqualsText && mTabBean.tabType == FlowConstants.RECT) {
-                            TextView transText = transView.findViewById(mTextViewId);
-                            TextView curText = curView.findViewById(mTextViewId);
+                            TextView transText = mParentView.getTextView(position + 1);
+                            TextView curText = mParentView.getTextView(position);
                             if (curText != null) {
                                 int cw = (int) curText.getPaint().measureText(curText.getText().toString());
                                 textWidth = cw;
@@ -235,7 +224,7 @@ public abstract class BaseAction extends BViewPager {
                             //再拿到偏移坐标
                             left = left + positionOffset * (curView.getMeasuredWidth() + transView.getMeasuredWidth()) / 2;
                             right = left + textWidth;
-                        }else{
+                        } else {
                             left = curView.getLeft() + positionOffset * (transView.getLeft() - curView.getLeft());
                             right = curView.getRight() + positionOffset * (transView.getRight() - curView.getRight());
                         }
@@ -252,16 +241,29 @@ public abstract class BaseAction extends BViewPager {
 
                         mParentView.postInvalidate();
 
-                        //处理颜色渐变
-                        if (mTextViewId != -1 && isColorText) {
-                            if (Math.abs(mCurrentIndex - mLastIndex) <= 2){
-                                View leftView = curView.findViewById(mTextViewId);
-                                View rightView = transView.findViewById(mTextViewId);
+                        Log.d(TAG, "zsr onPageScrolled: "+needSmooth);
+                        if (needSmooth) {
+                            //处理颜色渐变
+                            if (isColorText) {
+                                TextView leftView = mParentView.getTextView(position);
+                                TextView rightView = mParentView.getTextView(position+1);
                                 TabColorTextView colorLeft = (TabColorTextView) leftView;
                                 TabColorTextView colorRight = (TabColorTextView) rightView;
                                 colorLeft.setprogress(1 - positionOffset, TabColorTextView.DEC_RIGHT);
                                 colorRight.setprogress(positionOffset, TabColorTextView.DEC_LEFT);
                             }
+
+                            //大小渐变效果
+                            if (mTabBean.autoScale && mTabBean.scaleFactor > 0) {
+                                float factor = mTabBean.scaleFactor % 1;
+                                float transScale = 1 + factor * positionOffset;
+                                float curScale = 1 + factor * (1 - positionOffset);
+                                transView.setScaleX(transScale);
+                                transView.setScaleY(transScale);
+                                curView.setScaleX(curScale);
+                                curView.setScaleY(curScale);
+                            }
+
                         }
                     }
                 }
@@ -290,9 +292,6 @@ public abstract class BaseAction extends BViewPager {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         chooseSelectedPosition(position);
-        if (Math.abs(mCurrentIndex - mLastIndex) > 2){
-            chooseIndex(mLastIndex,mCurrentIndex);
-        }
     }
 
 
@@ -305,11 +304,17 @@ public abstract class BaseAction extends BViewPager {
          * Viewpager 拿到 setCurrentItem(position) 中的position，赋值给当前的 mCurrentIndex；
          * 且两者之间大于1时，直接使用draw和动画效果；不再让 onPageScrolled 去执行动画，避免卡顿
          */
+        Log.d(TAG, "zsr onPageScrollStateChanged: "+isTabClick+" "+state);
         if (state == ViewPager.SCROLL_STATE_SETTLING) {
-            if (!isTabClick && mViewPager != null) {
+            if (!isTabClick && (mViewPager != null || mViewPager2 != null)) {
                 mLastIndex = mCurrentIndex;
-                mCurrentIndex = mViewPager.getCurrentItem();
-                if (Math.abs(mCurrentIndex - mLastIndex) > 1) {
+                if (mViewPager != null) {
+                    mCurrentIndex = mViewPager.getCurrentItem();
+                }
+                if (mViewPager2 != null) {
+                    mCurrentIndex = mViewPager2.getCurrentItem();
+                }
+                if (Math.abs(mCurrentIndex - mLastIndex) > SMOOTH_Threshold) {
                     isClickMore = true;
                     clearColorText();
                     doAnim(mLastIndex, mCurrentIndex, mTabBean.tabClickAnimTime);
@@ -321,6 +326,7 @@ public abstract class BaseAction extends BViewPager {
         if (state == ViewPager.SCROLL_STATE_IDLE) {
             isClickMore = false;
             isTabClick = false;
+            needSmooth = true;
         }
 
 
@@ -390,9 +396,9 @@ public abstract class BaseAction extends BViewPager {
                             curValue.left = (width - mTabBean.tabWidth) / 2 + curView.getLeft();
                             curValue.right = mTabBean.tabWidth + curValue.left;
                         }
-                    }else if (mTabBean.tabWidthEqualsText && mTabBean.tabType == FlowConstants.RECT &&
-                            (mViewPager != null || mViewPager2 != null)){
-                        TextView curText = curView.findViewById(mTextViewId);
+                    } else if (mTabBean.tabWidthEqualsText && mTabBean.tabType == FlowConstants.RECT &&
+                            (mViewPager != null || mViewPager2 != null)) {
+                        TextView curText = mParentView.getTextView(curIndex);
                         int textWidth = 0;
                         //todo 点击的也要支持
                         if (curText != null) {
@@ -461,18 +467,17 @@ public abstract class BaseAction extends BViewPager {
      * @param position
      */
     public void chooseSelectedPosition(int position) {
-        if (mTextViewId != -1 && mParentView != null) {
+        if (mParentView != null) {
             if (isTextView && !isColorText) {
                 int childCount = mParentView.getChildCount();
                 for (int i = 0; i < childCount; i++) {
-                    View view = mParentView.getChildAt(i);
-                    TextView textView = view.findViewById(mTextViewId);
+                    TextView textView = mParentView.getTextView(i);
                     if (i == position) {
-                        if (mSelectedColor != -2) {
+                        if (mSelectedColor != FlowConstants.COLOR_ILLEGAL) {
                             textView.setTextColor(mSelectedColor);
                         }
                     } else {
-                        if (mUnSelectedColor != -2) {
+                        if (mUnSelectedColor != FlowConstants.COLOR_ILLEGAL) {
                             textView.setTextColor(mUnSelectedColor);
                         }
                     }
@@ -503,18 +508,16 @@ public abstract class BaseAction extends BViewPager {
             if (child != null) {
                 doAnim(mLastIndex, mCurrentIndex, 0);
                 mOffset = mTabBean.tabWidth * 1.0f / child.getMeasuredWidth();
-                if (mTextViewId != -1) {
-                    View textView = child.findViewById(mTextViewId);
-                    if (textView instanceof TabColorTextView) {
-                        isColorText = true;
-                        TabColorTextView colorTextView = (TabColorTextView) textView;
-                        colorTextView.setTextColor(colorTextView.getChangeColor());
-                    }
-                    if (textView instanceof TextView) {
-                        isTextView = true;
-                        if (mSelectedColor != -2) {
-                            ((TextView) textView).setTextColor(mSelectedColor);
-                        }
+                View textView = mParentView.getTextView(mCurrentIndex);
+                if (textView instanceof TabColorTextView) {
+                    isColorText = true;
+                    TabColorTextView colorTextView = (TabColorTextView) textView;
+                    colorTextView.setTextColor(colorTextView.getChangeColor());
+                }
+                if (textView instanceof TextView) {
+                    isTextView = true;
+                    if (mSelectedColor != FlowConstants.COLOR_ILLEGAL) {
+                        ((TextView) textView).setTextColor(mSelectedColor);
                     }
                 }
                 if (mTabBean.autoScale && mTabBean.scaleFactor > 1) {
@@ -577,8 +580,14 @@ public abstract class BaseAction extends BViewPager {
      */
     public void configAttrs(TabBean bean) {
         mTabBean = bean;
-        if (bean.tabColor != -2) {
+        if (bean.tabColor != FlowConstants.COLOR_ILLEGAL) {
             mPaint.setColor(bean.tabColor);
+        }
+        if (bean.selectedColor != FlowConstants.COLOR_ILLEGAL) {
+            mSelectedColor = bean.selectedColor;
+        }
+        if (bean.unSelectedColor != FlowConstants.COLOR_ILLEGAL) {
+            mUnSelectedColor = bean.unSelectedColor;
         }
     }
 
@@ -635,10 +644,9 @@ public abstract class BaseAction extends BViewPager {
         }
         return false;
     }
-
-    public void updatePos(int lastIndex,int curIndex){
-        mLastIndex = lastIndex;
-        mCurrentIndex = curIndex;
+    private boolean needSmooth;
+    public void updatePos(int lastIndex, int curIndex) {
+        needSmooth = Math.abs(curIndex - lastIndex) <= SMOOTH_Threshold;
     }
 
 }

@@ -48,6 +48,7 @@ public class NetTestActivity extends BaseActivity {
 
         final TabFlowAdapter adapter ;
 
+
         TabConfig config = new TabConfig.Builder()
                 .setViewPager(mViewPager)
                 .setTextId(R.id.item_text)
@@ -59,7 +60,7 @@ public class NetTestActivity extends BaseActivity {
 
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
+                setDefaultText(view,data);
             }
 
             @Override

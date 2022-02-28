@@ -1,5 +1,8 @@
 package com.zhengsr.tablib.bean;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+
 import com.zhengsr.tablib.FlowConstants;
 
 /**
@@ -14,7 +17,7 @@ public class TabBean {
     /**
      * tab 的颜色
      */
-    public int tabColor = -2;
+    public int tabColor = FlowConstants.COLOR_ILLEGAL;
     /**
      * tab 的宽度
      */
@@ -79,6 +82,19 @@ public class TabBean {
      */
     public boolean tabWidthEqualsText = true;
 
+    /**
+     * tab 默认的textview，normal 或者 color
+     */
+    public int textType = 1;
+
+    /**
+     * textview 的颜色值
+     */
+    @ColorInt
+    public int selectedColor = FlowConstants.COLOR_ILLEGAL;
+    @ColorInt
+    public int unSelectedColor = FlowConstants.COLOR_ILLEGAL;
+
     @Override
     public String toString() {
         return "TabBean{" +
@@ -99,6 +115,8 @@ public class TabBean {
                 ", actionOrientation=" + actionOrientation +
                 ", isAutoScroll=" + isAutoScroll +
                 ", visualCount=" + visualCount +
+                ", tabWidthEqualsText=" + tabWidthEqualsText +
+                ", textType=" + textType +
                 '}';
     }
 }

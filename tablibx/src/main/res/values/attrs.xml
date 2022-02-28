@@ -21,6 +21,8 @@
         <attr name="tab_scale_factor" format="float"/>
         <attr name="tab_visual_count" format="integer"/>
         <attr name="tab_width_equals_text" format="boolean"/>
+        <attr name="tab_text_select_color" format="color"/>
+        <attr name="tab_text_unselect_color" format="color"/>
         <attr name="tab_orientation">
             <enum name="vertical" value="1"/>
             <enum name="horizontal" value="2"/>
@@ -28,6 +30,11 @@
         <attr name="tab_action_orientaion">
             <enum name="left" value="1"/>
             <enum name="right" value="2"/>
+        </attr>
+        <!--如果写了这个属性，则不可以不输入layout-->
+        <attr name="tab_default_textType">
+            <enum name="normal" value="1"/>
+            <enum name="color" value="2"/>
         </attr>
 
         <attr name="tab_click_animTime" format="integer"/>
