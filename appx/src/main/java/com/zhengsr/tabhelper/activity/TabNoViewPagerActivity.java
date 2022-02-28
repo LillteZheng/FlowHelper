@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TabNoViewPagerActivity extends AppCompatActivity {
+public class TabNoViewPagerActivity extends BaseActivity {
     private static final String TAG = "TabNoViewPagerActivity";
     private List<String> mTitle = new ArrayList<>();
     //Life is like an ocean. Only strong willed people can reach the other side

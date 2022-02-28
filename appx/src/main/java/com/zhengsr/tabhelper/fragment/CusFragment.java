@@ -32,7 +32,7 @@ public class CusFragment extends BaseFragment {
         }
         textView.setTextSize(30);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(Color.WHITE);
+        textView.setTextColor(Color.BLACK);
         return textView;
     }
 

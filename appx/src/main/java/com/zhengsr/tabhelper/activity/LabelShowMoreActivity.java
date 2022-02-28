@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LabelShowMoreActivity extends AppCompatActivity {
+public class LabelShowMoreActivity extends BaseActivity {
 
     private List<String> mTitle = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed people can reach the other side ".split(" ")));
     

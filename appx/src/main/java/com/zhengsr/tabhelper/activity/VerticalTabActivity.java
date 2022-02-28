@@ -32,7 +32,7 @@ import java.util.List;
 
 import io.reactivex.observers.ResourceObserver;
 
-public class VerticalTabActivity extends AppCompatActivity {
+public class VerticalTabActivity extends BaseActivity {
     private static final String TAG = "VerticalTabActivity";
     private TabFlowLayout mTabFlowLayout;
     private RecyclerView mRecyclerView;

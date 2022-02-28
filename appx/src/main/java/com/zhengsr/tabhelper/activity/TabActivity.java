@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TabActivity extends AppCompatActivity {
+public class TabActivity extends BaseActivity {
     private static final String TAG = "TabActivity";
     private List<Fragment> mFragments = new ArrayList<>();
     private List<String> mTitle = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed people can reach the other side".split(" ")));
@@ -235,26 +236,6 @@ public class TabActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * viewpager adapter
-     */
-    class CusAdapter extends FragmentPagerAdapter {
-
-        public CusAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-    }
-
     class CusAdapter2 extends FragmentStateAdapter{
 
         public CusAdapter2(@NonNull FragmentActivity fragmentActivity) {
@@ -264,8 +245,9 @@ public class TabActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return mFragments.get(position);
+            return CusFragment.newInStance(mTitle.get(position));
         }
+
 
         @Override
         public int getItemCount() {

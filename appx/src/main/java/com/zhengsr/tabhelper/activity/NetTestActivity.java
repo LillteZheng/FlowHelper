@@ -28,7 +28,7 @@ import io.reactivex.observers.ResourceObserver;
 import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.SupportActivity;
 
-public class NetTestActivity extends SupportActivity {
+public class NetTestActivity extends BaseActivity {
     private static final String TAG = "NetTestActivity";
     private ViewPager mViewPager;
 

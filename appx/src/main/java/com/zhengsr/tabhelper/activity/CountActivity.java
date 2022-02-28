@@ -24,7 +24,7 @@ import java.util.List;
  * @author by zhengshaorui 2021/4/22 16:31
  * describe：
  */
-public class CountActivity extends AppCompatActivity {
+public class CountActivity extends BaseActivity {
     private List<String> mTitle = new ArrayList<>(Arrays.asList("test1","test2"));
     private List<Fragment> mFragments = new ArrayList<>();
     private ViewPager2 mViewPager;

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LabelActivity extends AppCompatActivity {
+public class LabelActivity extends BaseActivity {
     private List<String> mTitle = new ArrayList<>(Arrays.asList("新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习"));
     private List<String> mTitle2 = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed ".split(" ")));
     @Override
