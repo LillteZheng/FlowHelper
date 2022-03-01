@@ -54,7 +54,7 @@ allprojects {
 
 **如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 ```
-implementation 'com.github.LillteZheng:FlowHelper:v1.37'
+implementation 'com.github.LillteZheng:FlowHelper:vv2.0'
 ```
 **support可以关联以下连接，请尽快切到androidx，support包不再维护**
 ```
