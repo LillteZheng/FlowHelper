@@ -35,11 +35,11 @@ public class TabNoViewPagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mTitle.add("Java");
         mTitle.add("Android");
-        // mTitle.add("Kotlin");
         setContentView(R.layout.activity_tab_no_view_pager);
         TabFlowLayout flowLayout = findViewById(R.id.new_test);
         TabConfig config = new TabConfig.Builder()
-                .setTextId(R.id.item_text).build();
+                .setTextId(R.id.item_text)
+                .build();
         flowLayout.setAdapter(new TabFlowAdapter<String>( mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
@@ -86,7 +86,6 @@ public class TabNoViewPagerActivity extends BaseActivity {
         flowLayout.setAdapter(mAdapter);
 
         TabFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-
         flowLayout2.setAdapter(new TabFlowAdapter<String>( mTitle3));
     }
 

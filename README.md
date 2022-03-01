@@ -144,6 +144,7 @@ implementation 'com.github.LillteZheng:FlowHelper:v1.37'
 
 
 ## 版本信息：
+-  v2.0  : 内置部分控件，减少接入成本，并优化一些bug，和关闭demo ，viewpager 内存泄露的问题
 -  v1.37 : 增加 tab_width_equals_text ，让 rect 根据 text 的长度变化，修复 TabColorTextView 加粗不起作用的问题
 -  v1.32 : 修复res和round，tab_margin_x 不起作用的问题
 -  v1.30 : 重构分离了ViewPager和非ViewPager的情况，并处理数据增加减少时，notifyDataChange()导致布局混乱的问题

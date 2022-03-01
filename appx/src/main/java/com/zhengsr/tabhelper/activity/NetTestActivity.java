@@ -62,13 +62,6 @@ public class NetTestActivity extends BaseActivity {
             public void bindView(View view, String data, int position) {
                 setDefaultText(view,data);
             }
-
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
-            }
-
         });
 
 

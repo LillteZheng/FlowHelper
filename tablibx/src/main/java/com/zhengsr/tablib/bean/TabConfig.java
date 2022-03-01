@@ -1,6 +1,7 @@
 package com.zhengsr.tablib.bean;
 
 import android.graphics.Rect;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
@@ -8,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.zhengsr.tablib.FlowConstants;
+import com.zhengsr.tablib.view.TabColorTextView;
 
 /**
  * @author by zhengshaorui 2021/5/21 08:53
@@ -47,12 +49,12 @@ public class TabConfig {
         return builder.visibleCount;
     }
 
-    public Rect getTextPaddingRect(){
-        return builder.rect;
+    public TextConfig getTextConfig(){
+        return builder.textConfig;
     }
 
-    public float getTextSize(){
-        return builder.textSize;
+    public Builder getBuilder() {
+        return builder;
     }
 
     public boolean isUseColorText(){
@@ -73,9 +75,8 @@ public class TabConfig {
         private ViewPager viewPager;
         private  ViewPager2 viewpager2;
         private int visibleCount=-1;
-        private Rect rect;
-        private float textSize;
         private boolean useColorText;
+        private TextConfig textConfig;
         public Builder setViewPager(ViewPager viewPager){
             this.viewPager = viewPager;
             return this;
@@ -118,28 +119,7 @@ public class TabConfig {
             return this;
         }
 
-        /**
-         * 不设置 layout 时，设置TextView pading的宽高，此方法只针对不设置 layout 的情况
-         * @param l 默认 10 dp
-         * @param t 默认 6 dp
-         * @param r 默认 6 dp
-         * @param b 默认 10 dp
-         * @returnt
-         */
-        public Builder setDefaultTextPadding(int l, int t, int r, int b) {
-            rect = new Rect(l, t, r, b);
-            return this;
-        }
 
-        /**
-         * 不设置 layout ，默认 TextView 的大小
-         * @param size ，默认14 sp
-         * @return
-         */
-        public Builder setDefaultTextSize(float size) {
-            textSize = size;
-            return this;
-        }
         /**
          * 不设置 layout ，默认 TextView 的大小
          * @param type {@link FlowConstants#NORMALTEXT} 或者 {@link FlowConstants#COLORTEXT}
@@ -149,6 +129,17 @@ public class TabConfig {
             useColorText = type == FlowConstants.COLORTEXT;
             return this;
         }
+
+        /**
+         * 设置 TextView 的通用属性
+         * @param config
+         * @return
+         */
+        public Builder setTextConfig(TextConfig config) {
+            this.textConfig = config;
+            return this;
+        }
+
 
         public TabConfig build(){
             //判断参数
@@ -169,7 +160,6 @@ public class TabConfig {
                     ", viewPager=" + viewPager +
                     ", viewpager2=" + viewpager2 +
                     ", visibleCount=" + visibleCount +
-                    ", rect=" + rect +
                     '}';
         }
     }

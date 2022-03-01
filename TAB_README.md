@@ -80,48 +80,53 @@ tab_type 可以填 tri ，rect，round 等类型
 
 **Java**
 
-那么，在 xml 写好了，接着，就是在 Activity 中，这样写：
+TabFlowLayout 支持TextView 和 TabColorTextView 两种，可以通知 TabConfig 配置，简易版本如下：
 ```
-private void rectFlow(){
+private void configFlow(){
     TabFlowLayout flowLayout = findViewById(R.id.rectflow);
-    //设置数据，这里以 setAdapter 的形式
-    flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-        @Override
-        public void onItemSelectState(View view, boolean isSelected) {
-            super.onItemSelectState(view, isSelected);
-            //选中时，可以改变不同颜色，如果你的background 为 selector，可以不写这个
-            if (isSelected){
-                setTextColor(view,R.id.item_text,Color.WHITE);
-            }else{
-                setTextColor(view,R.id.item_text,getResources().getColor(R.color.unselect));
-            }
-        }
+    //1. 默认是 TextView 模式，只需要配置 title 的数据即可，不需要其他操作，当然这个 List 是 String 类型的
+   TabConfig config = new TabConfig.Builder()
+           .setViewpager(mViewPager)
+           .setSelectedColor(Color.WHITE)
+           .setUnSelectColor(getResources().getColor(R.color.unselect))
+           .build();
+   flowLayout.setAdapter(config, new TabFlowAdapter<>(mTitle));
 
-        @Override
-        public void bindView(View view, String data, int position) {
-            /**
-             * 绑定数据，可以使用 setText(..) 等快捷方式，也可以视同 view.findViewById()
-             * 同时，当你的子控件需要点击事件时，可以通过  addChildrenClick() 注册事件，
-             * 然后重写 onItemChildClick(..) 即可拿到事件，否则就自己写。
-             * 自己的点击和长按不需要注册
-             */
-            setText(view,R.id.item_text,data)
-                    .setTextColor(view,R.id.item_text,getResources().getColor(R.color.unselect));
-            if (position == 0){
-                setVisible(view,R.id.item_msg,true);
-            }
-            
-            // 注册子控件的点击事件
-            //addChildrenClick(view,R.id.item_text,position);
-            //注册子控件的长按事件
-            //addChildrenLongClick(view,R.id.item_text,position);
+   //2. 也可以配置成颜色渐变模式，比如你还想设置TextView的大小，粗细等，如下：
+   TextConfig textConfig = new TextConfig()
+           .setPadding(l, t, l, t)
+           .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD))
+           .setTextSize(18);
 
-        }
-    });
+   TabConfig config = new TabConfig.Builder()
+           .setViewpager(mViewPager)
+           .setDefaultTextType(FlowConstants.COLORTEXT)
+           .setTextConfig(textConfig)
+           .setSelectedColor(getResources().getColor(R.color.colorAccent))
+           .setUnSelectColor(getResources().getColor(R.color.unselect))
+           .build();
+
+   flowLayout.setAdapter(config, new TabFlowAdapter<>(mTitle));
+
+   //3. 如果你觉得默认的不满足你的需求，setAdapter 也支持传入自定义的 layout ，如：
+   TabConfig config = new TabConfig.Builder()
+           .setViewPager(mViewPager)
+           .setTextId(R.id.item_text)
+           .setDefaultPos(2)
+           .setVisibleCount(4)
+           .build();
+
+   flowLayout.setAdapter(config,adapter = new TabFlowAdapter<String>(R.layout.item_tab,datas) {
+
+       @Override
+       public void bindView(View view, NavData data, int position) {
+           setText(view,R.id.item.text,data.getTitle();
+       }
+   });
 
 }
 ```
-可以看到，只需要设置 adapter 就行了，需要注意的是你要传入子控件的 layout，这样方便你自定义你的布局，比如一个TextView 和一个红点点。
+可以看到，只需要设置 adapter 就行了，也可以传入 layout，这样方便你自定义你的布局，比如一个TextView 和一个红点点。
 
 **如果需要数据更新，使用adapter.notifyDataChanged() 即可**
 
@@ -129,7 +134,7 @@ private void rectFlow(){
 
 [实现一个可定制化的TabFlowLayout(三) -- 动态数据添加与常用接口封装](https://blog.csdn.net/u011418943/article/details/103817967)
 
-如果你需要使用颜色渐变的效果，蒋xml 的TextView 换成 TabColorTextView 就可以了，比如：
+如果你需要使用颜色渐变的效果，直接看上面的第二种配置，如果不满足，也可以自定义 xml ，比如：
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -184,20 +189,25 @@ flowLayout.setViewPager(viewpager) .
 如果您想要配置默认位置，或者 TextView 的颜色变化，则需要配置TabConfig :
 ```
   /**
-   * @ setViewPager 设置 viewpager
-   * @ setTextId  view 中 textview 的id,用于TextView的颜色变化
-   * @ setDefaultPosition 默认选中的item，初始值为0，也可以从第二页或者其他 位置
-   * @ setSelectedColor //选中的颜色，如果为 TabColorTextView 不需要些这个
-   * @ setUnSelectedColor //没有选中的颜色，如果为 TabColorTextView 不需要些这个
+   * @ setViewPager       // 设置 viewpager
+   * @ setTextId          // 可选，如果配置了layout，需要设置 view 中 textview 的id,用于TextView的颜色变化，未配置layout可忽略
+   * @ setDefaultPosition // 默认选中的item，初始值为0，也可以从第二页或者其他 位置
+   * @ setSelectedColor   // 选中的颜色，如果为 TabColorTextView 不需要些这个
+   * @ setUnSelectedColor // 没有选中的颜色，如果为 TabColorTextView 不需要些这个
+   * @ setDefaultTextType // 默认TextView，可配置成 TabColorTextView
+   * @ setTextConfig      // 对默认的TextView 设置一些通用属性，未满足时，请自定义 layout
    */
- flowLayout.setViewPager(mViewPager)
-            .setTextId(R.id.item_text)  //必填，不然 Textview 没效果
-            .setSelectedColor(Color.WHITE) 
-            .setUnSelectedColor(getResources().getColor(R.color.unselect)) 
-            .setDefaultPosition(2); 
+    TabConfig config = new TabConfig.Builder()
+            .setViewpager(mViewPager)
+            //.setTextId(R.id.item_text)
+            .setDefaultTextType(FlowConstants.COLORTEXT)
+            .setTextConfig(textConfig)
+            .setSelectedColor(getResources().getColor(R.color.colorAccent))
+            .setUnSelectColor(getResources().getColor(R.color.unselect))
+            .build();
 ```
 
-**其中，如果TextView有颜色变化，setTextId()是必须要设置的!**
+**其中，如果设置了layout，setTextId()是必须要设置的!**
 
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**
 - fragment 布局复杂或者网络加载数据时，建议在懒加载中去初始化或者加载数据
@@ -233,18 +243,7 @@ private void resFlow(){
     //动态设置自定义属性
     flowLayout.setTabBean(bean);
 
-    flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
-        @Override
-        public void bindView(View view, String data, int position) {
-            setText(view,R.id.item_text,data);
-        }
-
-        @Override
-        public void onItemClick(View view, String data, int position) {
-            super.onItemClick(view, data, position);
-            mViewPager.setCurrentItem(position);
-        }
-    });
+    flowLayout.setAdapter(new TabFlowAdapter<>(mTitle));
 }
 ```
 
@@ -362,6 +361,9 @@ private void resFlow(){
 |tab_isAutoScroll|boolean|是否支持自动滚动,默认为true|
 |tab_visual_count|integer|可视化个数，比如有一排，我们就只要显示4个，此时宽度均分|
 |tab_width_equals_text|boolean|rect 是否根据text的大小来，目前只支持rect和带viewpager和不放大的情况|
+|tab_default_textType|enum|默认的控件，normal - TextView，color - TabColorTextView|
+|tab_text_select_color|color|选择颜色|
+|tab_text_unselect_color|color|未选择颜色|
 
 
 **TabColorTextView**

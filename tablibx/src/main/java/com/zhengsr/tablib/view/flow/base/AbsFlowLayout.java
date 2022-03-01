@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -23,6 +24,7 @@ import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.R;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabConfig;
+import com.zhengsr.tablib.bean.TextConfig;
 import com.zhengsr.tablib.callback.FlowListener;
 import com.zhengsr.tablib.callback.FlowListenerAdapter;
 import com.zhengsr.tablib.utils.AttrsUtils;
@@ -52,7 +54,7 @@ public class AbsFlowLayout extends ScrollFlowLayout {
      */
     protected BaseAction mAction;
     private TabConfig mTabConfig;
-    private TabFlowAdapter mAdapter;
+    protected TabFlowAdapter mAdapter;
     protected Scroller mScroller;
     protected int mLastScrollPos = 0;
     protected int mLastIndex = 0;
@@ -456,51 +458,25 @@ public class AbsFlowLayout extends ScrollFlowLayout {
 
     private TextView getTextview(int pos,int textType){
         boolean useColorText = false;
+        TextView textView ;
         if (mTabConfig != null) {
             useColorText = mTabConfig.isUseColorText();
         }
         if (textType == FlowConstants.COLORTEXT || useColorText) {
-            TabColorTextView textView = new TabColorTextView(getContext());
-            int l = DisplayUtil.dip2px(getContext(), 10);
-            int t = DisplayUtil.dip2px(getContext(), 6);
-            textView.setPadding(l, t, l, t);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            if (mTabConfig != null) {
-                if (mTabConfig.getTextPaddingRect() != null) {
-                    Rect rect = mTabConfig.getTextPaddingRect();
-                    textView.setPadding(rect.left,rect.top,rect.right,rect.bottom);
-                }
-                if (mTabConfig.getTextSize() != 0) {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,mTabConfig.getTextSize());
-                }
-            }
-            textView.setCusTextColor(Color.GRAY,Color.RED);
+            TabColorTextView colorTextView = new TabColorTextView(getContext());
+
+            colorTextView.setCusTextColor(Color.GRAY,Color.RED);
             if (mTabBean != null) {
                 if (mTabBean.selectedColor != FlowConstants.COLOR_ILLEGAL
                         && mTabBean.unSelectedColor != FlowConstants.COLOR_ILLEGAL) {
-                    textView.setCusTextColor(mTabBean.unSelectedColor,mTabBean.selectedColor);
+                    colorTextView.setCusTextColor(mTabBean.unSelectedColor,mTabBean.selectedColor);
                 }
             }
-            textView.setGravity(Gravity.CENTER);
-            return textView;
-            
-        }else {
-            TextView textView = new TextView(getContext());
-            int l = DisplayUtil.dip2px(getContext(), 10);
-            int t = DisplayUtil.dip2px(getContext(), 6);
-            textView.setPadding(l, t, l, t);
-            if (mTabConfig != null) {
-                if (mTabConfig.getTextPaddingRect() != null) {
-                    Rect rect = mTabConfig.getTextPaddingRect();
-                    textView.setPadding(rect.left,rect.top,rect.right,rect.bottom);
-                }
-                if (mTabConfig.getTextSize() != 0) {
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,mTabConfig.getTextSize());
-                }
-            }
+            textView = colorTextView;
 
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            textView.setGravity(Gravity.CENTER);
+
+        }else {
+            textView = new TextView(getContext());
             textView.setTextColor(Color.BLACK);
             if (mTabBean != null) {
                 if (mTabBean.selectedColor != FlowConstants.COLOR_ILLEGAL) {
@@ -511,8 +487,34 @@ public class AbsFlowLayout extends ScrollFlowLayout {
                     }
                 }
             }
-            return textView;
+
         }
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        textView.setGravity(Gravity.CENTER);
+        int l = DisplayUtil.dip2px(getContext(), 10);
+        int t = DisplayUtil.dip2px(getContext(), 6);
+        textView.setPadding(l, t, l, t);
+        textView.setGravity(Gravity.CENTER);
+
+        if (mTabConfig != null) {
+            TextConfig config = mTabConfig.getTextConfig();
+            if (config != null) {
+                if (config.getPadding() != null) {
+                    Rect rect = config.getPadding();
+                    textView.setPadding(rect.left, rect.top, rect.right, rect.bottom);
+                }
+                if (config.getTextSize() != 0) {
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, config.getTextSize());
+                }
+                if (config.getTypefaces() != null) {
+                    for (Typeface typeface : config.getTypefaces()) {
+                        textView.setTypeface(typeface);
+                    }
+                }
+            }
+
+        }
+        return textView;
     }
 
 }

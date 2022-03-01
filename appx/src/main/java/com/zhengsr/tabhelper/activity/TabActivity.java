@@ -2,6 +2,7 @@ package com.zhengsr.tabhelper.activity;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,6 +19,9 @@ import com.zhengsr.tablib.FlowConstants;
 import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.bean.TabValue;
+import com.zhengsr.tablib.bean.TextConfig;
+import com.zhengsr.tablib.utils.DisplayUtil;
+import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.action.BaseAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
@@ -34,6 +38,7 @@ public class TabActivity extends BaseActivity {
 
     private ViewPager2 mViewPager;
     private CusAdapter2 mViewAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,37 +52,35 @@ public class TabActivity extends BaseActivity {
         rectFlow();
         triFlow();
         roundFlow();
-         resFlow();
-         colorFlow();
+        resFlow();
+        colorFlow();
         cusFlow();
     }
 
     boolean isDetele = false;
-    private void rectFlow(){
+
+    private void rectFlow() {
         final TabVpFlowLayout flowLayout = findViewById(R.id.rectflow);
-       // flowLayout.setViewPager(mViewPager,R.id.item_text,getResources().getColor(R.color.unselect),Color.WHITE);
         TabConfig config = new TabConfig.Builder()
                 .setViewpager(mViewPager)
                 .setSelectedColor(Color.WHITE)
                 .setUnSelectColor(getResources().getColor(R.color.unselect))
                 .build();
-
-
-
-        flowLayout.setAdapter(config,new TabFlowAdapter<>(mTitle));
+        flowLayout.setAdapter(config, new TabFlowAdapter<>(mTitle));
 
 
         TabVpFlowLayout flowLayout2 = findViewById(R.id.rectflow2);
-        flowLayout2.setAdapter(config,new TabFlowAdapter<>(mTitle));
+        flowLayout2.setAdapter(config, new TabFlowAdapter<>(mTitle));
 
     }
 
-    private void triFlow(){
+    private void triFlow() {
         TabVpFlowLayout flowLayout = findViewById(R.id.triflow);
         flowLayout.setViewPager(mViewPager);
         flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle));
     }
-    private void roundFlow(){
+
+    private void roundFlow() {
         TabVpFlowLayout flowLayout = findViewById(R.id.roundflow);
 
         TabConfig config = new TabConfig.Builder()
@@ -87,14 +90,15 @@ public class TabActivity extends BaseActivity {
                 .setUnSelectColor(getResources().getColor(R.color.unselect))
                 .build();
         flowLayout.setTabConfig(config);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg,mTitle) {
+        flowLayout.setAdapter(new TabFlowAdapter<String>(R.layout.item_msg, mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
+                setText(view, R.id.item_text, data);
             }
         });
     }
-    private void resFlow(){
+
+    private void resFlow() {
         final TabVpFlowLayout flowLayout = findViewById(R.id.resflow);
 
         /**
@@ -116,35 +120,31 @@ public class TabActivity extends BaseActivity {
         flowLayout.setTabBean(bean);
 
         flowLayout.setViewPager(mViewPager);
-        flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle) );
+        flowLayout.setAdapter(new TabFlowAdapter<String>(mTitle));
     }
 
-    private void colorFlow(){
+    private void colorFlow() {
         TabVpFlowLayout flowLayout = findViewById(R.id.colorflow);
+        int l = DisplayUtil.dip2px(this, 12);
+        int t = DisplayUtil.dip2px(this, 6);
+        TextConfig textConfig = new TextConfig()
+                .setPadding(l, t, l, t)
+                .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD))
+                .setTextSize(18);
+
         TabConfig config = new TabConfig.Builder()
                 .setViewpager(mViewPager)
                 .setDefaultTextType(FlowConstants.COLORTEXT)
+                .setTextConfig(textConfig)
                 .setSelectedColor(getResources().getColor(R.color.colorAccent))
                 .setUnSelectColor(getResources().getColor(R.color.unselect))
-                .setDefaultTextSize(16)
                 .build();
 
-        flowLayout.setAdapter(config,new TabFlowAdapter<>(mTitle));
-        /*flowLayout.setAdapter(config,new TabFlowAdapter<String>(R.layout.item_color_msg,mTitle) {
-            @Override
-            public void bindView(View view, String data, int position) {
-                setText(view,R.id.item_text,data);
-            }
+        flowLayout.setAdapter(config, new TabFlowAdapter<>(mTitle));
 
-            @Override
-            public void onItemClick(View view, String data, int position) {
-                super.onItemClick(view, data, position);
-                mViewPager.setCurrentItem(position);
-            }
-        });*/
     }
 
-    private void cusFlow(){
+    private void cusFlow() {
         TabVpFlowLayout flowLayout = findViewById(R.id.cusflow);
         flowLayout.setCusAction(new CircleAction());
         flowLayout.setViewPager(mViewPager);
@@ -160,11 +160,11 @@ public class TabActivity extends BaseActivity {
             super.config(parentView);
             View child = parentView.getChildAt(0);
             if (child != null) {
-                float l = parentView.getPaddingLeft() + child.getMeasuredWidth()/2;
-                float t = parentView.getPaddingTop() +  child.getMeasuredHeight() - mTabBean.tabHeight/2 -mTabBean.tabMarginBottom;
+                float l = parentView.getPaddingLeft() + child.getMeasuredWidth() / 2;
+                float t = parentView.getPaddingTop() + child.getMeasuredHeight() - mTabBean.tabHeight / 2 - mTabBean.tabMarginBottom;
                 float r = mTabBean.tabWidth + l;
                 float b = child.getMeasuredHeight() - mTabBean.tabMarginBottom;
-                mTabRect.set(l,t,r,b);
+                mTabRect.set(l, t, r, b);
             }
         }
 
@@ -173,16 +173,16 @@ public class TabActivity extends BaseActivity {
         protected void valueChange(TabValue value) {
             super.valueChange(value);
             //由于自定义的，都是从left 开始算起的，所以这里还需要加上圆的半径
-            mTabRect.left = value.left + mTabBean.tabWidth/2;
+            mTabRect.left = value.left + mTabBean.tabWidth / 2;
         }
 
         @Override
         public void draw(Canvas canvas) {
-            canvas.drawCircle(mTabRect.left, mTabRect.top,mTabBean.tabWidth/2,mPaint);
+            canvas.drawCircle(mTabRect.left, mTabRect.top, mTabBean.tabWidth / 2, mPaint);
         }
     }
 
-    class CusAdapter2 extends FragmentStateAdapter{
+    class CusAdapter2 extends FragmentStateAdapter {
 
         public CusAdapter2(@NonNull FragmentActivity fragmentActivity) {
             super(fragmentActivity);

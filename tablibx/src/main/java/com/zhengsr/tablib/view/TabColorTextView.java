@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.zhengsr.tablib.R;
@@ -156,5 +157,11 @@ public class TabColorTextView extends AppCompatTextView {
 
     public int getDefaultColor() {
         return mDefaultColor;
+    }
+
+    @NonNull
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

@@ -241,12 +241,11 @@ public abstract class BaseAction extends BViewPager {
 
                         mParentView.postInvalidate();
 
-                        Log.d(TAG, "zsr onPageScrolled: "+needSmooth);
                         if (needSmooth) {
                             //处理颜色渐变
                             if (isColorText) {
                                 TextView leftView = mParentView.getTextView(position);
-                                TextView rightView = mParentView.getTextView(position+1);
+                                TextView rightView = mParentView.getTextView(position + 1);
                                 TabColorTextView colorLeft = (TabColorTextView) leftView;
                                 TabColorTextView colorRight = (TabColorTextView) rightView;
                                 colorLeft.setprogress(1 - positionOffset, TabColorTextView.DEC_RIGHT);
@@ -304,7 +303,6 @@ public abstract class BaseAction extends BViewPager {
          * Viewpager 拿到 setCurrentItem(position) 中的position，赋值给当前的 mCurrentIndex；
          * 且两者之间大于1时，直接使用draw和动画效果；不再让 onPageScrolled 去执行动画，避免卡顿
          */
-        Log.d(TAG, "zsr onPageScrollStateChanged: "+isTabClick+" "+state);
         if (state == ViewPager.SCROLL_STATE_SETTLING) {
             if (!isTabClick && (mViewPager != null || mViewPager2 != null)) {
                 mLastIndex = mCurrentIndex;
@@ -438,8 +436,14 @@ public abstract class BaseAction extends BViewPager {
                                         return;
                                     }
                                     if (i == mCurrentIndex) {
+                                        if (isTextView && !isColorText && mSelectedColor != FlowConstants.COLOR_ILLEGAL) {
+                                            mParentView.getTextView(i).setTextColor(mSelectedColor);
+                                        }
                                         adapter.onItemSelectState(child, true);
                                     } else {
+                                        if (isTextView && !isColorText && mUnSelectedColor != FlowConstants.COLOR_ILLEGAL) {
+                                            mParentView.getTextView(i).setTextColor(mUnSelectedColor);
+                                        }
                                         adapter.onItemSelectState(child, false);
                                     }
                                 }
@@ -644,7 +648,9 @@ public abstract class BaseAction extends BViewPager {
         }
         return false;
     }
-    private boolean needSmooth;
+
+    private boolean needSmooth = true;
+
     public void updatePos(int lastIndex, int curIndex) {
         needSmooth = Math.abs(curIndex - lastIndex) <= SMOOTH_Threshold;
     }

@@ -135,6 +135,7 @@ public class TabFlowLayout extends AbsFlowLayout {
          */
         updateScroll(view, true);
         postInvalidate();
+
     }
 
     @Override
