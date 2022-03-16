@@ -1,7 +1,5 @@
 package com.zhengsr.tablib.view.action;
 
-import android.util.Log;
-
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -14,6 +12,7 @@ public class BViewPager {
     protected ViewPager2 mViewPager2;
     protected ViewPager mViewPager;
     private Pager2Listener mPager2Listener;
+    protected boolean isChooseItemWhenPageSelected = false;
     public BViewPager setViewPager(ViewPager2 viewPager){
         if (viewPager != null) {
             mViewPager2 = viewPager;
@@ -42,6 +41,12 @@ public class BViewPager {
     public ViewPager2 getViewPager2() {
         return mViewPager2;
     }
+
+    public void chooseItemWhenPageSelected() {
+        isChooseItemWhenPageSelected = true;
+    }
+
+
 
     private class PagerListener implements ViewPager.OnPageChangeListener{
 

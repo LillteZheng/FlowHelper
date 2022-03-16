@@ -54,7 +54,7 @@ allprojects {
 
 **如果你的工程的是androidx且想支持ViewPager2，可以关联tablibx库**
 ```
-implementation 'com.github.LillteZheng:FlowHelper:vv2.0'
+implementation 'com.github.LillteZheng:FlowHelper:vv2.1'
 ```
 **support可以关联以下连接，请尽快切到androidx，support包不再维护**
 ```
@@ -144,6 +144,7 @@ implementation 'com.github.LillteZheng:FlowHelper:vv2.0'
 
 
 ## 版本信息：
+-  v2.1  : 修改TabVpFlowLayout 快速点击时,TabColorTextView 还有残留的问题
 -  v2.0  : 内置部分控件，减少接入成本，并优化一些bug，和关闭demo ，viewpager 内存泄露的问题
 -  v1.37 : 增加 tab_width_equals_text ，让 rect 根据 text 的长度变化，修复 TabColorTextView 加粗不起作用的问题
 -  v1.32 : 修复res和round，tab_margin_x 不起作用的问题

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
@@ -291,8 +290,34 @@ public abstract class BaseAction extends BViewPager {
         mLastIndex = mCurrentIndex;
         mCurrentIndex = position;
         chooseSelectedPosition(position);
+        checkIfNeedScroll(position);
+
     }
 
+    private void checkIfNeedScroll(int position){
+        if (isChooseItemWhenPageSelected) {
+            if (mParentView != null) {
+                if (mParentView.isCanMove()) {
+                    View curView = mParentView.getChildAt(position);
+                    int scrollX = (int) (curView.getLeft());
+                    if (scrollX > (mViewWidth / 2 - mParentView.getPaddingLeft())) {
+                        scrollX -= (mViewWidth / 2 - mParentView.getPaddingLeft());
+                        //有边界提醒
+                        if (scrollX <= mRightBound - mViewWidth) {
+                            mParentView.scrollTo(scrollX, 0);
+                        } else {
+                            int dx = mRightBound - mViewWidth;
+                            mParentView.scrollTo(dx, 0);
+                        }
+                    } else {
+                        mParentView.scrollTo(0, 0);
+                    }
+                }
+                isChooseItemWhenPageSelected = false;
+            }
+
+        }
+    }
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -472,10 +497,10 @@ public abstract class BaseAction extends BViewPager {
      */
     public void chooseSelectedPosition(int position) {
         if (mParentView != null) {
-            if (isTextView && !isColorText) {
-                int childCount = mParentView.getChildCount();
-                for (int i = 0; i < childCount; i++) {
-                    TextView textView = mParentView.getTextView(i);
+            int childCount = mParentView.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                TextView textView = mParentView.getTextView(i);
+                if (textView != null) {
                     if (i == position) {
                         if (mSelectedColor != FlowConstants.COLOR_ILLEGAL) {
                             textView.setTextColor(mSelectedColor);

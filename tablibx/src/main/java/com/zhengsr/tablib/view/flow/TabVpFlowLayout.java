@@ -184,4 +184,17 @@ public class TabVpFlowLayout extends AbsFlowLayout {
         mCurrentIndex = position;
         return this;
     }
+
+    /**
+     * 选择某个item，建议 viewpager setCurrentItem(position,false);
+     * 此方法是为了优化当 viewpager 页面过多，从第一页选择到最后一页，此时
+     * ViewPaper onPageScrolled 执行过多，导致滚动异常的问题。
+     * @param position
+     */
+    public void chooseItem(int position){
+        mLastIndex = mCurrentIndex;
+        mCurrentIndex = position;
+        mAction.chooseIndex(mLastIndex,position);
+        mAction.chooseItemWhenPageSelected();
+    }
 }

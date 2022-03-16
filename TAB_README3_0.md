@@ -207,7 +207,8 @@ flowLayout.setViewPager(viewpager) .
 
 **为了避免卡顿，当viewpager结合fragment时，可以有以下优化手段：**
 - fragment 布局复杂或者网络加载数据时，建议在懒加载中去初始化或者加载数据
-- viewpager 增加缓存，setOffscreenPageLimit(3)。
+- ViewPager 增加缓存，setOffscreenPageLimit(3)。
+- ViewPager 选择页面的方法设置为 setCurrentItem(position,false);再调用 chooseItem(position) 方法
 
 
 **如果您觉得viewpager切换太快，可以使用 ViewPagerHelperUtils.initSwitchTime(getContext(), viewPager, 600) 改变滚动速度**

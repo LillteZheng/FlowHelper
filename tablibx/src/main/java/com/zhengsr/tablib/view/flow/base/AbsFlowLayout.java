@@ -474,7 +474,6 @@ public class AbsFlowLayout extends ScrollFlowLayout {
             }
             textView = colorTextView;
 
-
         }else {
             textView = new TextView(getContext());
             textView.setTextColor(Color.BLACK);

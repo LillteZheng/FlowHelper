@@ -53,8 +53,8 @@ public class TabActivity extends BaseActivity {
         triFlow();
         roundFlow();
         resFlow();
-        colorFlow();
         cusFlow();
+        colorFlow();
     }
 
     boolean isDetele = false;
@@ -129,8 +129,8 @@ public class TabActivity extends BaseActivity {
         int t = DisplayUtil.dip2px(this, 6);
         TextConfig textConfig = new TextConfig()
                 .setPadding(l, t, l, t)
-                .setTypeface(Typeface.defaultFromStyle(Typeface.BOLD))
-                .setTextSize(18);
+                .setTypeface(Typeface.DEFAULT_BOLD)
+                .setTextSize(14);
 
         TabConfig config = new TabConfig.Builder()
                 .setViewpager(mViewPager)
