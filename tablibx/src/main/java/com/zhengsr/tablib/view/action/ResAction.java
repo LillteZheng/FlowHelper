@@ -14,7 +14,7 @@ import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
  */
-public class ResAction extends BaseAction {
+public class ResAction extends BaseVpAction {
     private static final String TAG = "ResAction";
     private Bitmap mBitmap;
     private Rect mSrcRect;

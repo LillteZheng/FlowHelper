@@ -258,9 +258,9 @@ private void resFlow(){
 
     /**
      * 绘制一个圆的指示器
-     * 除了继承 BaseAction，还需要些 TabRect
+     * 继承BaseVpAction，重写valueChange 和 draw ，绘制自己想要的效果即可
      */
-    class CircleAction extends BaseAction{
+    class CircleAction extends BaseVpAction{
         @Override
         public void config(TabFlowLayout parentView) {
             super.config(parentView);

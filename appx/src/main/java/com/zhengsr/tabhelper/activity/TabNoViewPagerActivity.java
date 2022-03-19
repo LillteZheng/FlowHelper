@@ -14,6 +14,7 @@ import com.zhengsr.tablib.bean.TabBean;
 import com.zhengsr.tablib.bean.TabConfig;
 import com.zhengsr.tablib.bean.TabValue;
 import com.zhengsr.tablib.view.action.BaseAction;
+import com.zhengsr.tablib.view.action.BaseVpAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabFlowLayout;
 import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
@@ -125,7 +126,7 @@ public class TabNoViewPagerActivity extends BaseActivity {
     /**
      * 绘制一个圆的指示器
      */
-    class CircleAction extends BaseAction {
+    class CircleAction extends BaseVpAction {
         private static final String TAG = "CircleAction";
 
         @Override

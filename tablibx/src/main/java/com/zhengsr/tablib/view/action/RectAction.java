@@ -11,7 +11,7 @@ import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 绘制矩形
  */
-public class RectAction extends BaseAction {
+public class RectAction extends BaseVpAction {
     private static final String TAG = "RectAction";
 
     @Override

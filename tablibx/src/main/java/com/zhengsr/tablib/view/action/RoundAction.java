@@ -11,7 +11,7 @@ import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
  */
-public class RoundAction extends BaseAction {
+public class RoundAction extends BaseVpAction {
     private static final String TAG = "RoundAction";
     private float mRound;
 

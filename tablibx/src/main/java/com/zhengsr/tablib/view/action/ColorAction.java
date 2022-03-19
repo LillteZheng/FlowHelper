@@ -6,7 +6,7 @@ import android.graphics.Canvas;
  * @auther by zhengshaorui on 2020/1/9
  * describe:
  */
-public class ColorAction extends BaseAction {
+public class ColorAction extends BaseVpAction {
     @Override
     public void draw(Canvas canvas) {
 

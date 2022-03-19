@@ -12,7 +12,7 @@ import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
  * @author by  zhengshaorui on 2019/10/8
  * Describe:
  */
-public class TriAction extends BaseAction {
+public class TriAction extends BaseVpAction {
     private static final String TAG = "TriAction";
     private Path mPath;
 

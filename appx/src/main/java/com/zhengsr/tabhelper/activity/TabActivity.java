@@ -23,6 +23,7 @@ import com.zhengsr.tablib.bean.TextConfig;
 import com.zhengsr.tablib.utils.DisplayUtil;
 import com.zhengsr.tablib.view.TabColorTextView;
 import com.zhengsr.tablib.view.action.BaseAction;
+import com.zhengsr.tablib.view.action.BaseVpAction;
 import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
 import com.zhengsr.tablib.view.flow.TabVpFlowLayout;
 import com.zhengsr.tablib.view.flow.base.AbsFlowLayout;
@@ -49,8 +50,8 @@ public class TabActivity extends BaseActivity {
         }
         mViewPager.setAdapter(mViewAdapter = new CusAdapter2(this));
         mViewPager.setOffscreenPageLimit(3);
-        rectFlow();
         triFlow();
+        rectFlow();
         roundFlow();
         resFlow();
         cusFlow();
@@ -154,7 +155,7 @@ public class TabActivity extends BaseActivity {
     /**
      * 绘制一个圆的指示器
      */
-    class CircleAction extends BaseAction {
+    class CircleAction extends BaseVpAction {
         @Override
         public void config(AbsFlowLayout parentView) {
             super.config(parentView);
