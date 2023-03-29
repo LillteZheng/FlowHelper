@@ -32,7 +32,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         TextView textView = findViewById(R.id.text);
         textView.setTextColor(getResources().getColor(R.color.color_selector));
-
     }
 
 

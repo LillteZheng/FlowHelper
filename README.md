@@ -144,6 +144,7 @@ implementation 'com.github.LillteZheng:FlowHelper:v2.3'
 
 
 ## 版本信息：
+-  v2.4  : 修复TabLabelLayout 在调用 resetStatus，第一个无法点击的问题。并增加 BaseLabelItem,Bean 类继承它，可实现换行
 -  v2.3  : 修改TabVpFlowLayout 快速点击时,TabColorTextView 还有残留，和 tab 没有转移过去的问题
 -  v2.0  : 内置部分控件，减少接入成本，并优化一些bug，和关闭demo ，viewpager 内存泄露的问题
 -  v1.37 : 增加 tab_width_equals_text ，让 rect 根据 text 的长度变化，修复 TabColorTextView 加粗不起作用的问题

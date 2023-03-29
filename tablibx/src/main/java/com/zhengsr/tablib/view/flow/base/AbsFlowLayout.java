@@ -43,7 +43,7 @@ import com.zhengsr.tablib.view.adapter.TabFlowAdapter;
  * @author by zhengshaorui 2021/5/23 06:40
  * describe：用来获取通用的自定义属性，和一些常用的配置
  */
-public class AbsFlowLayout extends ScrollFlowLayout {
+public class AbsFlowLayout extends ScrollFlowLayout<TabFlowAdapter> {
     private static final String TAG = AbsFlowLayout.class.getSimpleName();
     /**
      * attrs
@@ -55,7 +55,6 @@ public class AbsFlowLayout extends ScrollFlowLayout {
      */
     protected BaseAction mAction;
     private TabConfig mTabConfig;
-    protected TabFlowAdapter mAdapter;
     protected Scroller mScroller;
     protected int mLastScrollPos = 0;
     protected int mLastIndex = 0;

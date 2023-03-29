@@ -29,12 +29,11 @@ import java.util.List;
  * @auther by zhengshaorui on 2020/1/8
  * describe: 标签瀑布流布局，支持单选，多选
  */
-public class LabelFlowLayout extends ScrollFlowLayout {
+public class LabelFlowLayout extends ScrollFlowLayout<LabelFlowAdapter> {
     private static final String TAG = "LabelFlowLayout";
     /**
      * logic
      */
-    private LabelFlowAdapter mAdapter;
     private int mMaxSelectCount;
     private int mLastPosition = -1;
     private boolean isHasMoreView;
@@ -429,7 +428,6 @@ public class LabelFlowLayout extends ScrollFlowLayout {
             isAutoScroll = autoScroll;
         }
     }
-
 
 
     /**

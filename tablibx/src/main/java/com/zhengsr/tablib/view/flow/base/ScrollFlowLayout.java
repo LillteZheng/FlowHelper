@@ -12,11 +12,13 @@ import android.widget.Scroller;
 
 import androidx.annotation.Nullable;
 
+import com.zhengsr.tablib.view.adapter.BaseFlowAdapter;
+
 /**
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 滚动类，用来移动
  */
-public class ScrollFlowLayout extends FlowLayout {
+public class ScrollFlowLayout<T extends BaseFlowAdapter> extends FlowLayout<T> {
     private static final String TAG = "ScrollFlowLayout";
     private int mTouchSlop;
     private float mLastPos;

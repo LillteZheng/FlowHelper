@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 
 import com.zhengsr.tablib.FlowConstants;
+import com.zhengsr.tablib.bean.BaseLabelItem;
+import com.zhengsr.tablib.view.adapter.BaseFlowAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
  * @author by  zhengshaorui on 2019/10/8
  * Describe: 瀑布流布局,这个类只用来测量子控件，不做其他操作
  */
-class FlowLayout extends ViewGroup {
+class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
     private static final String TAG = "FlowLayout";
     protected int mViewWidth;
     protected int mViewHeight;
@@ -35,6 +37,7 @@ class FlowLayout extends ViewGroup {
     private int mLabelLines = -1;
     private boolean isLabelMoreLine;
     protected int mLineWidth;
+    protected T mAdapter;
 
     public FlowLayout(Context context) {
         this(context, null);
@@ -162,7 +165,7 @@ class FlowLayout extends ViewGroup {
         int widthPixels = getResources().getDisplayMetrics().widthPixels;
         if (MeasureSpec.EXACTLY == widthMode) {
             widthPixels = widthSize;
-        }else {
+        } else {
             if (mVisibleCount != -1) {
                 MarginLayoutParams parentParams = (MarginLayoutParams) getLayoutParams();
                 widthPixels -= (getPaddingStart() + getPaddingEnd() + parentParams.leftMargin + parentParams.rightMargin);
@@ -271,9 +274,11 @@ class FlowLayout extends ViewGroup {
             /**
              * 确定是否换行
              */
+            boolean isFull = lineWidth + cWidth > (widthSize - (getPaddingLeft() + getPaddingRight()));
+            boolean isHeader = isHeader(i);
 
-            if (lineWidth + cWidth > (widthSize - (getPaddingLeft() + getPaddingRight()))) {
 
+            if (isFull) {
                 //换行
                 height += lineHeight;
 
@@ -297,10 +302,32 @@ class FlowLayout extends ViewGroup {
 
             } else {
                 //未换行
+                if (isHeader) {
+                    //查看上一个
+                    if (i > 0 && getChildAt(i - 1) != null) {
+                        //// 如果当前子视图是头部视图，并且上一个子视图不为空，则另起一行
+                        height += lineHeight;
+                        mLineHeights.add(lineHeight);
+                        mAllViews.add(lineViews);
+                        lineViews = new ArrayList<>();
+                    }
+                }
                 lineWidth += cWidth;
                 lineHeight = Math.max(lineHeight, cHeight);
                 mLineWidth = Math.max(mLineWidth, lineWidth);
                 lineViews.add(child);
+
+                if (isHeader) {
+                    //换行
+                    height += lineHeight;
+
+
+                    mLineHeights.add(lineHeight);
+                    mAllViews.add(lineViews);
+                    lineViews = new ArrayList<>();
+                }
+
+
             }
 
             //加最后一行
@@ -408,6 +435,15 @@ class FlowLayout extends ViewGroup {
         return isVertical() || isLabelFlow();
     }
 
+    private boolean isHeader(int index) {
+        if (mAdapter != null && mAdapter.getDatas() != null) {
+            Object bean = mAdapter.getDatas().get(index);
+            if (bean instanceof BaseLabelItem) {
+                return ((BaseLabelItem) bean).isHeader;
+            }
+        }
+        return false;
+    }
 
     public boolean isLabelMoreLine() {
         return isLabelMoreLine;

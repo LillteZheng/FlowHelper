@@ -1,7 +1,9 @@
 package com.zhengsr.tabhelper.activity;
 
 import android.graphics.Color;
+import android.icu.text.CaseMap;
 import android.os.Bundle;
+import android.service.quicksettings.Tile;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.zhengsr.tabhelper.CommonUtils;
 import com.zhengsr.tabhelper.R;
+import com.zhengsr.tablib.bean.BaseLabelItem;
 import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 import com.zhengsr.tablib.view.flow.LabelFlowLayout;
 
@@ -31,13 +34,24 @@ public class LabelActivity extends BaseActivity {
 
     private void singleFlow(){
         LabelFlowLayout flowLayout = findViewById(R.id.singleflow);
+        List<SingleBean> datas = new ArrayList();
+        for (int i = 0; i < mTitle.size(); i++) {
+            SingleBean bean = new SingleBean();
+            bean.name = mTitle.get(i);
+            if (i == 0 || i == 3){
+                bean.isHeader = true;
+                bean.name = "Header";
+            }
+            datas.add(bean);
+        }
         final LabelFlowAdapter adapter;
-        flowLayout.setAdapter(adapter = new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
+        flowLayout.setAdapter(adapter = new LabelFlowAdapter<SingleBean>(R.layout.item_textview,datas) {
             @Override
-            public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data)
+            public void bindView(View view, SingleBean data, int position) {
+                setText(view, R.id.item_text,data.name)
                         . setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
             }
+
 
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
@@ -63,6 +77,9 @@ public class LabelActivity extends BaseActivity {
 
     }
 
+    class SingleBean extends BaseLabelItem{
+        public String name;
+    }
 
     private void searchFlow(){
         LabelFlowLayout flowLayout = findViewById(R.id.search_flow);
@@ -151,4 +168,7 @@ public class LabelActivity extends BaseActivity {
     }
 
 
+    public void test(View view) {
+
+    }
 }

@@ -184,7 +184,12 @@ bean.showMoreColor = Color.WHITE;
 flowLayout.setLabelBean(bean);
 ```
 
-### 3.3.7参考代码：
+### 3.3.7 主动换行
+
+你可能想有个 Header 换行，然后再显示不同的数据，这个时候，需要你的数据类继承 BaseLabelItem，把 isHeader 设置为ture，
+即可实现自动换行。
+
+### 参考代码：
 
 [布局代码](https://github.com/LillteZheng/FlowHelper/blob/master/app/src/main/res/layout/activity_label.xml)
 
