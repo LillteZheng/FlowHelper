@@ -22,6 +22,7 @@ import java.util.List;
 public class LabelActivity extends BaseActivity {
     private List<String> mTitle = new ArrayList<>(Arrays.asList("新闻", "娱乐", "学习", "测试后", "新闻", "娱乐", "学习"));
     private List<String> mTitle2 = new ArrayList<>(Arrays.asList("Life is like an ocean Only strong willed ".split(" ")));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,34 +33,34 @@ public class LabelActivity extends BaseActivity {
         canLongFlow();
     }
 
-    private void singleFlow(){
+    private void singleFlow() {
         LabelFlowLayout flowLayout = findViewById(R.id.singleflow);
         List<SingleBean> datas = new ArrayList();
-        for (int i = 0; i < mTitle.size(); i++) {
+        for (int i = 0; i < 20; i++) {
             SingleBean bean = new SingleBean();
-            bean.name = mTitle.get(i);
-            if (i == 0 || i == 3){
+            bean.name = "测试 " + i;
+            if (i == 0 || i == 3 || i == 10) {
                 bean.isHeader = true;
                 bean.name = "Header";
             }
             datas.add(bean);
         }
         final LabelFlowAdapter adapter;
-        flowLayout.setAdapter(adapter = new LabelFlowAdapter<SingleBean>(R.layout.item_textview,datas) {
+        flowLayout.setAdapter(adapter = new LabelFlowAdapter<SingleBean>(R.layout.item_textview, datas) {
             @Override
             public void bindView(View view, SingleBean data, int position) {
-                setText(view, R.id.item_text,data.name)
-                        . setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
+                setText(view, R.id.item_text, data.name)
+                        .setTextColor(view, R.id.item_text, getResources().getColor(R.color.unselect));
             }
 
 
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);
-                if (isSelected){
-                    setTextColor(view, R.id.item_text,Color.BLACK);
-                }else{
-                    setTextColor(view, R.id.item_text,getResources().getColor(R.color.unselect));
+                if (isSelected) {
+                    setTextColor(view, R.id.item_text, Color.BLACK);
+                } else {
+                    setTextColor(view, R.id.item_text, getResources().getColor(R.color.unselect));
                 }
             }
         });
@@ -73,94 +74,93 @@ public class LabelActivity extends BaseActivity {
             }
         });
 
-    //    flowLayout.setSelects(6);
+        //    flowLayout.setSelects(6);
 
     }
 
-    class SingleBean extends BaseLabelItem{
+    class SingleBean extends BaseLabelItem {
         public String name;
     }
 
-    private void searchFlow(){
+    private void searchFlow() {
         LabelFlowLayout flowLayout = findViewById(R.id.search_flow);
-        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview,mTitle) {
+        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview, mTitle) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data)
-                        .setTextColor(view, R.id.item_text,Color.WHITE);
+                setText(view, R.id.item_text, data)
+                        .setTextColor(view, R.id.item_text, Color.WHITE);
                 view.setBackground(CommonUtils.getColorDrawable(10));
             }
         });
 
     }
 
-    private void multiFlow(){
+    private void multiFlow() {
         LabelFlowLayout flowLayout = findViewById(R.id.multiflow);
         flowLayout.setMaxSelectCount(3);
-        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview,mTitle2) {
+        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_textview, mTitle2) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.item_text,data);
+                setText(view, R.id.item_text, data);
             }
-
 
 
             @Override
             public void onReachMaxCount(List<Integer> ids, int count) {
                 super.onReachMaxCount(ids, count);
-                Toast.makeText(LabelActivity.this, "最多只能选中 "+count+" 个"+" 已选中坐标: "+ids, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LabelActivity.this, "最多只能选中 " + count + " 个" + " 已选中坐标: " + ids, Toast.LENGTH_SHORT).show();
             }
 
 
         });
 
         //选中默认数据
-        flowLayout.setSelects(2,3,5);
+        flowLayout.setSelects(2, 3, 5);
 
     }
 
-    private void canLongFlow(){
+    private void canLongFlow() {
         LabelFlowLayout flowLayout = findViewById(R.id.longflow);
-        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_search_layout,mTitle2) {
+        flowLayout.setAdapter(new LabelFlowAdapter<String>(R.layout.item_search_layout, mTitle2) {
             @Override
             public void bindView(View view, String data, int position) {
-                setText(view, R.id.search_msg_tv,data)
-                        .addChildrenClick(view, R.id.search_delete_iv,position);
+                setText(view, R.id.search_msg_tv, data)
+                        .addChildrenClick(view, R.id.search_delete_iv, position);
             }
 
             @Override
             public void onItemSelectState(View view, boolean isSelected) {
                 super.onItemSelectState(view, isSelected);
-                if (!isSelected){
+                if (!isSelected) {
                     view.setBackgroundResource(R.drawable.shape_search);
-                    setVisible(view, R.id.search_delete_iv,false);
+                    setVisible(view, R.id.search_delete_iv, false);
                 }
             }
 
             @Override
             public void onItemClick(View view, String data, int position) {
                 super.onItemClick(view, data, position);
-                Toast.makeText(LabelActivity.this, "点击了: "+data, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LabelActivity.this, "点击了: " + data, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemChildClick(View childView, int position) {
                 super.onItemChildClick(childView, position);
-                if (childView.getId() == R.id.search_delete_iv){
+                if (childView.getId() == R.id.search_delete_iv) {
                     mTitle2.remove(position);
                     notifyDataChanged();
                 }
             }
 
             @Override
-            public boolean onItemLongClick(View view,int position) {
+            public boolean onItemLongClick(View view, int position) {
                 /**
                  * 置所有view 的 select 为 false
                  */
                 resetStatus();
                 view.setBackgroundResource(R.drawable.shape_search_select);
-                setVisible(view, R.id.search_delete_iv,true);
-                return super.onItemLongClick(view,position);
+                setVisible(view, R.id.search_delete_iv, true);
+                return super.onItemLongClick(view, position);
             }
 
 

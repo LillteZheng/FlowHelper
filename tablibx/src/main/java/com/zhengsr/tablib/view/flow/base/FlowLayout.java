@@ -310,6 +310,9 @@ class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
                         mLineHeights.add(lineHeight);
                         mAllViews.add(lineViews);
                         lineViews = new ArrayList<>();
+                        //重置为下一个child 的宽度
+                        lineWidth = 0;
+                        lineHeight = 0;
                     }
                 }
                 lineWidth += cWidth;
@@ -320,11 +323,12 @@ class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
                 if (isHeader) {
                     //换行
                     height += lineHeight;
-
-
                     mLineHeights.add(lineHeight);
                     mAllViews.add(lineViews);
                     lineViews = new ArrayList<>();
+                    //重置为下一个child 的宽度
+                    lineWidth = 0;
+                    lineHeight = 0;
                 }
 
 
