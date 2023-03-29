@@ -22,6 +22,7 @@ import com.zhengsr.tablib.view.adapter.LabelFlowAdapter;
 import com.zhengsr.tablib.view.flow.base.ScrollFlowLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -127,6 +128,7 @@ public class LabelFlowLayout extends ScrollFlowLayout {
         @Override
         public void resetAllStatus() {
             int childCount = getChildCount();
+            mLastPosition = -1;
             for (int i = 0; i < childCount; i++) {
                 View view = getChildAt(i);
                 view.setSelected(false);
@@ -427,6 +429,8 @@ public class LabelFlowLayout extends ScrollFlowLayout {
             isAutoScroll = autoScroll;
         }
     }
+
+
 
     /**
      * 设置自定义属性
