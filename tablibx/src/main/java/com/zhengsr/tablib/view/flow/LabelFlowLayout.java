@@ -264,6 +264,7 @@ public class LabelFlowLayout extends ScrollFlowLayout<LabelFlowAdapter> {
      * 更新数据
      */
     private void notifyData() {
+        mLastPosition = -1;
         removeAllViews();
         int childCount = mAdapter.getItemCount();
         for (int i = 0; i < childCount; i++) {

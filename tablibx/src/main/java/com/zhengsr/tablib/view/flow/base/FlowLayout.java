@@ -289,6 +289,13 @@ class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
                 //重置为下一个child 的宽度
                 lineWidth = cWidth;
                 lineHeight = cHeight;
+                if (isHeader){
+                    height = processHeaderView(height,lineHeight,lineViews);
+                    lineViews = new ArrayList<>();
+                    //重置为下一个child 的宽度
+                    lineWidth = 0;
+                    lineHeight = 0;
+                }
 
                 /**
                  * 是否设置了显示行数
@@ -305,10 +312,8 @@ class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
                 if (isHeader) {
                     //查看上一个
                     if (i > 0 && getChildAt(i - 1) != null) {
-                        //// 如果当前子视图是头部视图，并且上一个子视图不为空，则另起一行
-                        height += lineHeight;
-                        mLineHeights.add(lineHeight);
-                        mAllViews.add(lineViews);
+                        // 如果当前子视图是头部视图，并且上一个子视图不为空，则另起一行
+                        height = processHeaderView(height,lineHeight,lineViews);
                         lineViews = new ArrayList<>();
                         //重置为下一个child 的宽度
                         lineWidth = 0;
@@ -322,13 +327,20 @@ class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
 
                 if (isHeader) {
                     //换行
-                    height += lineHeight;
-                    mLineHeights.add(lineHeight);
-                    mAllViews.add(lineViews);
+                    height = processHeaderView(height,lineHeight,lineViews);
                     lineViews = new ArrayList<>();
                     //重置为下一个child 的宽度
                     lineWidth = 0;
                     lineHeight = 0;
+                    /**
+                     * 是否设置了显示行数
+                     */
+                    if (mLabelLines != -1 && mLineHeights.size() >= mLabelLines) {
+                        isLabelMoreLine = true;
+                        break;
+                    } else {
+                        isLabelMoreLine = false;
+                    }
                 }
 
 
@@ -355,6 +367,14 @@ class FlowLayout<T extends BaseFlowAdapter> extends ViewGroup {
         //把测量完成的高，重设置给父控件
 
         setMeasuredDimension(widthSize, height);
+    }
+
+    private int processHeaderView(int height,int lineHeight,List<View> lineViews){
+        //换行
+        height += lineHeight;
+        mLineHeights.add(lineHeight);
+        mAllViews.add(lineViews);
+        return height;
     }
 
 
